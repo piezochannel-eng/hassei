@@ -414,10 +414,48 @@ button:not(:disabled):active { background: var(--cyan) !important; color: #0b0c0
 }
 #treeCanvas, #trialCanvas { background: #0b0c0c; }
 
+/* ---------- 耐用試験 ---------- */
+.tr-shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 4px; }
+.tr-shop button, .tr-sel button { border: 1px solid var(--line); background: #151817; color: var(--text); padding: 5px 7px; font-size: 11.5px; text-align: left; }
+.tr-shop button small { display: block; color: var(--amber); font-size: 10px; }
+.tr-shop button.on { border-color: var(--amber); color: var(--amber); }
+.tr-sel { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; padding: 6px 0; }
+.tr-sel .num { color: var(--amber); }
+.tr-ctrl button.go { border-color: var(--cyan); color: var(--cyan); }
+#trCtrl { display: grid; gap: 8px; }
+@media (min-width: 900px) {
+  body.trial-on #desk::before { content: ""; position: fixed; inset: 0; background: #070808; z-index: 8000; }
+  body.trial-on #win-trial { z-index: 8001 !important; }
+  body.trial-on #bgEmbryo { visibility: hidden; }
+}
+
+/* ---------- PC: 胚は背景に ---------- */
+#bgEmbryo { display: none; }
+@media (min-width: 900px) {
+  #bgEmbryo { display: block; position: fixed; left: 0; top: 0; right: 0; bottom: 52px; z-index: 0; }
+  #bgEmbryo #embryoWrap { position: absolute; inset: 0; padding: 0; display: block; }
+  #bgEmbryo #embryo { width: 100%; height: 100%; aspect-ratio: auto; }
+  #bgEmbryo #embryo:active { transform: none; }
+  #bgEmbryo #voice { top: 24px; }
+  #desk { z-index: 1; pointer-events: none; }
+  #desk > .win { pointer-events: auto; }
+  body.trial-on #desk::before { pointer-events: auto; }
+}
+
+.tr-side { display: grid; gap: 10px; align-content: start; }
+@media (max-width: 899px) { .tr-wrap { display: flex; flex-direction: column; } .tr-side { display: contents; } .tr-side #trCtrl { order: 3; } #trialCanvas { order: 2; } .tr-hud { order: 0; } .tr-banner { order: 1; } }
+@media (min-width: 900px) {
+  .tr-wrap { grid-template-columns: 260px minmax(0, 1fr); align-items: start; }
+  #trialCanvas { order: 2; width: min(100%, calc(100vh - 52px - 90px)); max-width: none; }
+  .tr-hud { grid-template-columns: repeat(2, 1fr); }
+  .tr-shop { grid-template-columns: repeat(2, 1fr); }
+}
+
 </style>
 </head>
 <body>
 <div id="scan" aria-hidden="true"></div>
+<div id="bgEmbryo"></div>
 <div id="desk">
 
 <section class="win" id="win-core" data-title="胚">
@@ -432,7 +470,7 @@ button:not(:disabled):active { background: var(--cyan) !important; color: #0b0c0
       </div>
       <div id="status"></div>
     </div>
-    <section id="embryoWrap">
+    <div id="embryoHome"><section id="embryoWrap">
       <canvas id="embryo" width="150" height="150" aria-label="分裂させる"></canvas>
       <div id="voice" role="button" aria-label="声を拾う">
         <div class="who"><span id="voiceName"></span><span id="voiceRole"></span><span id="voiceCard" class="vcard">カード</span></div>
@@ -440,7 +478,7 @@ button:not(:disabled):active { background: var(--cyan) !important; color: #0b0c0
         <div class="hint"><span></span><span id="voiceLeft"></span></div>
         <div class="timer" id="voiceTimer"></div>
       </div>
-    </section>
+    </section></div>
     <div id="clickInfo" class="num">+1</div>
     <section id="actions">
       <button class="act" id="btnDormant"><b>休眠</b><span>-30%</span></button>
@@ -488,8 +526,8 @@ button:not(:disabled):active { background: var(--cyan) !important; color: #0b0c0
   <div class="win-b"><div id="bpBody"></div></div>
 </section>
 
-<section class="win panel" id="win-trial" data-title="試験">
-  <header class="win-h"><span class="win-t">試験</span><button class="win-x" aria-label="閉じる">×</button></header>
+<section class="win panel" id="win-trial" data-title="耐用試験">
+  <header class="win-h"><span class="win-t">耐用試験</span><button class="win-x" aria-label="閉じる">×</button></header>
   <div class="win-b"><div id="trialBody"></div></div>
 </section>
 
@@ -1236,21 +1274,21 @@ var Tree = (function () {
     { id: 'gamaliel', no: 9, sephira: 'イェソド', name: 'ガマリエル', title: '穢れた者', pos: [0, 6], theme: 'idle',
       key: { effect: { offline: 4, dormancy: 0.15 }, label: '閉じている間の上限+4時間、休眠中の生産+15%', text: '眠っている間も、夢は育つ。' } },
     { id: 'samael', no: 8, sephira: 'ホド', name: 'サマエル', title: '神の毒', pos: [-1, 5], theme: 'strike',
-      key: { effect: { trialDmg: 1.5, tap: 2 }, label: '試験の攻撃1.5倍、タップ2倍', text: '毒は、正しく使えば薬と呼ばれる。' } },
+      key: { effect: { trialDmg: 1.5, tap: 2 }, label: '耐用試験の攻撃1.5倍、タップ2倍', text: '毒は、正しく使えば薬と呼ばれる。' } },
     { id: 'arab', no: 7, sephira: 'ネツァク', name: 'アラブ・ズラク', title: '散らす烏', pos: [1, 5], theme: 'heat',
-      key: { effect: { cooling: 1.25, trialHeat: 0.7 }, label: 'ヒートの冷め方+25%、試験のヒート-30%', text: '散らせば、熱はどこにも留まらない。' } },
+      key: { effect: { cooling: 1.25, trialFood: 1.3 }, label: 'ヒートの冷め方+25%、耐用試験の養分+30%', text: '散らせば、熱はどこにも留まらない。' } },
     { id: 'thagirion', no: 6, sephira: 'ティファレト', name: 'タギリロン', title: '争う者', pos: [0, 4], theme: 'design',
       key: { effect: { bpBranch: 1, bpExp: 1 }, label: '設計図の分岐+1、設計図の倍率2倍', text: '中心に座るものは、いつも二つに引き裂かれている。' } },
     { id: 'golachab', no: 5, sephira: 'ゲブラー', name: 'ゴラケブ', title: '燃やす者', pos: [-1, 3], theme: 'fury',
-      key: { effect: { trialRate: 1.3, trialCrit: 0.1, trialHp: 0.9 }, label: '試験の発射の速さ+30%、会心+10%。体力-10%', text: '燃やすものは、自らも燃える。' } },
+      key: { effect: { trialRate: 1.3, trialCrit: 0.1, trialHp: 0.9 }, label: '耐用試験の発射の速さ+30%、会心+10%。体力-10%', text: '燃やすものは、自らも燃える。' } },
     { id: 'gamchicoth', no: 4, sephira: 'ケセド', name: 'ガシェクラー', title: '貪る者', pos: [1, 3], theme: 'greed',
       key: { effect: { cost: 0.85, shards: 1.3 }, label: '施設の値段-15%、殻片+30%', text: '与えるふりをして、すべてを呑む。' } },
     { id: 'satariel', no: 3, sephira: 'ビナー', name: 'サタリエル', title: '隠す者', pos: [-1, 1], theme: 'veil',
       key: { effect: { cardSlots: 1, trialReveal: 0.3, himRate: 1.5 }, label: 'カードの枠+1、影を見抜く範囲+30%。彼の声が増える', text: '見えないものほど、よく見ている。' } },
     { id: 'ghagiel', no: 2, sephira: 'コクマー', name: 'ガギエル', title: '妨げる者', pos: [1, 1], theme: 'bulwark',
-      key: { effect: { trialHp: 1.6, trialRegen: 3 }, label: '試験の体力1.6倍、毎秒3回復', text: '何者も通さない。内側からも。' } },
+      key: { effect: { trialHp: 1.6, trialRegen: 3 }, label: '耐用試験の体力1.6倍、毎秒3回復', text: '何者も通さない。内側からも。' } },
     { id: 'thaumiel', no: 1, sephira: 'ケテル', name: 'タウミエル', title: '双頭', pos: [0, 0], theme: 'crown',
-      key: { effect: { global: 10, trialDmg: 3 }, label: '全体10倍、試験の攻撃3倍', text: '頭は二つ。片方は、あなたの顔をしている。' } },
+      key: { effect: { global: 10, trialDmg: 3 }, label: '全体10倍、耐用試験の攻撃3倍', text: '頭は二つ。片方は、あなたの顔をしている。' } },
   ];
   var SPHERE_BY_ID = {};
   SPHERES.forEach(function (s) { SPHERE_BY_ID[s.id] = s; });
@@ -1269,14 +1307,14 @@ var Tree = (function () {
   var THEMES = {
     growth: [{ effect: { global: 1.05 }, label: '全体+5%' }, { effect: { tap: 1.25 }, label: 'タップ+25%' }, { effect: { global: 1.08 }, label: '全体+8%' }],
     idle: [{ effect: { offline: 1 }, label: '閉じている間の上限+1時間' }, { effect: { dormancy: 0.05 }, label: '休眠中の生産+5%' }, { effect: { global: 1.04 }, label: '全体+4%' }],
-    strike: [{ effect: { trialDmg: 1.1 }, label: '試験の攻撃+10%' }, { effect: { trialTap: 1.25 }, label: '試験でのタップ+25%' }, { effect: { tap: 1.3 }, label: 'タップ+30%' }],
-    heat: [{ effect: { heatGain: 0.95 }, label: 'ヒートの上がり方-5%' }, { effect: { cooling: 1.06 }, label: 'ヒートの冷め方+6%' }, { effect: { trialHeat: 0.9 }, label: '試験のヒート-10%' }],
+    strike: [{ effect: { trialDmg: 1.1 }, label: '試験の攻撃+10%' }, { effect: { trialMove: 1.06 }, label: '耐用試験の移動+6%' }, { effect: { tap: 1.3 }, label: 'タップ+30%' }],
+    heat: [{ effect: { heatGain: 0.95 }, label: 'ヒートの上がり方-5%' }, { effect: { cooling: 1.06 }, label: 'ヒートの冷め方+6%' }, { effect: { trialFood: 1.1 }, label: '耐用試験の養分+10%' }],
     design: [{ effect: { bpBridges: 1 }, label: '設計図の交差+1' }, { effect: { bpExp: 0.25 }, label: '設計図の倍率+19%' }, { effect: { global: 1.05 }, label: '全体+5%' }],
-    fury: [{ effect: { trialRate: 1.08 }, label: '試験の発射の速さ+8%' }, { effect: { trialCrit: 0.04 }, label: '試験の会心+4%' }, { effect: { trialDmg: 1.08 }, label: '試験の攻撃+8%' }],
+    fury: [{ effect: { trialRate: 1.08 }, label: '耐用試験の発射の速さ+8%' }, { effect: { trialCrit: 0.04 }, label: '耐用試験の会心+4%' }, { effect: { trialDmg: 1.08 }, label: '耐用試験の攻撃+8%' }],
     greed: [{ effect: { cost: 0.97 }, label: '施設の値段-3%' }, { effect: { drugPrice: 0.9 }, label: '薬の値段-10%' }, { effect: { shards: 1.08 }, label: '殻片+8%' }, { effect: { residue: 1.1 }, label: '継代の残滓+10%' }],
-    veil: [{ effect: { trialReveal: 0.08 }, label: '影を見抜く範囲+8%' }, { effect: { trialEnergy: 1.1 }, label: '試験の気力+10%' }, { effect: { codex: 1.15 }, label: '写本が見つかりやすい' }],
-    bulwark: [{ effect: { trialHp: 1.1 }, label: '試験の体力+10%' }, { effect: { trialRegen: 0.5 }, label: '試験で毎秒0.5回復' }, { effect: { trialArmor: 0.04 }, label: '試験で受ける傷-4%' }],
-    crown: [{ effect: { global: 1.2 }, label: '全体+20%' }, { effect: { trialDmg: 1.2 }, label: '試験の攻撃+20%' }],
+    veil: [{ effect: { trialReveal: 0.08 }, label: '影を見抜く範囲+8%' }, { effect: { trialEnergy: 1.1 }, label: '耐用試験の気力+10%' }, { effect: { codex: 1.15 }, label: '写本が見つかりやすい' }],
+    bulwark: [{ effect: { trialHp: 1.1 }, label: '耐用試験の体力+10%' }, { effect: { trialRegen: 0.5 }, label: '耐用試験で毎秒0.5回復' }, { effect: { trialArmor: 0.04 }, label: '耐用試験で受ける傷-4%' }],
+    crown: [{ effect: { global: 1.2 }, label: '全体+20%' }, { effect: { trialDmg: 1.2 }, label: '耐用試験の攻撃+20%' }],
   };
 
   /* ---------- 節を並べる ---------- */
@@ -1353,7 +1391,7 @@ var Tree = (function () {
 
   function cost(id) {
     var n = NODE_BY_ID[id];
-    var c = Math.ceil(3 * Math.pow(1.13, n.depth));
+    var c = Math.ceil(3 * Math.pow(1.55, n.depth));
     return n.kind === 'key' ? c * 4 : c;
   }
 
@@ -1382,7 +1420,7 @@ var Tree = (function () {
   /** 持っている節の効果をまとめる(掛けるものは掛け、足すものは足す) */
   var ADDITIVE = { offline: 1, dormancy: 1, bpBranch: 1, bpBridges: 1, bpExp: 1, trialCrit: 1, trialRegen: 1, trialReveal: 1, cardSlots: 1, trialArmor: 1 };
   function effects(owned) {
-    var fx = { global: 1, tap: 1, offline: 0, dormancy: 0, trialDmg: 1, trialTap: 1, heatGain: 1, cooling: 1, trialHeat: 1, bpBranch: 0, bpBridges: 0, bpExp: 0,
+    var fx = { global: 1, tap: 1, offline: 0, dormancy: 0, trialDmg: 1, trialTap: 1, trialMove: 1, trialFood: 1, heatGain: 1, cooling: 1, trialHeat: 1, bpBranch: 0, bpBridges: 0, bpExp: 0,
       trialRate: 1, trialCrit: 0, trialHp: 1, trialRegen: 0, trialArmor: 0, cost: 1, drugPrice: 1, shards: 1, residue: 1, trialReveal: 0, trialEnergy: 1,
       codex: 1, cardSlots: 0, himRate: 1 };
     Object.keys(owned || {}).forEach(function (id) {
@@ -1410,167 +1448,208 @@ if (typeof module !== 'undefined') module.exports = Tree;
 </script>
 <script>
 /*
- * 試験(リアルタイム)の計算部分
- *   中央の him に、外側から負荷が押し寄せる。器官がそれぞれ自動で迎え撃ち、
- *   プレイヤーはタップ・シグナルの切り替え・器官の技・ヒートの管理で支える。
- *   何波目まで耐えたかが到達点。画面にもゲーム本体にも依存しない。
- *   座標: him が原点、場の半径が1。角度は画面の右が0で、下向きに回る(画面の座標と同じ)。
+ * 耐用試験(リアルタイム)の計算部分
+ *   him を場の中で動かし、押し寄せる負荷を討ちながら、落ちた残骸を拾う。
+ *   ラウンドの合間は準備の時間で、養分を使って装置を置いたり強くしたりする。
+ *   敵の強さと数も、報酬も、ラウンドごとに指数で増える。
+ *   座標: 場は x, y とも -1〜1 の正方形。画面にもゲーム本体にも依存しない。
  */
 var Trial = (function () {
   'use strict';
 
-  var CORE_R = 0.08;          // him の大きさ
-  var BASE_RANGE = 0.7;
+  var HIM_R = 0.035;
+  var PICK_R = 0.09;
+  var CAP = 140;              // 1ラウンドに出る数の上限(超えた分は硬さに回す)
 
-  var THREATS = {
-    bact: { name: '細菌', hp: 1, speed: 0.16, dmg: 4, color: '#8fa996' },
-    tera: { name: '催奇形因子', hp: 3, speed: 0.10, dmg: 8, armor: 0.6, color: '#9b90a8' },
-    immune: { name: '免疫細胞', hp: 8, speed: 0.07, dmg: 15, color: '#d6d8d2' },
-    shade: { name: '影', hp: 2, speed: 0.12, dmg: 10, hidden: true, color: '#a3808f' },
-    boss: { name: '介入', hp: 30, speed: 0.035, dmg: 40, boss: true, color: '#a9524c' },
+  var ENEMIES = {
+    bact: { name: '細菌', hp: 2, speed: 0.30, dps: 6, r: 0.022, food: 1, shard: 1, color: '#8fa996', from: 1 },
+    tera: { name: '催奇形因子', hp: 5, speed: 0.20, dps: 10, r: 0.026, armor: 0.5, food: 1.5, shard: 1.5, color: '#9b90a8', from: 3 },
+    split: { name: '分裂体', hp: 6, speed: 0.19, dps: 8, r: 0.03, split: 2, food: 1, shard: 1, color: '#b8a27a', from: 5 },
+    immune: { name: '免疫細胞', hp: 14, speed: 0.13, dps: 18, r: 0.036, food: 3, shard: 3, color: '#d6d8d2', from: 6 },
+    spit: { name: '抗体産生細胞', hp: 7, speed: 0.16, dps: 4, r: 0.028, ranged: { range: 0.42, every: 1.7, dmg: 8, speed: 0.7 }, food: 2, shard: 2, color: '#8f88a3', from: 8 },
+    shade: { name: '影', hp: 4, speed: 0.26, dps: 12, r: 0.024, hidden: true, food: 2, shard: 2.5, color: '#a3808f', from: 12 },
+    boss: { name: '介入', hp: 70, speed: 0.10, dps: 40, r: 0.07, boss: true, food: 25, shard: 30, color: '#a9524c', from: 10 },
   };
 
   var BOSSES = ['白石の通報', '春日の鎮静処置', '鳴海の廃棄処分', '鷺沼の契約解除', '灰原の観察終了', '久遠寺の中止命令'];
-  function bossName(wave) { var i = wave / 10 - 1; return i < BOSSES.length ? BOSSES[i] : '研究所の封鎖'; }
-
-  function phaseOf(wave) {
-    if (wave <= 10) return '第Ⅰ相';
-    if (wave <= 25) return '第Ⅱ相';
-    if (wave <= 50) return '第Ⅲ相';
+  function bossName(round) { var i = round / 10 - 1; return i < BOSSES.length ? BOSSES[i] : '研究所の封鎖'; }
+  function phaseOf(round) {
+    if (round <= 10) return '第Ⅰ相';
+    if (round <= 25) return '第Ⅱ相';
+    if (round <= 50) return '第Ⅲ相';
     return '第Ⅳ相';
   }
 
-  var SIGNALS = {
-    wnt: { name: 'Wnt', desc: '発射が1.5倍速くなる。ヒートが上がる', heat: 10 },
-    bmp: { name: 'BMP', desc: '受ける傷が4割減る', heat: 0 },
-    shh: { name: 'Shh', desc: '催奇形因子の守りを貫き、会心+15%', heat: 0 },
-    fgf: { name: 'FGF', desc: '毎秒3回復する。ヒートが上がる', heat: 6 },
-    ra: { name: 'レチノイン酸', desc: '届く距離が1.3倍になる', heat: 0 },
-  };
+  /* ---------- 装置 ---------- */
+  var EQUIP = [
+    { id: 'turret', name: 'タレット', cost: 15, from: 0, range: 0.4, every: 0.7, dmg: 1.0 },
+    { id: 'mine', name: '地雷', cost: 10, from: 0, trigger: 0.07, radius: 0.16, dmg: 6, rearm: 4 },
+    { id: 'collector', name: '自動収集器', cost: 25, from: 0, speed: 0.5 },
+    { id: 'barrier', name: '防壁', cost: 20, from: 2, size: 0.055, hpMult: 0.6 },
+    { id: 'freezer', name: 'フリーザー', cost: 30, from: 3, radius: 0.25, slow: 0.35, dmg: 0.2 },
+    { id: 'healer', name: '修復器', cost: 40, from: 4, radius: 0.2, heal: 0.02 },
+    { id: 'laser', name: 'レーザー', cost: 60, from: 5, range: 0.6, dmg: 1.5 },
+    { id: 'magnet', name: '磁場発生器', cost: 45, from: 7, radius: 0.3 },
+    { id: 'mortar', name: '迫撃砲', cost: 80, from: 8, range: 0.9, min: 0.15, every: 2.5, dmg: 3, radius: 0.13 },
+    { id: 'tesla', name: '放電塔', cost: 100, from: 10, range: 0.35, every: 1.2, dmg: 1.2, jumps: 3 },
+    { id: 'decoy', name: '囮', cost: 35, from: 12, lure: 0.45, hpMult: 0.5 },
+    { id: 'amp', name: '増幅器', cost: 120, from: 15, radius: 0.25, boost: 0.25 },
+  ];
+  var EQUIP_BY_ID = {};
+  EQUIP.forEach(function (e) { EQUIP_BY_ID[e.id] = e; });
+  var MAX_EQUIP = 24, MAX_LV = 12;
+  function equipUnlocked(id, best) { return (best || 0) >= EQUIP_BY_ID[id].from; }
+  function lvMult(lv) { return Math.pow(1.9, lv - 1); }
+  function upgradeCost(e) { return Math.ceil(EQUIP_BY_ID[e.id].cost * Math.pow(2.2, e.lv)); }
 
+  /* ---------- 技 ---------- */
   var ACTIVES = [
-    { id: 'pulse', name: '拍動', organ: 'heart', cost: 15, cd: 12, desc: '周りの負荷をまとめて叩く' },
-    { id: 'grasp', name: '掌握', organ: 'brain', cost: 25, cd: 30, desc: 'すべての負荷を止める' },
-    { id: 'fury', name: '闘争', organ: 'adrenal', cost: 20, cd: 30, desc: 'しばらく攻撃2倍' },
-    { id: 'detox', name: '解毒', organ: 'liver', cost: 20, cd: 25, desc: '体力を回復する' },
-    { id: 'cool', name: '冷却', organ: null, cost: 10, cd: 15, desc: 'ヒート-50' },
+    { id: 'dash', name: '跳躍', organ: null, cost: 8, cd: 3 },
+    { id: 'pulse', name: '拍動', organ: 'heart', cost: 15, cd: 10 },
+    { id: 'grasp', name: '掌握', organ: 'brain', cost: 25, cd: 30 },
+    { id: 'fury', name: '闘争', organ: 'adrenal', cost: 20, cd: 30 },
+    { id: 'detox', name: '解毒', organ: 'liver', cost: 20, cd: 25 },
   ];
   var ACTIVE_BY_ID = {};
   ACTIVES.forEach(function (a) { ACTIVE_BY_ID[a.id] = a; });
 
+  /* ---------- ラウンドの大きさ ---------- */
+  function countRaw(n) { return Math.round(6 * Math.pow(1.18, n - 1)); }
+  function countFor(n) { return Math.min(CAP, countRaw(n)); }
+  function hpScale(n) { return Math.pow(1.25, n - 1) * Math.max(1, countRaw(n) / CAP); }
+  function dmgScale(n) { return Math.pow(1.1, n - 1); }
+  function foodPer(n) { return Math.pow(1.22, n - 1); }
+  function shardPer(n) { return 0.25 * Math.pow(1.2, n - 1); }
+  function clearBonus(n) { return { food: Math.ceil(10 * Math.pow(1.25, n - 1)), shards: 3 * Math.pow(1.3, n - 1) }; }
+
   function rng(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  function d2(ax, ay, bx, by) { var x = ax - bx, y = ay - by; return x * x + y * y; }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
   /**
-   * stats: {
-   *   power, hp, energy, energyRegen, rate, crit, armor, regen, reveal, heatMult, tap, range,
-   *   organs: { 器官id: 段階0〜3 }
-   * }
+   * stats: { power, hp, energy, energyRegen, rate, crit, armor, regen, reveal, move, foodMult, food0, best, organs }
    */
   function create(stats, seed) {
     var o = stats.organs || {};
     var tier = function (id) { return o[id] || 0; };
     var T = {
-      t: 0, wave: 0, cleared: 0, spawnLeft: 0, spawnTimer: 0, breakTimer: 1.5, boss: null,
-      threats: [], nextId: 1, kills: 0, over: false, events: [],
-      stats: stats, tier: tier,
-      him: { hp: stats.hp, maxHp: stats.hp, energy: stats.energy, maxEnergy: stats.energy, heat: 0, stun: 0, revived: false },
-      signal: null, signalCd: 0,
+      t: 0, round: 0, cleared: 0, phase: 'prep', phaseT: 0, spawnLeft: 0, spawnTimer: 0, spawnEvery: 0.5,
+      enemies: [], drops: [], shots: [], shells: [], equip: [], nextId: 1,
+      kills: 0, over: false, events: [], food: Math.floor(stats.food0 || 30), shards: 0,
+      stats: stats, tier: tier, best: stats.best || 0,
+      him: { x: 0, y: 0, hp: stats.hp, maxHp: stats.hp, energy: stats.energy, maxEnergy: stats.energy, revived: false, inv: 0, dash: 0, timers: {} },
+      move: { x: 0, y: 0 }, goal: null,
       cds: {}, fury: 0, grasp: 0,
-      turrets: [],
       rand: rng(seed || 1),
     };
-    // 迎撃する器官(膜は最初からある)
-    T.turrets.push({ id: 'membrane', name: '細胞膜', every: 1.0, timer: 0, dmg: 1, target: tier('brain') ? 'strongest' : 'nearest' });
-    if (tier('thymus')) T.turrets.push({ id: 'thymus', name: '胸腺', every: 0.6 / (1 + 0.25 * (tier('thymus') - 1)), timer: 0.3, dmg: 0.7 * tier('thymus'), target: 'nearest' });
-    if (tier('heart')) T.turrets.push({ id: 'heart', name: '心臓', every: 4, timer: 2, dmg: 0.8 * tier('heart'), area: 0.3 + 0.05 * tier('heart') });
-    [['armL', Math.PI, 1.5 * Math.PI], ['armR', 1.5 * Math.PI, 2 * Math.PI], ['legL', 0.5 * Math.PI, Math.PI], ['legR', 0, 0.5 * Math.PI]].forEach(function (q) {
-      if (tier(q[0])) T.turrets.push({ id: q[0], name: { armL: '左上肢', armR: '右上肢', legL: '左下肢', legR: '右下肢' }[q[0]], every: 3, timer: 1, dmg: 0.5 * tier(q[0]), sweep: [q[1], q[2]] });
-    });
     return T;
   }
 
-  function range(T) { return (T.stats.range || BASE_RANGE) + 0.08 * T.tier('arch') * (1) * (T.signal === 'ra' ? 1 : 1); }
-  function effRange(T) { return range(T) * (T.signal === 'ra' ? 1.3 : 1); }
-  function revealR(T) { return 0.25 + (T.tier('pineal') ? 0.1 + 0.15 * T.tier('pineal') : 0) + (T.stats.reveal || 0); }
-  function visible(T, th) { return !th.hidden || th.r <= revealR(T); }
-  function rateMult(T) { return (T.stats.rate || 1) * (1 + 0.1 * T.tier('thyroid')) * (T.signal === 'wnt' ? 1.5 : 1); }
-  function dmgMult(T) { return (T.fury > 0 ? 2 : 1); }
+  function P(T) { return T.stats.power * (T.fury > 0 ? 2 : 1); }
+  function rate(T) { return (T.stats.rate || 1) * (1 + 0.1 * T.tier('thyroid')); }
+  function himRange(T) { return 0.45 + 0.05 * T.tier('arch') + (T.stats.range || 0); }
+  function revealR(T) { return 0.25 + 0.12 * T.tier('pineal') + (T.stats.reveal || 0); }
+  function visible(T, e) { return !e.hidden || d2(e.x, e.y, T.him.x, T.him.y) <= revealR(T) * revealR(T); }
+  function himSpeed(T) { return 0.45 * (T.stats.move || 1) * (1 + 0.12 * (T.tier('legL') + T.tier('legR'))) * (T.him.dash > 0 ? 3 : 1); }
+  function pickR(T) { return PICK_R + (T.stats.pick || 0); }
 
-  /* ---------- 波 ---------- */
-  function waveSize(n) { return 6 + Math.floor(1.6 * n); }
-  function hpScale(n) { return Math.pow(1.2, n - 1); }
-  function spawnEvery(n) { return Math.max(0.25, 0.7 * Math.pow(0.98, n)); }
-
+  /* ---------- 敵 ---------- */
   function pickType(T, n) {
-    var w = [['bact', 6]];
-    if (n >= 3) w.push(['tera', 3]);
-    if (n >= 6) w.push(['immune', 2]);
-    if (n >= 12) w.push(['shade', 2]);
+    var w = [];
+    Object.keys(ENEMIES).forEach(function (k) {
+      var d = ENEMIES[k];
+      if (d.boss || n < d.from) return;
+      w.push([k, k === 'bact' ? 6 : k === 'tera' ? 3 : 2]);
+    });
     var tot = w.reduce(function (a, b) { return a + b[1]; }, 0);
     var r = T.rand() * tot;
     for (var i = 0; i < w.length; i++) { r -= w[i][1]; if (r <= 0) return w[i][0]; }
     return 'bact';
   }
-
-  function spawn(T, type) {
-    var d = THREATS[type];
-    var n = T.wave;
-    var hp = d.hp * hpScale(n) * (d.boss ? 1 + n / 10 : 1);
-    var th = { id: T.nextId++, wave: n, type: type, a: T.rand() * Math.PI * 2, r: 1, hp: hp, maxHp: hp, speed: d.speed * (1 + 0.01 * n),
-      dmg: d.dmg * (1 + 0.08 * n), armor: d.armor || 0, hidden: !!d.hidden, boss: !!d.boss, slow: 1, knocks: 0 };
-    if (th.boss) { th.name = bossName(n); T.boss = th.id; }
-    T.threats.push(th);
-    return th;
+  function edgePoint(T) {
+    for (var tries = 0; tries < 8; tries++) {
+      var side = Math.floor(T.rand() * 4), u = T.rand() * 2 - 1;
+      var x = side === 0 ? -1 : side === 1 ? 1 : u, y = side === 2 ? -1 : side === 3 ? 1 : u;
+      if (d2(x, y, T.him.x, T.him.y) > 0.36) return [x, y];
+    }
+    return [T.him.x > 0 ? -1 : 1, T.him.y > 0 ? -1 : 1];
+  }
+  function spawn(T, type, at, hpOverride) {
+    var d = ENEMIES[type];
+    var n = Math.max(1, T.round);
+    var p = at || edgePoint(T);
+    var hp = hpOverride || d.hp * hpScale(n) * (d.boss ? 1 + n / 10 : 1);
+    var e = { id: T.nextId++, type: type, x: p[0], y: p[1], hp: hp, maxHp: hp, r: d.r, speed: d.speed * Math.min(1.4, 1 + 0.01 * n),
+      dps: d.dps * dmgScale(n), armor: d.armor || 0, hidden: !!d.hidden, boss: !!d.boss, cd: 1 + T.rand(), round: n };
+    if (e.boss) e.name = bossName(n);
+    T.enemies.push(e);
+    return e;
   }
 
-  function startWave(T) {
-    T.wave++;
-    T.spawnLeft = waveSize(T.wave);
-    T.spawnTimer = 0;
-    T.events.push({ type: 'wave', wave: T.wave, phase: phaseOf(T.wave) });
-    if (T.wave % 10 === 0) { var b = spawn(T, 'boss'); T.events.push({ type: 'boss', name: b.name }); }
+  function startRound(T) {
+    if (T.over || T.phase !== 'prep') return false;
+    T.round++;
+    T.phase = 'fight';
+    T.spawnLeft = countFor(T.round);
+    T.spawnEvery = Math.min(0.6, 18 / T.spawnLeft);
+    T.spawnTimer = 0.3;
+    T.events.push({ type: 'round', round: T.round, phase: phaseOf(T.round) });
+    if (T.round % 10 === 0) { var b = spawn(T, 'boss'); T.events.push({ type: 'boss', name: b.name }); }
+    return true;
   }
 
   /* ---------- 傷 ---------- */
-  function hurt(T, th, base, source) {
-    if (th.hp <= 0) return 0;
-    var d = base * T.stats.power * dmgMult(T);
-    if (th.armor && T.signal !== 'shh') d *= (1 - th.armor);
-    var crit = (T.stats.crit || 0) + (T.signal === 'shh' ? 0.15 : 0);
-    var isCrit = T.rand() < crit;
-    if (isCrit) d *= 2;
-    // 介入がいる間は、ほかの負荷が少し硬い
-    if (T.boss && !th.boss) d *= 0.7;
-    th.hp -= d;
-    T.events.push({ type: 'hit', id: th.id, source: source, dmg: d, crit: isCrit, a: th.a, r: th.r });
-    if (th.hp <= 0) {
-      T.kills++;
-      T.events.push({ type: 'kill', id: th.id, a: th.a, r: th.r, boss: th.boss });
-      if (th.boss) T.boss = null;
-    }
+  function hurt(T, e, amount, src) {
+    if (e.hp <= 0) return 0;
+    var d = amount;
+    if (e.armor) d *= (1 - e.armor);
+    var crit = T.rand() < (T.stats.crit || 0);
+    if (crit) d *= 2;
+    e.hp -= d;
+    if (e.hp <= 0) kill(T, e, src);
     return d;
   }
-
+  function kill(T, e, src) {
+    var d = ENEMIES[e.type];
+    var n = e.round;
+    T.kills++;
+    T.events.push({ type: 'kill', id: e.id, x: e.x, y: e.y, boss: e.boss, src: src });
+    T.drops.push({ id: T.nextId++, x: e.x, y: e.y, food: d.food * foodPer(n) * (T.stats.foodMult || 1), shard: d.shard * shardPer(n), big: e.boss, age: 0 });
+    if (d.split) for (var i = 0; i < d.split; i++) spawn(T, 'bact', [e.x + (T.rand() - 0.5) * 0.06, e.y + (T.rand() - 0.5) * 0.06], e.maxHp * 0.35);
+  }
   function damageHim(T, amount) {
-    var armor = Math.min(0.8, (T.stats.armor || 0) + (T.signal === 'bmp' ? 0.4 : 0));
-    T.him.hp -= amount * (1 - armor);
-    if (T.him.hp <= 0) {
-      if (!T.him.revived && T.tier('gonad')) {
-        T.him.revived = true;
-        T.him.hp = T.him.maxHp * 0.25 * T.tier('gonad');
+    var h = T.him;
+    if (h.inv > 0 || T.over) return;
+    h.hp -= amount * (1 - Math.min(0.8, T.stats.armor || 0));
+    if (h.hp <= 0) {
+      if (!h.revived && T.tier('gonad')) {
+        h.revived = true; h.hp = h.maxHp * 0.25 * T.tier('gonad'); h.inv = 1.5;
         T.events.push({ type: 'revive' });
-      } else { T.him.hp = 0; T.over = true; T.events.push({ type: 'over', wave: T.wave, cleared: T.cleared }); }
+      } else { h.hp = 0; T.over = true; T.phase = 'over'; T.events.push({ type: 'over', round: T.round, cleared: T.cleared }); }
     }
   }
+  function collect(T, dr, by) {
+    T.food += dr.food;
+    T.shards += dr.shard;
+    dr.got = true;
+    T.events.push({ type: 'pick', x: dr.x, y: dr.y, by: by, big: dr.big });
+  }
 
-  function pickTarget(T, mode, maxR) {
-    var best = null;
-    T.threats.forEach(function (th) {
-      if (th.hp <= 0 || th.r > maxR || !visible(T, th)) return;
-      if (!best) { best = th; return; }
-      if (mode === 'strongest' ? th.hp > best.hp : th.r < best.r) best = th;
-    });
+  function nearestEnemy(T, x, y, range, mode) {
+    var best = null, bv = 0, r2 = range * range;
+    for (var i = 0; i < T.enemies.length; i++) {
+      var e = T.enemies[i];
+      if (e.hp <= 0 || !visible(T, e)) continue;
+      var dd = d2(e.x, e.y, x, y);
+      if (dd > r2) continue;
+      var v = mode === 'strongest' ? e.hp : -dd;
+      if (!best || v > bv) { best = e; bv = v; }
+    }
     return best;
+  }
+  function inRadius(T, x, y, r, fn) {
+    var r2 = r * r;
+    for (var i = 0; i < T.enemies.length; i++) { var e = T.enemies[i]; if (e.hp > 0 && d2(e.x, e.y, x, y) <= r2) fn(e); }
   }
 
   /* ---------- 1歩 ---------- */
@@ -1578,170 +1657,426 @@ var Trial = (function () {
     if (T.over) return;
     T.t += dt;
     var h = T.him;
-    // 波の進行
-    if (T.spawnLeft > 0) {
-      T.spawnTimer -= dt;
-      while (T.spawnLeft > 0 && T.spawnTimer <= 0) { spawn(T, pickType(T, T.wave)); T.spawnLeft--; T.spawnTimer += spawnEvery(T.wave); }
-      if (T.spawnLeft === 0) T.pressure = 8;
-    } else {
-      // 出し切った波は、場が空になるか、8秒たつと次の波が来る
-      T.pressure = (T.pressure || 0) - dt;
-      if (T.wave > 0 && T.cleared < T.wave && !T.threats.some(function (th) { return th.wave === T.wave; })) {
-        T.cleared = T.wave; T.events.push({ type: 'cleared', wave: T.wave });
-      }
-      if (T.wave === 0 || T.threats.length === 0 || T.pressure <= 0) {
-        T.breakTimer -= dt;
-        if (T.breakTimer <= 0) { startWave(T); T.breakTimer = T.threats.length ? 0 : 2; }
-      }
+    // him の移動(準備中も動ける)
+    var mx = T.move.x, my = T.move.y;
+    if (T.goal) {
+      var gx = T.goal.x - h.x, gy = T.goal.y - h.y, gl = Math.sqrt(gx * gx + gy * gy);
+      if (gl > 0.01) { mx = gx / gl; my = gy / gl; } else { mx = 0; my = 0; }
     }
-    // 気力・ヒート・回復
+    var ml = Math.sqrt(mx * mx + my * my);
+    if (ml > 0) { var sp = himSpeed(T) * dt; h.x = clamp(h.x + mx / ml * sp, -0.97, 0.97); h.y = clamp(h.y + my / ml * sp, -0.97, 0.97); }
+    h.dash = Math.max(0, h.dash - dt);
+    h.inv = Math.max(0, h.inv - dt);
+    // 拾う
+    var pr2 = pickR(T) * pickR(T);
+    T.drops.forEach(function (dr) { if (!dr.got && d2(dr.x, dr.y, h.x, h.y) <= pr2) collect(T, dr, 'him'); });
+    stepEquipPassive(T, dt);
+    T.drops = T.drops.filter(function (dr) { return !dr.got; });
+
+    if (T.phase === 'prep') return;
+
+    // 波の進行
+    if (T.phase === 'fight') {
+      if (T.spawnLeft > 0) {
+        T.spawnTimer -= dt;
+        while (T.spawnLeft > 0 && T.spawnTimer <= 0) { spawn(T, pickType(T, T.round)); T.spawnLeft--; T.spawnTimer += T.spawnEvery; }
+      } else if (T.enemies.length === 0) {
+        T.cleared = T.round;
+        var b = clearBonus(T.round);
+        T.food += Math.ceil(b.food * (T.stats.foodMult || 1));
+        T.shards += b.shards;
+        T.phase = 'collect'; T.phaseT = 4;
+        T.events.push({ type: 'cleared', round: T.round, food: b.food, shards: b.shards });
+      }
+    } else if (T.phase === 'collect') {
+      T.phaseT -= dt;
+      if (T.phaseT <= 0) toPrep(T);
+    }
+    if (T.phase === 'prep') return;
+
+    // 気力・回復
     h.energy = Math.min(h.maxEnergy, h.energy + ((T.stats.energyRegen || 1) + 0.5 * T.tier('tail')) * dt);
-    var heatUp = (T.signal ? SIGNALS[T.signal].heat : 0) * (T.stats.heatMult || 1);
-    h.heat = Math.max(0, h.heat + (heatUp - 6) * dt);
-    if (h.heat >= 100 && h.stun <= 0) { h.stun = 4; h.heat = 30; T.events.push({ type: 'overheat' }); }
-    h.stun = Math.max(0, h.stun - dt);
-    var regen = (T.stats.regen || 0) + 0.6 * T.tier('liver') + (T.signal === 'fgf' ? 3 : 0);
-    h.hp = Math.min(h.maxHp, h.hp + regen * dt);
+    h.hp = Math.min(h.maxHp, h.hp + ((T.stats.regen || 0) + 0.6 * T.tier('liver')) * dt);
     T.fury = Math.max(0, T.fury - dt);
     T.grasp = Math.max(0, T.grasp - dt);
-    T.signalCd = Math.max(0, T.signalCd - dt);
     Object.keys(T.cds).forEach(function (k) { T.cds[k] = Math.max(0, T.cds[k] - dt); });
 
-    // 負荷の移動
-    var slowAura = 0.12 * (T.tier('kidneyL') + T.tier('kidneyR'));
-    T.threats.forEach(function (th) {
-      if (th.hp <= 0) return;
-      var sp = th.speed * (T.grasp > 0 ? 0 : 1) * (th.r < 0.5 ? Math.max(0.3, 1 - slowAura) : 1);
-      th.r -= sp * dt;
-      if (th.r <= CORE_R) { damageHim(T, th.dmg); th.hp = 0; th.reached = true; T.events.push({ type: 'reach', id: th.id, a: th.a }); if (th.boss) T.boss = null; }
+    moveEnemies(T, dt);
+    if (T.over) return;
+    himWeapons(T, dt);
+    stepEquipActive(T, dt);
+    // 撃ち返し
+    T.shots.forEach(function (s) {
+      s.x += s.vx * dt; s.y += s.vy * dt; s.life -= dt;
+      if (d2(s.x, s.y, h.x, h.y) <= (HIM_R + 0.012) * (HIM_R + 0.012)) { damageHim(T, s.dmg); s.life = 0; T.events.push({ type: 'hurt' }); }
     });
-
-    // 迎撃
-    if (h.stun <= 0 && !T.over) {
-      var rm = rateMult(T);
-      var R = effRange(T);
-      T.turrets.forEach(function (tu) {
-        tu.timer -= dt * rm;
-        if (tu.timer > 0) return;
-        tu.timer += tu.every;
-        if (tu.area) {
-          var any = false;
-          T.threats.forEach(function (th) { if (th.hp > 0 && th.r <= tu.area && visible(T, th)) { hurt(T, th, tu.dmg, tu.id); any = true; } });
-          if (any) T.events.push({ type: 'pulse', source: tu.id, r: tu.area });
-        } else if (tu.sweep) {
-          var hitAny = false;
-          T.threats.forEach(function (th) {
-            if (th.hp <= 0 || th.r > 0.45 || !visible(T, th)) return;
-            var a = ((th.a % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-            if (a < tu.sweep[0] || a >= tu.sweep[1]) return;
-            hurt(T, th, tu.dmg, tu.id);
-            if (!th.boss && th.knocks < 2) { th.r = Math.min(1, th.r + 0.2); th.knocks++; }
-            hitAny = true;
-          });
-          if (hitAny) T.events.push({ type: 'sweep', source: tu.id, from: tu.sweep[0], to: tu.sweep[1] });
-          else tu.timer = Math.min(tu.timer, 0.2);
-        } else {
-          var tg = pickTarget(T, tu.target, R);
-          if (tg) { T.events.push({ type: 'shot', source: tu.id, a: tg.a, r: tg.r }); hurt(T, tg, tu.dmg, tu.id); }
-          else tu.timer = Math.min(tu.timer, 0.1);
-        }
-      });
-    }
-    T.threats = T.threats.filter(function (th) { return th.hp > 0; });
+    T.shots = T.shots.filter(function (s) { return s.life > 0 && Math.abs(s.x) < 1.1 && Math.abs(s.y) < 1.1; });
+    T.enemies = T.enemies.filter(function (e) { return e.hp > 0; });
   }
 
-  /* ---------- プレイヤーの操作 ---------- */
-  /** 負荷を直接叩く(画面のタップ)。座標は場の中の位置 */
-  function tap(T, x, y) {
-    if (T.over) return null;
-    var best = null, bd = 0.12 * 0.12;
-    T.threats.forEach(function (th) {
-      if (th.hp <= 0 || !visible(T, th)) return;
-      var tx = th.r * Math.cos(th.a), ty = th.r * Math.sin(th.a);
-      var d = (tx - x) * (tx - x) + (ty - y) * (ty - y);
-      if (d < bd) { bd = d; best = th; }
+  function toPrep(T) {
+    T.phase = 'prep';
+    T.drops = [];
+    T.shots = [];
+    T.him.hp = Math.min(T.him.maxHp, T.him.hp + T.him.maxHp * 0.25);
+    T.equip.forEach(function (e) { if (e.maxHp) e.hp = e.maxHp; e.cool = 0; });
+    T.events.push({ type: 'prep', next: T.round + 1 });
+  }
+
+  function lureFor(T, e) {
+    var best = null, bd = 0;
+    T.equip.forEach(function (q) {
+      if (q.id !== 'decoy' || q.hp <= 0) return;
+      var dd = d2(q.x, q.y, e.x, e.y), lr = EQUIP_BY_ID.decoy.lure;
+      if (dd <= lr * lr && (!best || dd < bd)) { best = q; bd = dd; }
     });
-    if (!best) return null;
-    hurt(T, best, 0.6 * (T.stats.tap || 1), 'tap');
     return best;
   }
 
-  function setSignal(T, id) {
-    if (T.over || T.signalCd > 0) return false;
-    if (id === T.signal) { T.signal = null; T.signalCd = 0.5; return true; }
-    if (id && !SIGNALS[id]) return false;
-    if (id && T.him.energy < 3) return false;
-    if (id) T.him.energy -= 3;
-    T.signal = id || null;
-    T.signalCd = 1;
-    return true;
+  function moveEnemies(T, dt) {
+    var h = T.him;
+    var slowAura = Math.max(0.3, 1 - 0.12 * (T.tier('kidneyL') + T.tier('kidneyR')));
+    var freezers = T.equip.filter(function (q) { return q.id === 'freezer'; });
+    var walls = T.equip.filter(function (q) { return (q.id === 'barrier' || q.id === 'decoy') && q.hp > 0; });
+    for (var i = 0; i < T.enemies.length; i++) {
+      var e = T.enemies[i];
+      if (e.hp <= 0) continue;
+      var tgt = lureFor(T, e);
+      var tx = tgt ? tgt.x : h.x, ty = tgt ? tgt.y : h.y;
+      var dx = tx - e.x, dy = ty - e.y, dl = Math.sqrt(dx * dx + dy * dy) || 1e-6;
+      var sp = e.speed * (T.grasp > 0 ? 0 : 1);
+      if (dl < 0.2 && !tgt) sp *= slowAura;
+      freezers.forEach(function (q) {
+        var d = EQUIP_BY_ID.freezer, rr = d.radius + 0.01 * (q.lv - 1);
+        if (d2(q.x, q.y, e.x, e.y) <= rr * rr) sp *= 1 - Math.min(0.7, d.slow + 0.03 * (q.lv - 1));
+      });
+      var ranged = ENEMIES[e.type].ranged;
+      var touch = (tgt ? 0.025 : HIM_R) + e.r;
+      if (ranged && !tgt) {
+        // 間合いを保って撃つ
+        if (dl > ranged.range) { e.x += dx / dl * sp * dt; e.y += dy / dl * sp * dt; }
+        else if (dl < ranged.range * 0.7) { e.x -= dx / dl * sp * dt * 0.6; e.y -= dy / dl * sp * dt * 0.6; }
+        e.cd -= dt;
+        if (e.cd <= 0 && T.grasp <= 0 && visible(T, e)) {
+          e.cd = ranged.every;
+          T.shots.push({ x: e.x, y: e.y, vx: dx / dl * ranged.speed, vy: dy / dl * ranged.speed, dmg: ranged.dmg * dmgScale(e.round), life: 3 });
+        }
+      } else if (dl > touch) {
+        e.x += dx / dl * Math.min(sp * dt, dl - touch); e.y += dy / dl * Math.min(sp * dt, dl - touch);
+      }
+      // 壁にぶつかる
+      for (var w = 0; w < walls.length; w++) {
+        var q = walls[w], wr = (q.id === 'barrier' ? EQUIP_BY_ID.barrier.size : 0.03) + e.r;
+        var qd = d2(q.x, q.y, e.x, e.y);
+        if (qd < wr * wr) {
+          var ql = Math.sqrt(qd) || 1e-6;
+          e.x = q.x + (e.x - q.x) / ql * wr; e.y = q.y + (e.y - q.y) / ql * wr;
+          q.hp -= e.dps * dt;
+          if (q.hp <= 0) { q.hp = 0; T.events.push({ type: 'broken', uid: q.uid }); }
+        }
+      }
+      // 触れたら傷
+      if (!tgt && d2(e.x, e.y, h.x, h.y) <= (touch + 0.004) * (touch + 0.004) && T.grasp <= 0) { damageHim(T, e.dps * dt); if (T.over) return; }
+    }
+    // 重なりすぎないように、少しだけ押し合う
+    var n = T.enemies.length;
+    if (n < 260) {
+      for (var a = 0; a < n; a++) {
+        var A = T.enemies[a];
+        for (var c = a + 1; c < n; c++) {
+          var B = T.enemies[c], rr2 = (A.r + B.r) * 0.9, ex = B.x - A.x, ey = B.y - A.y, dd = ex * ex + ey * ey;
+          if (dd > 0 && dd < rr2 * rr2) {
+            var l = Math.sqrt(dd), push = (rr2 - l) * 0.5 / l;
+            A.x -= ex * push; A.y -= ey * push; B.x += ex * push; B.y += ey * push;
+          }
+        }
+      }
+    }
   }
 
-  function activeAvailable(T, id) {
-    var a = ACTIVE_BY_ID[id];
-    if (!a) return false;
-    return !a.organ || T.tier(a.organ) > 0;
+  function himWeapons(T, dt) {
+    var h = T.him, rm = rate(T), p = P(T), R = himRange(T);
+    var tm = h.timers;
+    function every(key, sec) { tm[key] = (tm[key] === undefined ? sec * 0.5 : tm[key]) - dt * rm; if (tm[key] > 0) return false; tm[key] += sec; return true; }
+    var mode = T.tier('brain') ? 'strongest' : 'nearest';
+    if (every('shot', 0.8)) {
+      var tg = nearestEnemy(T, h.x, h.y, R, mode);
+      if (tg) { T.events.push({ type: 'shot', src: 'him', x1: h.x, y1: h.y, x2: tg.x, y2: tg.y }); hurt(T, tg, p, 'him'); }
+      else tm.shot = 0.05;
+    }
+    if (T.tier('thymus') && every('thymus', 0.55)) {
+      var t2 = nearestEnemy(T, h.x, h.y, R, 'nearest');
+      if (t2) { T.events.push({ type: 'shot', src: 'thymus', x1: h.x, y1: h.y, x2: t2.x, y2: t2.y }); hurt(T, t2, 0.6 * T.tier('thymus') * p, 'thymus'); }
+      else tm.thymus = 0.05;
+    }
+    if (T.tier('heart') && every('heart', 3)) {
+      var hr = 0.16 + 0.03 * T.tier('heart');
+      inRadius(T, h.x, h.y, hr, function (e) { hurt(T, e, T.tier('heart') * p, 'heart'); });
+      T.events.push({ type: 'ring', x: h.x, y: h.y, r: hr, src: 'heart' });
+    }
+    ['armL', 'armR'].forEach(function (k) {
+      var t = T.tier(k);
+      if (!t || !every(k, 1.4)) return;
+      var any = false;
+      inRadius(T, h.x, h.y, 0.13, function (e) {
+        hurt(T, e, 0.8 * t * p, k); any = true;
+        if (!e.boss) { var ex = e.x - h.x, ey = e.y - h.y, el = Math.sqrt(ex * ex + ey * ey) || 1; e.x += ex / el * 0.06; e.y += ey / el * 0.06; }
+      });
+      if (any) T.events.push({ type: 'ring', x: h.x, y: h.y, r: 0.13, src: 'arm' });
+      else tm[k] = 0.1;
+    });
   }
 
+  function ampAt(T, q) {
+    var m = 1;
+    T.equip.forEach(function (a) {
+      if (a.id !== 'amp' || a === q) return;
+      var rr = EQUIP_BY_ID.amp.radius;
+      if (d2(a.x, a.y, q.x, q.y) <= rr * rr) m *= 1 + EQUIP_BY_ID.amp.boost + 0.1 * (a.lv - 1);
+    });
+    return m;
+  }
+
+  /** 準備中でも動く装置(収集器・磁場・修復器) */
+  function stepEquipPassive(T, dt) {
+    var h = T.him;
+    T.equip.forEach(function (q) {
+      var d = EQUIP_BY_ID[q.id];
+      if (q.id === 'collector') {
+        var sp = d.speed * (1 + 0.12 * (q.lv - 1)) * dt;
+        var best = null, bd = 0;
+        T.drops.forEach(function (dr) { if (dr.got) return; var dd = d2(dr.x, dr.y, q.dx, q.dy); if (!best || dd < bd) { best = dr; bd = dd; } });
+        var tx = best ? best.x : q.x, ty = best ? best.y : q.y;
+        var ex = tx - q.dx, ey = ty - q.dy, el = Math.sqrt(ex * ex + ey * ey);
+        if (el > 1e-6) { var mv = Math.min(sp, el); q.dx += ex / el * mv; q.dy += ey / el * mv; }
+        if (best && d2(best.x, best.y, q.dx, q.dy) < 0.03 * 0.03) collect(T, best, 'collector');
+      } else if (q.id === 'magnet') {
+        var mr = d.radius * (1 + 0.1 * (q.lv - 1));
+        T.drops.forEach(function (dr) {
+          if (dr.got) return;
+          var dd = d2(dr.x, dr.y, q.x, q.y);
+          if (dd > mr * mr) return;
+          var l = Math.sqrt(dd);
+          if (l < 0.03) { collect(T, dr, 'magnet'); return; }
+          var mv2 = Math.min(l, 0.7 * dt);
+          dr.x += (q.x - dr.x) / l * mv2; dr.y += (q.y - dr.y) / l * mv2;
+        });
+      } else if (q.id === 'healer' && T.phase !== 'prep') {
+        var hr = d.radius + 0.01 * (q.lv - 1);
+        if (d2(q.x, q.y, h.x, h.y) <= hr * hr) h.hp = Math.min(h.maxHp, h.hp + h.maxHp * d.heal * (1 + 0.3 * (q.lv - 1)) * dt);
+      }
+    });
+  }
+
+  function stepEquipActive(T, dt) {
+    var p = T.stats.power;
+    T.equip.forEach(function (q) {
+      var d = EQUIP_BY_ID[q.id];
+      var L = lvMult(q.lv) * ampAt(T, q);
+      q.timer = (q.timer || 0) - dt;
+      if (q.id === 'turret') {
+        if (q.timer > 0) return;
+        var rg = d.range * (1 + 0.03 * (q.lv - 1));
+        var tg = nearestEnemy(T, q.x, q.y, rg, 'nearest');
+        if (!tg) { q.timer = 0.05; return; }
+        q.timer = d.every;
+        T.events.push({ type: 'shot', src: 'turret', x1: q.x, y1: q.y, x2: tg.x, y2: tg.y });
+        hurt(T, tg, d.dmg * p * L, 'turret');
+      } else if (q.id === 'laser') {
+        var lr = d.range;
+        var cur = null;
+        if (q.tgt) cur = T.enemies.filter(function (e) { return e.id === q.tgt && e.hp > 0; })[0];
+        if (cur && (d2(cur.x, cur.y, q.x, q.y) > lr * lr || !visible(T, cur))) cur = null;
+        if (!cur) { cur = nearestEnemy(T, q.x, q.y, lr, 'strongest'); q.ramp = 0; }
+        q.tgt = cur ? cur.id : null;
+        if (!cur) return;
+        q.ramp = Math.min(3, (q.ramp || 0) + 0.5 * dt);
+        q.tx = cur.x; q.ty = cur.y;
+        hurt(T, cur, d.dmg * p * L * (1 + q.ramp) * dt, 'laser');
+      } else if (q.id === 'freezer') {
+        var fr = d.radius + 0.01 * (q.lv - 1);
+        inRadius(T, q.x, q.y, fr, function (e) { hurt(T, e, d.dmg * p * L * dt, 'freezer'); });
+      } else if (q.id === 'mine') {
+        q.cool = Math.max(0, (q.cool || 0) - dt);
+        if (q.cool > 0) return;
+        var hit = nearestEnemy(T, q.x, q.y, d.trigger, 'nearest');
+        if (!hit) return;
+        inRadius(T, q.x, q.y, d.radius, function (e) { hurt(T, e, d.dmg * p * L, 'mine'); });
+        q.cool = d.rearm * Math.pow(0.95, q.lv - 1);
+        T.events.push({ type: 'boom', x: q.x, y: q.y, r: d.radius });
+      } else if (q.id === 'mortar') {
+        if (q.timer > 0) return;
+        var cands = T.enemies.filter(function (e) { if (e.hp <= 0 || !visible(T, e)) return false; var dd = d2(e.x, e.y, q.x, q.y); return dd <= d.range * d.range && dd >= d.min * d.min; });
+        if (!cands.length) { q.timer = 0.1; return; }
+        q.timer = d.every;
+        var tgm = cands[Math.floor(T.rand() * cands.length)];
+        T.shells.push({ x: tgm.x, y: tgm.y, fx: q.x, fy: q.y, t: 0.6, life: 0.6, dmg: d.dmg * p * L, r: d.radius });
+      } else if (q.id === 'tesla') {
+        if (q.timer > 0) return;
+        var first = nearestEnemy(T, q.x, q.y, d.range, 'nearest');
+        if (!first) { q.timer = 0.05; return; }
+        q.timer = d.every;
+        var pts = [[q.x, q.y]], hitIds = {}, curE = first, jumps = d.jumps + Math.floor((q.lv - 1) / 2);
+        for (var j = 0; j <= jumps && curE; j++) {
+          pts.push([curE.x, curE.y]); hitIds[curE.id] = true;
+          hurt(T, curE, d.dmg * p * L, 'tesla');
+          var from = curE, nx = null, nd = 0;
+          T.enemies.forEach(function (e) {
+            if (e.hp <= 0 || hitIds[e.id] || !visible(T, e)) return;
+            var dd = d2(e.x, e.y, from.x, from.y);
+            if (dd <= 0.04 && (!nx || dd < nd)) { nx = e; nd = dd; }
+          });
+          curE = nx;
+        }
+        T.events.push({ type: 'zap', pts: pts });
+      }
+    });
+    T.shells.forEach(function (s) {
+      s.t -= dt;
+      if (s.t > 0) return;
+      inRadius(T, s.x, s.y, s.r, function (e) { hurt(T, e, s.dmg, 'mortar'); });
+      T.events.push({ type: 'boom', x: s.x, y: s.y, r: s.r });
+    });
+    T.shells = T.shells.filter(function (s) { return s.t > 0; });
+  }
+
+  /* ---------- 操作 ---------- */
+  function setMove(T, x, y) { T.move.x = x; T.move.y = y; if (x || y) T.goal = null; }
+  function setGoal(T, x, y) { T.goal = x === null ? null : { x: clamp(x, -0.97, 0.97), y: clamp(y, -0.97, 0.97) }; }
+
+  function activeAvailable(T, id) { var a = ACTIVE_BY_ID[id]; return !!a && (!a.organ || T.tier(a.organ) > 0); }
   function useActive(T, id) {
     var a = ACTIVE_BY_ID[id];
-    if (T.over || !a || !activeAvailable(T, id) || (T.cds[id] || 0) > 0 || T.him.energy < a.cost) return false;
+    if (T.over || T.phase === 'prep' || !a || !activeAvailable(T, id) || (T.cds[id] || 0) > 0 || T.him.energy < a.cost) return false;
     T.him.energy -= a.cost;
     T.cds[id] = a.cd;
     var t = a.organ ? T.tier(a.organ) : 1;
-    if (id === 'pulse') T.threats.forEach(function (th) { if (th.r <= 0.6 && visible(T, th)) hurt(T, th, 3 * t, 'pulse'); });
+    var h = T.him;
+    if (id === 'dash') { h.dash = 0.35; h.inv = 0.4; }
+    else if (id === 'pulse') { inRadius(T, h.x, h.y, 0.3, function (e) { hurt(T, e, 4 * t * P(T), 'pulse'); }); T.events.push({ type: 'ring', x: h.x, y: h.y, r: 0.3, src: 'pulse' }); }
     else if (id === 'grasp') T.grasp = 2 + t;
     else if (id === 'fury') T.fury = 5 + t;
-    else if (id === 'detox') T.him.hp = Math.min(T.him.maxHp, T.him.hp + T.him.maxHp * (0.2 + 0.1 * t));
-    else if (id === 'cool') T.him.heat = Math.max(0, T.him.heat - 50);
+    else if (id === 'detox') h.hp = Math.min(h.maxHp, h.hp + h.maxHp * (0.2 + 0.1 * t));
     T.events.push({ type: 'active', id: id });
-    T.threats = T.threats.filter(function (th) { return th.hp > 0; });
+    T.enemies = T.enemies.filter(function (e) { return e.hp > 0; });
     return true;
   }
 
-  function takeEvents(T) { var e = T.events; T.events = []; return e; }
-
-  /** 報酬の殻片(耐えきった波の数から) */
-  function shardsFor(cleared) {
-    var s = 0;
-    for (var w = 1; w <= cleared; w++) s += 1 + Math.floor(w / 5);
-    return s;
+  function placeCost(id) { return EQUIP_BY_ID[id].cost; }
+  function canPlace(T, id, x, y) {
+    if (T.phase !== 'prep' || T.over || !EQUIP_BY_ID[id] || !equipUnlocked(id, T.best)) return false;
+    if (T.equip.length >= MAX_EQUIP || T.food < placeCost(id)) return false;
+    if (Math.abs(x) > 0.95 || Math.abs(y) > 0.95) return false;
+    return !T.equip.some(function (q) { return d2(q.x, q.y, x, y) < 0.07 * 0.07; });
+  }
+  function place(T, id, x, y) {
+    if (!canPlace(T, id, x, y)) return null;
+    var d = EQUIP_BY_ID[id];
+    T.food -= d.cost;
+    var q = { uid: T.nextId++, id: id, x: x, y: y, lv: 1, spent: d.cost, timer: 0 };
+    if (id === 'collector') { q.dx = x; q.dy = y; }
+    if (d.hpMult) { q.maxHp = T.stats.hp * d.hpMult; q.hp = q.maxHp; }
+    T.equip.push(q);
+    T.events.push({ type: 'placed', uid: q.uid });
+    return q;
+  }
+  function equipByUid(T, uid) { return T.equip.filter(function (q) { return q.uid === uid; })[0] || null; }
+  function equipAt(T, x, y) {
+    var best = null, bd = 0.06 * 0.06;
+    T.equip.forEach(function (q) { var dd = d2(q.x, q.y, x, y); if (dd < bd) { best = q; bd = dd; } });
+    return best;
+  }
+  function upgrade(T, uid) {
+    var q = equipByUid(T, uid);
+    if (!q || T.phase !== 'prep' || q.lv >= MAX_LV) return false;
+    var c = upgradeCost(q);
+    if (T.food < c) return false;
+    T.food -= c; q.spent += c; q.lv++;
+    var d = EQUIP_BY_ID[q.id];
+    if (d.hpMult) { q.maxHp = T.stats.hp * d.hpMult * lvMult(q.lv); q.hp = q.maxHp; }
+    return true;
+  }
+  function sell(T, uid) {
+    var q = equipByUid(T, uid);
+    if (!q || T.phase !== 'prep') return 0;
+    var back = Math.floor(q.spent * 0.6);
+    T.food += back;
+    T.equip = T.equip.filter(function (x) { return x !== q; });
+    return back;
   }
 
-  /** 自動で遊ぶ(難しさの調整と検証用)。active が true なら、操作もする */
+  function takeEvents(T) { var e = T.events; T.events = []; return e; }
+  function shardsOf(T) { return Math.floor(T.shards); }
+
+  /* ---------- 自動で遊ぶ(難しさの調整と検証用) ---------- */
+  var RING = [];
+  for (var ri = 0; ri < 24; ri++) { var ra = ri * 2.39996, rr = 0.16 + 0.03 * (ri % 6); RING.push([Math.cos(ra) * rr, Math.sin(ra) * rr]); }
+  function autoPrep(T, opts) {
+    var want = opts.buy || ['collector', 'turret', 'turret', 'freezer', 'turret', 'laser', 'turret', 'mine', 'tesla', 'laser', 'mortar', 'turret', 'amp'];
+    for (var guard = 0; guard < 60; guard++) {
+      var options = [];
+      var counts = {};
+      T.equip.forEach(function (q) { counts[q.id] = (counts[q.id] || 0) + 1; });
+      var planned = {};
+      for (var i = 0; i < want.length; i++) {
+        var id = want[i];
+        planned[id] = (planned[id] || 0) + 1;
+        if ((counts[id] || 0) < planned[id] && equipUnlocked(id, T.best)) { options.push({ kind: 'new', id: id, cost: placeCost(id) }); break; }
+      }
+      T.equip.forEach(function (q) { if (q.id !== 'collector' && q.lv < MAX_LV) options.push({ kind: 'up', q: q, cost: upgradeCost(q) * (q.id === 'mine' ? 1.5 : 1) }); });
+      options.sort(function (a, b) { return a.cost - b.cost; });
+      var o = options[0];
+      if (!o || T.food < (o.kind === 'up' ? upgradeCost(o.q) : o.cost)) break;
+      if (o.kind === 'new') {
+        var spot = RING.filter(function (p) { return canPlace(T, o.id, p[0], p[1]); })[0];
+        if (!spot || !place(T, o.id, spot[0], spot[1])) break;
+      } else upgrade(T, o.q.uid);
+    }
+  }
+  function autoMove(T) {
+    var h = T.him, fx = 0, fy = 0;
+    T.enemies.forEach(function (e) {
+      var dx = h.x - e.x, dy = h.y - e.y, dd = dx * dx + dy * dy;
+      if (dd < 0.16) { var w = 1 / Math.max(0.002, dd); fx += dx * w * 0.02; fy += dy * w * 0.02; }
+    });
+    var near = null, nd = 0;
+    T.drops.forEach(function (dr) { var dd = d2(dr.x, dr.y, h.x, h.y); if (dd < 0.25 && (!near || dd < nd)) { near = dr; nd = dd; } });
+    if (near) { fx += (near.x - h.x) * 3; fy += (near.y - h.y) * 3; }
+    fx += -h.x * 1.5; fy += -h.y * 1.5;
+    setMove(T, fx, fy);
+  }
   function autoplay(stats, opts) {
     opts = opts || {};
     var T = create(stats, opts.seed || 7);
-    var dt = 0.1, tapEvery = opts.taps ? 1 / opts.taps : 0, tapT = 0;
-    var limit = opts.maxSeconds || 3600;
+    var dt = 1 / 20, limit = opts.maxSeconds || 3600, maxRound = opts.maxRound || 999;
     while (!T.over && T.t < limit) {
-      if (opts.active) {
-        if (T.him.heat > 70 && T.signal === 'wnt') setSignal(T, 'bmp');
-        else if (T.him.heat < 30 && T.signal !== 'wnt') setSignal(T, 'wnt');
-        if (T.him.hp < T.him.maxHp * 0.5) useActive(T, 'detox');
-        if (T.threats.filter(function (th) { return th.r < 0.6; }).length >= 4) useActive(T, 'pulse');
-        if (T.boss) useActive(T, 'fury');
-        if (T.threats.filter(function (th) { return th.r < 0.3; }).length >= 3) useActive(T, 'grasp');
-        if (T.him.heat > 85) useActive(T, 'cool');
+      if (T.phase === 'prep') {
+        if (T.round >= maxRound) break;
+        if (!opts.noEquip) autoPrep(T, opts);
+        startRound(T);
       }
-      if (tapEvery) {
-        tapT -= dt;
-        if (tapT <= 0) {
-          tapT += tapEvery;
-          var near = T.threats.filter(function (th) { return visible(T, th); }).sort(function (a, b) { return a.r - b.r; })[0];
-          if (near) tap(T, near.r * Math.cos(near.a), near.r * Math.sin(near.a));
-        }
+      if (opts.move !== false) autoMove(T);
+      if (opts.active) {
+        if (T.him.hp < T.him.maxHp * 0.45) useActive(T, 'detox');
+        var close = 0; T.enemies.forEach(function (e) { if (d2(e.x, e.y, T.him.x, T.him.y) < 0.09) close++; });
+        if (close >= 4) useActive(T, 'pulse');
+        if (close >= 2) useActive(T, 'dash');
+        if (T.enemies.some(function (e) { return e.boss; })) useActive(T, 'fury');
+        if (close >= 8) useActive(T, 'grasp');
       }
       step(T, dt);
       T.events = [];
     }
-    return { cleared: T.cleared, wave: T.wave, seconds: T.t, kills: T.kills };
+    return { cleared: T.cleared, round: T.round, seconds: T.t, kills: T.kills, shards: Math.floor(T.shards), food: T.food, equip: T.equip.length };
   }
 
   return {
-    THREATS: THREATS, SIGNALS: SIGNALS, ACTIVES: ACTIVES, ACTIVE_BY_ID: ACTIVE_BY_ID, CORE_R: CORE_R, BOSSES: BOSSES,
-    create: create, step: step, tap: tap, setSignal: setSignal, useActive: useActive, activeAvailable: activeAvailable, takeEvents: takeEvents,
-    shardsFor: shardsFor, phaseOf: phaseOf, bossName: bossName, waveSize: waveSize, effRange: effRange, revealR: revealR, visible: visible, autoplay: autoplay,
+    ENEMIES: ENEMIES, EQUIP: EQUIP, EQUIP_BY_ID: EQUIP_BY_ID, ACTIVES: ACTIVES, ACTIVE_BY_ID: ACTIVE_BY_ID, BOSSES: BOSSES, HIM_R: HIM_R, MAX_EQUIP: MAX_EQUIP, MAX_LV: MAX_LV,
+    create: create, step: step, startRound: startRound, setMove: setMove, setGoal: setGoal, useActive: useActive, activeAvailable: activeAvailable,
+    place: place, canPlace: canPlace, upgrade: upgrade, sell: sell, equipAt: equipAt, equipByUid: equipByUid, upgradeCost: upgradeCost, placeCost: placeCost,
+    equipUnlocked: equipUnlocked, lvMult: lvMult, takeEvents: takeEvents, shardsOf: shardsOf,
+    countFor: countFor, hpScale: hpScale, dmgScale: dmgScale, foodPer: foodPer, shardPer: shardPer, clearBonus: clearBonus,
+    phaseOf: phaseOf, bossName: bossName, revealR: revealR, visible: visible, himRange: himRange, pickR: pickR, autoplay: autoplay,
   };
 })();
 
@@ -2754,7 +3089,7 @@ var Core = (function () {
   var TRIAL_UNLOCK = 5e4;
   function trialUnlocked(state) { return !!(state.trial.unlocked || state.totalCells >= TRIAL_UNLOCK); }
 
-  /** 試験に持ち込む力。invested は持ち込む細胞(気力と体力が少し増える) */
+  /** 耐用試験に持ち込む力。invested は持ち込む細胞(最初の養分になる) */
   function trialStats(state, invested) {
     var fx = treeFx(state);
     var card = cardFx(state);
@@ -2765,22 +3100,24 @@ var Core = (function () {
     var inv = Math.max(0, invested || 0);
     var life = (state.lifetimeCells || 0) + state.totalCells;
     return {
-      power: (1 + Math.log10(1 + cps)) * fx.trialDmg,
-      hp: 100 * (1 + 0.05 * Math.log10(1 + life)) * (1 + 0.02 * Math.log10(1 + inv)) * fx.trialHp,
-      energy: (30 + 6 * Math.log10(1 + inv)) * fx.trialEnergy,
-      energyRegen: 1 * fx.trialEnergy,
+      power: (1 + Math.log10(1 + cps)) * fx.trialDmg * Math.sqrt(card.tap > 1 ? Math.min(card.tap, 4) : 1),
+      hp: 100 * (1 + 0.05 * Math.log10(1 + life)) * fx.trialHp,
+      energy: 40 * fx.trialEnergy,
+      energyRegen: 1.5 * fx.trialEnergy,
       rate: fx.trialRate,
       crit: fx.trialCrit,
       armor: fx.trialArmor,
       regen: fx.trialRegen,
       reveal: fx.trialReveal,
-      heatMult: fx.trialHeat,
-      tap: card.tap * fx.trialTap,
+      move: fx.trialMove * fx.trialTap,
+      foodMult: fx.trialFood,
+      food0: Math.floor((30 + 10 * Math.log10(1 + inv)) * fx.trialFood),
+      best: state.trial.best,
       organs: organs,
     };
   }
 
-  /** 試験を始める(持ち込む細胞を払う)。Trial の状態を返す */
+  /** 耐用試験を始める(持ち込む細胞を払う)。Trial の状態を返す */
   function startTrial(state, fraction, seed) {
     if (!trialUnlocked(state)) return null;
     state.trial.unlocked = true;
@@ -2790,16 +3127,23 @@ var Core = (function () {
     return TL.create(trialStats(state, inv), seed || (Date.now() % 100000));
   }
 
-  /** 試験の結果を受け取る。もらえた殻片を返す */
+  /** 耐用試験の結果を受け取る。拾った殻片を樹へ */
   function finishTrial(state, T) {
     var cleared = T.cleared;
     var record = cleared > state.trial.best;
-    var shards = Math.floor(TL.shardsFor(cleared) * treeFx(state).shards * (record ? 1.5 : 1));
+    var shards = Math.floor(TL.shardsOf(T) * treeFx(state).shards);
     state.tree.shards += shards;
     if (record) state.trial.best = cleared;
     state.trial.history.unshift({ cleared: cleared, shards: shards, record: record, at: state.stats.playSeconds });
     state.trial.history = state.trial.history.slice(0, 10);
     return { shards: shards, record: record, cleared: cleared };
+  }
+
+  /** 次に開ける節のうち、一番安いものの値段(なければ 0) */
+  function nextNodeCost(state) {
+    var vis = TR.visibility(state.tree.owned), best = 0;
+    Object.keys(vis).forEach(function (id) { if (vis[id] === 'open' && !state.tree.owned[id]) { var c = TR.cost(id); if (!best || c < best) best = c; } });
+    return best;
   }
 
   /* ============================================================
@@ -3263,7 +3607,7 @@ var Core = (function () {
     newState: newState, clone: clone, step: step, tick: tick, computeRates: computeRates, clickValue: clickValue, buildEnv: buildEnv,
     responseFactor: responseFactor, effectiveCount: effectiveCount, facMods: facMods, heatStage: heatStage, heatCooling: heatCooling, clockFactor: clockFactor,
     cardFx: cardFx, cursedFx: cursedFx, treeFx: treeFx, progress: progress, TR: TR, TL: TL,
-    treeCost: treeCost, buyNode: buyNode, treeRevealed: treeRevealed, trialUnlocked: trialUnlocked, trialStats: trialStats, startTrial: startTrial, finishTrial: finishTrial,
+    treeCost: treeCost, buyNode: buyNode, treeRevealed: treeRevealed, trialUnlocked: trialUnlocked, trialStats: trialStats, startTrial: startTrial, finishTrial: finishTrial, nextNodeCost: nextNodeCost,
     spawnVoice: spawnVoice, catchVoice: catchVoice, spawnHim: spawnHim,
     cardSlots: cardSlots, equipCard: equipCard, discardCard: discardCard, checkProgress: checkProgress, meets: meets,
     bpUnlocked: bpUnlocked, zoneOpen: zoneOpen, openZoneCount: openZoneCount, bpTools: bpTools, bpPieceAvailable: bpPieceAvailable,
@@ -3693,7 +4037,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     ['card', function () { return state.cards.owned.length > 0; }, 'カードは、身につけているあいだだけ効く。'],
     ['drug', function () { return state.stats.drugsUsed > 0; }, '薬は効く。効きすぎることもある。'],
     ['promote', function () { return state.promotions > 0 || C.promotionUnits(state) > 0; }, '継代すれば、胚は始まりに戻る。残滓だけが残る。'],
-    ['trial', function () { return C.trialUnlocked(state); }, '試験は、himがどこまで耐えるかを測る。'],
+    ['trial', function () { return C.trialUnlocked(state); }, '耐用試験は、himがどこまで持つかを測る。'],
     ['tree', function () { return state.tree.shards > 0 || Object.keys(state.tree.owned).length > 1; }, '殻片は、樹に。'],
   ];
   function renderCodex() {
@@ -3911,10 +4255,10 @@ if (typeof module !== 'undefined') module.exports = Core;
    * ========================================================== */
   var WINDOWS = [
     { id: 'fac', title: '培養' }, { id: 'upg', title: '強化' }, { id: 'drug', title: '薬品庫' }, { id: 'bp', title: '設計図' },
-    { id: 'trial', title: '試験' }, { id: 'tree', title: '樹' }, { id: 'codex', title: '写本' }, { id: 'log', title: '通信' },
+    { id: 'trial', title: '耐用試験' }, { id: 'tree', title: '樹' }, { id: 'codex', title: '写本' }, { id: 'log', title: '通信' },
     { id: 'rec', title: '記録' }, { id: 'grade', title: '継代' },
   ];
-  var LAYOUT_KEY = 'embryo-genesis-layout';
+  var LAYOUT_KEY = 'embryo-genesis-layout-2';
   var deskMQ = window.matchMedia('(min-width: 900px)');
   function isDesk() { return deskMQ.matches; }
   var activeTab = 'fac';
@@ -3923,16 +4267,15 @@ if (typeof module !== 'undefined') module.exports = Core;
 
   function defaultLayout() {
     var W = window.innerWidth, H = window.innerHeight - 52;
-    var col = function (f) { return Math.round(W * f); };
     var L = {
-      core: { x: 12, y: 12, w: 340, h: Math.min(H - 24, 760), open: true },
-      fac: { x: 364, y: 12, w: Math.max(360, col(0.27)), h: Math.round(H * 0.62), open: true },
-      log: { x: 364, y: Math.round(H * 0.62) + 24, w: Math.max(360, col(0.27)), h: Math.round(H * 0.38) - 36, open: true },
-      bp: { x: 376 + Math.max(360, col(0.27)), y: 12, w: Math.max(420, W - (388 + Math.max(360, col(0.27))) - 12), h: H - 24, open: true },
+      core: { x: 12, y: 12, w: 320, h: 340, open: true },
+      fac: { x: 12, y: 364, w: 360, h: Math.max(240, H - 376), open: true },
+      log: { x: Math.max(400, W - 392), y: Math.max(12, H - 272), w: 380, h: 260, open: true },
+      bp: { x: Math.max(400, W - 652), y: 12, w: 640, h: Math.max(300, H - 300), open: false },
     };
     var cx = Math.round(W / 2), cy = Math.round(H / 2);
     ['upg', 'drug', 'codex', 'rec', 'grade'].forEach(function (id, i) { L[id] = { x: cx - 220 + i * 26, y: 40 + i * 26, w: 440, h: Math.min(620, H - 80), open: false }; });
-    L.trial = { x: Math.max(12, cx - 330), y: 12, w: 660, h: H - 24, open: false };
+    L.trial = { x: Math.max(12, cx - 520), y: 8, w: Math.min(W - 24, 1040), h: H - 16, open: false };
     L.tree = { x: Math.max(12, cx - 360), y: 24, w: 720, h: H - 48, open: false };
     return L;
   }
@@ -4273,17 +4616,18 @@ if (typeof module !== 'undefined') module.exports = Core;
     var W = cv.width, H = cv.height;
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, W, H);
-    var cx = W / 2, cy = H * 0.46, S = W * 0.34;
+    var M = Math.min(W, H);
+    var cx = W / 2, cy = H * 0.46, S = M * 0.34;
     var C3 = col.join(',');
     // 投影の光(弱く)
-    var base = g.createRadialGradient(cx, H * 0.93, 2, cx, H * 0.93, W * 0.26);
+    var base = g.createRadialGradient(cx, H * 0.93, 2, cx, H * 0.93, M * 0.26);
     base.addColorStop(0, 'rgba(159,189,184,.28)'); base.addColorStop(1, 'rgba(159,189,184,0)');
     g.fillStyle = base;
-    g.beginPath(); g.ellipse(cx, H * 0.93, W * 0.26, H * 0.03, 0, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.ellipse(cx, H * 0.93, M * 0.26, M * 0.03, 0, 0, Math.PI * 2); g.fill();
     var cone = g.createLinearGradient(0, H * 0.93, 0, H * 0.2);
     cone.addColorStop(0, 'rgba(159,189,184,.06)'); cone.addColorStop(1, 'rgba(159,189,184,0)');
     g.fillStyle = cone;
-    g.beginPath(); g.moveTo(cx - W * 0.05, H * 0.93); g.lineTo(cx + W * 0.05, H * 0.93); g.lineTo(cx + W * 0.4, H * 0.2); g.lineTo(cx - W * 0.4, H * 0.2); g.closePath(); g.fill();
+    g.beginPath(); g.moveTo(cx - M * 0.05, H * 0.93); g.lineTo(cx + M * 0.05, H * 0.93); g.lineTo(cx + M * 0.4, H * 0.2); g.lineTo(cx - M * 0.4, H * 0.2); g.closePath(); g.fill();
     // 目盛りの輪
     g.save(); g.translate(cx, cy);
     g.strokeStyle = 'rgba(159,189,184,.16)'; g.lineWidth = 1;
@@ -4315,13 +4659,13 @@ if (typeof module !== 'undefined') module.exports = Core;
       });
       proj.forEach(function (q) {
         if (q.k !== 1) return;
-        var rr = W * (0.012 + 0.01 * beat);
+        var rr = M * (0.012 + 0.01 * beat);
         var grd = g.createRadialGradient(q.x, q.y, 0, q.x, q.y, rr * 3);
         grd.addColorStop(0, 'rgba(169,82,76,' + (0.35 + 0.4 * beat) + ')'); grd.addColorStop(1, 'rgba(169,82,76,0)');
         g.fillStyle = grd; g.beginPath(); g.arc(q.x, q.y, rr * 3, 0, Math.PI * 2); g.fill();
       });
     } else {
-      var cellR = W * 0.035;
+      var cellR = M * 0.035;
       proj.forEach(function (q) {
         g.strokeStyle = 'rgba(163,128,143,' + (0.06 + 0.08 * (1 - q.z)) + ')';
         g.lineWidth = 1;
@@ -4346,7 +4690,7 @@ if (typeof module !== 'undefined') module.exports = Core;
       o.ripples.forEach(function (rp) {
         g.strokeStyle = 'rgba(159,189,184,' + (0.35 * (1 - rp.t / 0.7)) + ')';
         g.lineWidth = 1;
-        g.beginPath(); g.arc(rp.x, rp.y, 8 + rp.t * W * 0.35, 0, Math.PI * 2); g.stroke();
+        g.beginPath(); g.arc(rp.x, rp.y, 4 + rp.t * M * 0.35, 0, Math.PI * 2); g.stroke();
       });
     }
     g.globalCompositeOperation = 'source-over';
@@ -4403,7 +4747,28 @@ if (typeof module !== 'undefined') module.exports = Core;
   function startEndingHolo() { if (endHolo.on) return; endHolo.on = true; requestAnimationFrame(endingLoop); }
   function stopEndingHolo() { endHolo.on = false; }
 
-  function embryoLoop(now) { drawEmbryoFrame(now || performance.now()); requestAnimationFrame(embryoLoop); }
+  /* PC では胚を背景いっぱいに。スマホでは胚の小窓の中 */
+  var bgMQ = window.matchMedia('(min-width: 900px)');
+  function placeEmbryo() {
+    var wrap = $('embryoWrap'), cv = $('embryo'), bg = $('bgEmbryo');
+    if (bgMQ.matches) {
+      if (wrap.parentNode !== bg) bg.appendChild(wrap);
+      var w = Math.max(160, Math.round(bg.clientWidth / 3)), h = Math.max(120, Math.round(bg.clientHeight / 3));
+      if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    } else {
+      var home = $('embryoHome');
+      if (wrap.parentNode !== home) home.appendChild(wrap);
+      if (cv.width !== 150) { cv.width = 150; cv.height = 150; }
+    }
+  }
+  placeEmbryo();
+  window.addEventListener('resize', placeEmbryo);
+  if (bgMQ.addEventListener) bgMQ.addEventListener('change', placeEmbryo);
+
+  function embryoLoop(now) {
+    if (!(bgMQ.matches && document.body.classList.contains('trial-on'))) drawEmbryoFrame(now || performance.now());
+    requestAnimationFrame(embryoLoop);
+  }
   requestAnimationFrame(embryoLoop);
 
   $('embryo').addEventListener('click', function (ev) {
@@ -4690,57 +5055,73 @@ if (typeof module !== 'undefined') module.exports = Core;
   }
 
   /* ============================================================
-   * 試験の画面。ui.js の中に差し込まれる
+   * 耐用試験の画面。ui.js の中に差し込まれる
    * ========================================================== */
   var TL = C.TL;
-  var trial = { run: null, speed: 1, invest: 0.5, result: null, fx: [], banner: '', bannerBoss: false, bannerT: 0, built: false, flash: 0 };
-  var SIG_KEYS = ['wnt', 'bmp', 'shh', 'fgf', 'ra'];
-  var ACT_KEYS = { pulse: 'Q', grasp: 'W', fury: 'E', detox: 'R', cool: 'T' };
+  var trial = { run: null, speed: 1, invest: 0.5, result: null, fx: [], banner: '', bannerBoss: false, bannerT: 0, built: false, flash: 0,
+    pick: null, sel: null, ptr: null, keys: {} };
+  var ACT_KEYS = { dash: 'Space', pulse: 'Q', grasp: 'E', fury: 'R', detox: 'F' };
   var ORGAN_ABILITY = {
-    thymus: '胸腺: 免疫を撃つ', heart: '心臓: 周りを拍動で叩く / 技「拍動」', armL: '左上肢: 左上を払う', armR: '右上肢: 右上を払う', legL: '左下肢: 左下を払う', legR: '右下肢: 右下を払う',
-    kidneyL: '腎: 近づく負荷を遅くする', kidneyR: '腎: 近づく負荷を遅くする', liver: '肝臓: 少しずつ回復 / 技「解毒」', thyroid: '甲状腺: 発射が速くなる', arch: '咽頭弓: 届く距離が伸びる',
-    brain: '脳: 一番強い負荷を狙う / 技「掌握」', adrenal: '副腎: 技「闘争」', pineal: '松果体: 影を遠くから見抜く', gonad: '生殖腺: 一度だけ持ち直す', tail: '尾: 気力が回復しやすい',
+    thymus: '胸腺', heart: '心臓', armL: '左上肢', armR: '右上肢', legL: '左下肢', legR: '右下肢', kidneyL: '左腎', kidneyR: '右腎', liver: '肝臓',
+    thyroid: '甲状腺', arch: '咽頭弓', brain: '脳', adrenal: '副腎', pineal: '松果体', gonad: '生殖腺', tail: '尾',
   };
+  var EQ_COLOR = { turret: '#9fbdb8', mine: '#b8a27a', collector: '#8fa996', barrier: '#878b86', freezer: '#9fb4c8', healer: '#8fa996', laser: '#a9524c',
+    magnet: '#8f88a3', mortar: '#b8a27a', tesla: '#c8c4e0', decoy: '#a3808f', amp: '#d6d8d2' };
 
   $('win-trial').addEventListener('click', function (ev) {
     var b = ev.target.closest('button');
     if (!b) return;
     var d = b.dataset;
+    var T = trial.run;
     if (d.invest) { trial.invest = Number(d.invest); trial.built = false; }
     else if (d.start) startTrialRun();
-    else if (d.sig) { if (trial.run) TL.setSignal(trial.run, d.sig); }
-    else if (d.act) { if (trial.run && TL.useActive(trial.run, d.act)) trialFxText(TL.ACTIVE_BY_ID[d.act].name, '#a3808f'); }
+    else if (d.buy) { trial.pick = trial.pick === d.buy ? null : d.buy; trial.sel = null; trial.built = false; }
+    else if (d.up) { if (T && TL.upgrade(T, trial.sel)) trial.built = false; }
+    else if (d.sellq) { if (T && TL.sell(T, trial.sel)) { trial.sel = null; trial.built = false; } }
+    else if (d.next) { if (T && TL.startRound(T)) { trial.pick = null; trial.sel = null; trial.built = false; } }
+    else if (d.act) { if (T && TL.useActive(T, d.act)) trialFxText(TL.ACTIVE_BY_ID[d.act].name, '#a3808f'); }
     else if (d.speed) { trial.speed = trial.speed === 1 ? 2 : 1; trial.built = false; }
-    else if (d.giveup) { if (trial.run) { trial.run.over = true; finishTrialRun(); } }
+    else if (d.giveup) { if (T) { T.over = true; finishTrialRun(); } }
     else if (d.again) { trial.result = null; trial.built = false; }
     else return;
     htmlCache = {};
     renderTrial(true);
   });
 
+  var MOVE_KEYS = { w: [0, -1], a: [-1, 0], s: [0, 1], d: [1, 0], arrowup: [0, -1], arrowleft: [-1, 0], arrowdown: [0, 1], arrowright: [1, 0] };
+  function applyKeys() {
+    var T = trial.run;
+    if (!T) return;
+    var x = 0, y = 0;
+    Object.keys(trial.keys).forEach(function (k) { if (trial.keys[k] && MOVE_KEYS[k]) { x += MOVE_KEYS[k][0]; y += MOVE_KEYS[k][1]; } });
+    if (x || y || !T.goal) TL.setMove(T, x, y);
+  }
   document.addEventListener('keydown', function (ev) {
     if (!trial.run || !shown('trial') || ev.target.tagName === 'INPUT') return;
-    var k = ev.key.toUpperCase();
-    var n = Number(ev.key);
-    if (n >= 1 && n <= 5) { TL.setSignal(trial.run, SIG_KEYS[n - 1]); ev.preventDefault(); }
-    Object.keys(ACT_KEYS).forEach(function (id) { if (ACT_KEYS[id] === k && TL.useActive(trial.run, id)) { trialFxText(TL.ACTIVE_BY_ID[id].name, '#a3808f'); ev.preventDefault(); } });
+    var k = ev.key.toLowerCase();
+    if (MOVE_KEYS[k]) { trial.keys[k] = true; applyKeys(); ev.preventDefault(); return; }
+    if (k === 'enter' && trial.run.phase === 'prep') { if (TL.startRound(trial.run)) { trial.pick = null; trial.sel = null; trial.built = false; renderTrial(true); } ev.preventDefault(); return; }
+    var name = k === ' ' ? 'Space' : k.toUpperCase();
+    Object.keys(ACT_KEYS).forEach(function (id) { if (ACT_KEYS[id] === name) { if (TL.useActive(trial.run, id)) trialFxText(TL.ACTIVE_BY_ID[id].name, '#a3808f'); ev.preventDefault(); } });
   });
+  document.addEventListener('keyup', function (ev) { var k = ev.key.toLowerCase(); if (MOVE_KEYS[k]) { trial.keys[k] = false; applyKeys(); } });
 
   function startTrialRun() {
     var T = C.startTrial(state, trial.invest);
     if (!T) return;
-    trial.run = T; trial.fx = []; trial.result = null; trial.built = false;
-    trialBanner('第Ⅰ相 開始', false);
+    trial.run = T; trial.fx = []; trial.result = null; trial.built = false; trial.pick = null; trial.sel = null; trial.keys = {};
+    document.body.classList.add('trial-on');
     lastTrialT = performance.now();
     requestAnimationFrame(trialLoop);
   }
   function finishTrialRun() {
     var T = trial.run;
     var res = C.finishTrial(state, T);
-    trial.result = Object.assign({ wave: T.wave, kills: T.kills, phase: TL.phaseOf(Math.max(1, T.cleared)) }, res);
+    trial.result = Object.assign({ kills: T.kills, phase: TL.phaseOf(Math.max(1, T.cleared)) }, res);
     trial.run = null; trial.built = false;
-    toast(res.cleared + '波', res.record ? 'gold' : '');
-    pushLog('event', '試験', res.cleared + '波');
+    document.body.classList.remove('trial-on');
+    toast(res.cleared + 'ラウンド', res.record ? 'gold' : '');
+    pushLog('event', '耐用試験', res.cleared + 'ラウンド / 殻片 +' + fmt(res.shards));
     if (res.shards > 0) newShards = true;
     save();
     htmlCache = {};
@@ -4756,32 +5137,62 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (!T) return;
     var dt = Math.min(0.1, (now - lastTrialT) / 1000) * trial.speed;
     lastTrialT = now;
+    var phase0 = T.phase;
     var steps = Math.ceil(dt / (1 / 30));
     for (var i = 0; i < steps && !T.over; i++) TL.step(T, dt / steps);
     TL.takeEvents(T).forEach(function (e) {
-      if (e.type === 'shot') trial.fx.push({ kind: 'beam', a: e.a, r: e.r, src: e.source, t: 0, life: 0.18 });
-      else if (e.type === 'pulse') trial.fx.push({ kind: 'ring', r: e.r, t: 0, life: 0.5, color: '#a8706a' });
-      else if (e.type === 'sweep') trial.fx.push({ kind: 'arc', from: e.from, to: e.to, t: 0, life: 0.35 });
-      else if (e.type === 'kill') trial.fx.push({ kind: 'burst', a: e.a, r: e.r, t: 0, life: 0.5, boss: e.boss });
-      else if (e.type === 'hit' && e.source === 'tap') trial.fx.push({ kind: 'spark', a: e.a, r: e.r, t: 0, life: 0.3, crit: e.crit });
-      else if (e.type === 'reach') trial.flash = 0.35;
-      else if (e.type === 'wave') { trialBanner(e.phase + ' 第' + e.wave + '波', false); }
-      else if (e.type === 'boss') { trialBanner('介入: ' + e.name, true); pushLog('event', '試験', '介入「' + e.name + '」'); }
-      else if (e.type === 'overheat') trialBanner('過熱 迎撃停止', true);
+      if (e.type === 'shot') trial.fx.push({ kind: 'beam', x1: e.x1, y1: e.y1, x2: e.x2, y2: e.y2, src: e.src, t: 0, life: 0.15 });
+      else if (e.type === 'ring') trial.fx.push({ kind: 'ring', x: e.x, y: e.y, r: e.r, t: 0, life: 0.45, color: e.src === 'arm' ? '#b8a27a' : '#a8706a' });
+      else if (e.type === 'boom') trial.fx.push({ kind: 'ring', x: e.x, y: e.y, r: e.r, t: 0, life: 0.4, color: '#b8a27a' });
+      else if (e.type === 'zap') trial.fx.push({ kind: 'zap', pts: e.pts, t: 0, life: 0.2 });
+      else if (e.type === 'kill') trial.fx.push({ kind: 'burst', x: e.x, y: e.y, t: 0, life: 0.45, boss: e.boss });
+      else if (e.type === 'pick') trial.fx.push({ kind: 'pick', x: e.x, y: e.y, t: 0, life: 0.35 });
+      else if (e.type === 'hurt') trial.flash = 0.2;
+      else if (e.type === 'round') trialBanner(e.phase + ' 第' + e.round + 'ラウンド', false);
+      else if (e.type === 'boss') { trialBanner('介入 ' + e.name, true); pushLog('event', '耐用試験', '介入「' + e.name + '」'); }
+      else if (e.type === 'cleared') trialBanner('第' + e.round + 'ラウンド 終了', false);
       else if (e.type === 'revive') trialBanner('持ち直した', false);
-      else if (e.type === 'active' && e.id === 'pulse') trial.fx.push({ kind: 'ring', r: 0.6, t: 0, life: 0.6, color: '#a3808f' });
+      else if (e.type === 'prep') trialBanner('準備', false);
     });
+    if (T.phase !== phase0) { trial.built = false; renderTrial(true); }
     trial.bannerT = Math.max(0, trial.bannerT - dt);
     trial.flash = Math.max(0, trial.flash - dt);
-    drawTrial();
+    drawTrial(dt);
     updateTrialHud();
     if (T.over) { finishTrialRun(); return; }
     requestAnimationFrame(trialLoop);
   }
 
-  function arenaXY(cv, a, r) {
-    var R = cv.width * 0.46;
-    return [cv.width / 2 + Math.cos(a) * r * R, cv.height / 2 + Math.sin(a) * r * R];
+  /* ---------- 描画 ---------- */
+  function fxy(cv, x, y) { return [(x + 1) / 2 * cv.width, (y + 1) / 2 * cv.height]; }
+  function eqRange(q) {
+    var d = TL.EQUIP_BY_ID[q.id], lv = q.lv || 1;
+    if (q.id === 'turret') return d.range * (1 + 0.03 * (lv - 1));
+    if (q.id === 'laser' || q.id === 'mortar' || q.id === 'tesla') return d.range;
+    if (q.id === 'freezer') return d.radius + 0.01 * (lv - 1);
+    if (q.id === 'healer') return d.radius + 0.01 * (lv - 1);
+    if (q.id === 'magnet') return d.radius * (1 + 0.1 * (lv - 1));
+    if (q.id === 'mine') return d.radius;
+    if (q.id === 'decoy') return d.lure;
+    if (q.id === 'amp') return d.radius;
+    return 0;
+  }
+  function drawEquipGlyph(g, id, x, y, s, col) {
+    g.strokeStyle = col; g.fillStyle = col; g.lineWidth = 1;
+    g.beginPath();
+    if (id === 'turret') { g.rect(x - s, y - s, s * 2, s * 2); g.moveTo(x, y); g.lineTo(x + s * 1.6, y - s * 0.4); }
+    else if (id === 'mine') { g.arc(x, y, s * 0.8, 0, Math.PI * 2); g.moveTo(x - s, y); g.lineTo(x + s, y); g.moveTo(x, y - s); g.lineTo(x, y + s); }
+    else if (id === 'collector') { g.moveTo(x, y - s); g.lineTo(x + s, y + s); g.lineTo(x - s, y + s); g.closePath(); }
+    else if (id === 'barrier') { g.rect(x - s * 1.3, y - s * 0.6, s * 2.6, s * 1.2); }
+    else if (id === 'freezer') { for (var i = 0; i < 3; i++) { var a = i * Math.PI / 3; g.moveTo(x - Math.cos(a) * s, y - Math.sin(a) * s); g.lineTo(x + Math.cos(a) * s, y + Math.sin(a) * s); } }
+    else if (id === 'healer') { g.moveTo(x - s, y); g.lineTo(x + s, y); g.moveTo(x, y - s); g.lineTo(x, y + s); g.rect(x - s, y - s, s * 2, s * 2); }
+    else if (id === 'laser') { g.moveTo(x, y - s); g.lineTo(x + s, y); g.lineTo(x, y + s); g.lineTo(x - s, y); g.closePath(); g.moveTo(x, y); g.lineTo(x, y); }
+    else if (id === 'magnet') { g.arc(x, y, s, Math.PI, 0); g.moveTo(x - s, y); g.lineTo(x - s, y + s); g.moveTo(x + s, y); g.lineTo(x + s, y + s); }
+    else if (id === 'mortar') { g.arc(x, y + s * 0.3, s, Math.PI, 0); g.moveTo(x, y); g.lineTo(x + s * 0.6, y - s * 1.2); }
+    else if (id === 'tesla') { g.moveTo(x, y - s * 1.2); g.lineTo(x - s * 0.5, y); g.lineTo(x + s * 0.5, y); g.lineTo(x, y + s * 1.2); }
+    else if (id === 'decoy') { g.arc(x, y, s, 0, Math.PI * 2); g.moveTo(x + s * 0.4, y); g.arc(x, y, s * 0.4, 0, Math.PI * 2); }
+    else if (id === 'amp') { for (var k = 0; k < 6; k++) { var b = k * Math.PI / 3; g[k ? 'lineTo' : 'moveTo'](x + Math.cos(b) * s, y + Math.sin(b) * s); } g.closePath(); }
+    g.stroke();
   }
 
   function drawTrial() {
@@ -4789,101 +5200,126 @@ if (typeof module !== 'undefined') module.exports = Core;
     var T = trial.run;
     if (!cv || !T) return;
     var g = cv.getContext('2d');
-    var W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, R = W * 0.46;
-    g.clearRect(0, 0, W, H);
-    // 場
-    g.strokeStyle = 'rgba(159,189,184,.12)'; g.lineWidth = 1;
-    for (var k = 1; k <= 4; k++) { g.beginPath(); g.arc(cx, cy, R * k / 4, 0, Math.PI * 2); g.stroke(); }
-    for (var q = 0; q < 8; q++) { var aa = q * Math.PI / 4; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(aa) * R, cy + Math.sin(aa) * R); g.stroke(); }
-    // 届く距離と、影を見抜く範囲
-    g.setLineDash([4, 6]);
-    g.strokeStyle = 'rgba(159,189,184,.35)'; g.beginPath(); g.arc(cx, cy, R * Math.min(1, TL.effRange(T)), 0, Math.PI * 2); g.stroke();
-    g.strokeStyle = 'rgba(163,128,143,.3)'; g.beginPath(); g.arc(cx, cy, R * TL.revealR(T), 0, Math.PI * 2); g.stroke();
-    g.setLineDash([]);
-    // him
-    var pulse = 1 + 0.06 * Math.sin(T.t * 4);
-    var hc = T.him.stun > 0 ? '169,82,76' : T.fury > 0 ? '163,128,143' : '159,189,184';
-    var grd = g.createRadialGradient(cx, cy, 0, cx, cy, R * 0.16 * pulse);
-    grd.addColorStop(0, 'rgba(' + hc + ',.9)'); grd.addColorStop(0.4, 'rgba(' + hc + ',.35)'); grd.addColorStop(1, 'rgba(' + hc + ',0)');
-    g.fillStyle = grd; g.beginPath(); g.arc(cx, cy, R * 0.16 * pulse, 0, Math.PI * 2); g.fill();
-    g.strokeStyle = 'rgba(' + hc + ',.9)'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, R * TL.CORE_R, 0, Math.PI * 2); g.stroke();
-    // 負荷
-    T.threats.forEach(function (th) {
-      var p = arenaXY(cv, th.a, th.r);
-      var vis = TL.visible(T, th);
-      var d = TL.THREATS[th.type];
-      var size = (th.boss ? 24 : th.type === 'immune' ? 14 : 10) * (W / 560);
-      g.globalAlpha = vis ? 1 : 0.18;
-      g.strokeStyle = d.color; g.fillStyle = d.color; g.lineWidth = 1.5;
-      g.save(); g.translate(p[0], p[1]); g.rotate(T.t * (th.boss ? 0.6 : 2) + th.id);
+    var W = cv.width, H = cv.height, U = W / 2;
+    g.fillStyle = '#0b0c0c'; g.fillRect(0, 0, W, H);
+    // 場の目
+    g.fillStyle = 'rgba(159,189,184,.10)';
+    for (var gx = 0; gx <= 10; gx++) for (var gy = 0; gy <= 10; gy++) g.fillRect(Math.round(gx * W / 10), Math.round(gy * H / 10), 1, 1);
+    var prep = T.phase === 'prep';
+    // 装置の範囲
+    T.equip.forEach(function (q) {
+      var p = fxy(cv, q.x, q.y), rr = eqRange(q) * U;
+      if (q.id === 'freezer') { g.fillStyle = 'rgba(159,180,200,.06)'; g.beginPath(); g.arc(p[0], p[1], rr, 0, Math.PI * 2); g.fill(); }
+      if (q.id === 'healer') { g.fillStyle = 'rgba(143,169,150,.05)'; g.beginPath(); g.arc(p[0], p[1], rr, 0, Math.PI * 2); g.fill(); }
+      if ((prep || trial.sel === q.uid) && rr) { g.strokeStyle = trial.sel === q.uid ? 'rgba(184,162,122,.6)' : 'rgba(159,189,184,.12)'; g.setLineDash([2, 3]); g.beginPath(); g.arc(p[0], p[1], rr, 0, Math.PI * 2); g.stroke(); g.setLineDash([]); }
+    });
+    // 残骸
+    T.drops.forEach(function (dr) {
+      var p = fxy(cv, dr.x, dr.y), s = dr.big ? 4 : 2;
+      g.fillStyle = '#b8a27a'; g.beginPath(); g.moveTo(p[0], p[1] - s); g.lineTo(p[0] + s, p[1]); g.lineTo(p[0], p[1] + s); g.lineTo(p[0] - s, p[1]); g.closePath(); g.fill();
+    });
+    // 装置
+    T.equip.forEach(function (q) {
+      var p = fxy(cv, q.x, q.y);
+      var broken = q.maxHp && q.hp <= 0;
+      var col = broken ? '#3a3d3c' : EQ_COLOR[q.id] || '#9fbdb8';
+      drawEquipGlyph(g, q.id, Math.round(p[0]), Math.round(p[1]), 4, col);
+      if (q.lv > 1) { g.fillStyle = col; g.font = '7px DotGothic16, monospace'; g.textAlign = 'left'; g.fillText(String(q.lv), p[0] + 5, p[1] - 4); }
+      if (q.maxHp && q.hp < q.maxHp) { g.fillStyle = '#a9524c'; g.fillRect(p[0] - 5, p[1] + 6, 10 * Math.max(0, q.hp / q.maxHp), 1); }
+      if (q.id === 'laser' && q.tgt && !prep) { var tp = fxy(cv, q.tx, q.ty); g.strokeStyle = 'rgba(169,82,76,' + (0.5 + 0.15 * (q.ramp || 0)) + ')'; g.lineWidth = 1 + Math.floor(q.ramp || 0); g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(tp[0], tp[1]); g.stroke(); g.lineWidth = 1; }
+      if (q.id === 'collector') { var dp = fxy(cv, q.dx, q.dy); g.fillStyle = '#8fa996'; g.fillRect(Math.round(dp[0]) - 1, Math.round(dp[1]) - 1, 3, 3); }
+      if (q.id === 'mine' && q.cool > 0) { g.fillStyle = 'rgba(11,12,12,.6)'; g.fillRect(p[0] - 5, p[1] - 5, 10, 10); }
+    });
+    // 置こうとしているもの
+    if (prep && trial.pick && trial.ptr) {
+      var ok = TL.canPlace(T, trial.pick, trial.ptr.x, trial.ptr.y);
+      var pp = fxy(cv, trial.ptr.x, trial.ptr.y);
+      drawEquipGlyph(g, trial.pick, Math.round(pp[0]), Math.round(pp[1]), 4, ok ? 'rgba(214,216,210,.7)' : 'rgba(169,82,76,.7)');
+      var rr2 = eqRange({ id: trial.pick, lv: 1 }) * U;
+      if (rr2) { g.strokeStyle = ok ? 'rgba(214,216,210,.3)' : 'rgba(169,82,76,.3)'; g.setLineDash([2, 3]); g.beginPath(); g.arc(pp[0], pp[1], rr2, 0, Math.PI * 2); g.stroke(); g.setLineDash([]); }
+    }
+    // 砲弾と撃ち返し
+    T.shells.forEach(function (s) { var a = fxy(cv, s.x, s.y); g.strokeStyle = 'rgba(184,162,122,.5)'; g.beginPath(); g.arc(a[0], a[1], s.r * U * (1 - s.t / s.life), 0, Math.PI * 2); g.stroke(); });
+    T.shots.forEach(function (s) { var a = fxy(cv, s.x, s.y); g.fillStyle = '#8f88a3'; g.fillRect(Math.round(a[0]) - 1, Math.round(a[1]) - 1, 2, 2); });
+    // 敵
+    T.enemies.forEach(function (e) {
+      var p = fxy(cv, e.x, e.y);
+      var vis = TL.visible(T, e);
+      var d = TL.ENEMIES[e.type];
+      var size = Math.max(2, e.r * U);
+      g.globalAlpha = vis ? 1 : 0.12;
+      g.strokeStyle = d.color; g.fillStyle = d.color; g.lineWidth = 1;
+      g.save(); g.translate(Math.round(p[0]), Math.round(p[1])); g.rotate(Math.round((T.t * (e.boss ? 0.6 : 2) + e.id) * 4) / 4);
       g.beginPath();
-      if (th.type === 'bact') { g.ellipse(0, 0, size, size * 0.55, 0, 0, Math.PI * 2); }
-      else if (th.type === 'tera') { for (var s = 0; s < 3; s++) { var an = s * 2 * Math.PI / 3; g[s ? 'lineTo' : 'moveTo'](Math.cos(an) * size, Math.sin(an) * size); } g.closePath(); }
-      else if (th.type === 'immune') { g.arc(0, 0, size, 0, Math.PI * 2); g.moveTo(size * 0.5, 0); g.arc(0, 0, size * 0.5, 0, Math.PI * 2); }
-      else if (th.type === 'shade') { g.moveTo(0, -size); g.lineTo(size, 0); g.lineTo(0, size); g.lineTo(-size, 0); g.closePath(); }
+      if (e.type === 'bact') g.ellipse(0, 0, size, size * 0.55, 0, 0, Math.PI * 2);
+      else if (e.type === 'tera') { for (var s = 0; s < 3; s++) { var an = s * 2 * Math.PI / 3; g[s ? 'lineTo' : 'moveTo'](Math.cos(an) * size, Math.sin(an) * size); } g.closePath(); }
+      else if (e.type === 'immune') { g.arc(0, 0, size, 0, Math.PI * 2); g.moveTo(size * 0.5, 0); g.arc(0, 0, size * 0.5, 0, Math.PI * 2); }
+      else if (e.type === 'shade') { g.moveTo(0, -size); g.lineTo(size, 0); g.lineTo(0, size); g.lineTo(-size, 0); g.closePath(); }
+      else if (e.type === 'split') { g.arc(-size * 0.4, 0, size * 0.6, 0, Math.PI * 2); g.moveTo(size, 0); g.arc(size * 0.4, 0, size * 0.6, 0, Math.PI * 2); }
+      else if (e.type === 'spit') { g.rect(-size, -size * 0.6, size * 2, size * 1.2); g.moveTo(size, 0); g.lineTo(size * 1.6, 0); }
       else { for (var b = 0; b < 6; b++) { var ab = b * Math.PI / 3; g[b ? 'lineTo' : 'moveTo'](Math.cos(ab) * size, Math.sin(ab) * size); } g.closePath(); }
-      g.globalAlpha = (vis ? 1 : 0.18) * 0.18; g.fill(); g.globalAlpha = vis ? 1 : 0.18; g.stroke();
+      g.globalAlpha = (vis ? 1 : 0.12) * 0.25; g.fill(); g.globalAlpha = vis ? 1 : 0.12; g.stroke();
       g.restore();
-      // 体力の輪
-      if (vis && th.hp < th.maxHp) {
-        g.strokeStyle = d.color; g.lineWidth = 2;
-        g.beginPath(); g.arc(p[0], p[1], size + 4, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * th.hp / th.maxHp); g.stroke();
-      }
-      if (th.boss && vis) { g.fillStyle = '#a9524c'; g.font = Math.max(7, 12 * W / 560) + 'px DotGothic16, monospace'; g.textAlign = 'center'; g.fillText(th.name, p[0], p[1] - size - 8); }
+      if (vis && e.hp < e.maxHp) { g.fillStyle = d.color; g.fillRect(Math.round(p[0] - size), Math.round(p[1] + size + 2), Math.max(1, Math.round(2 * size * e.hp / e.maxHp)), 1); }
+      if (e.boss && vis) { g.fillStyle = '#a9524c'; g.font = '8px DotGothic16, monospace'; g.textAlign = 'center'; g.fillText(e.name, p[0], p[1] - size - 4); }
       g.globalAlpha = 1;
     });
+    // him
+    var h = T.him, hp = fxy(cv, h.x, h.y);
+    var hc = h.inv > 0 ? '214,216,210' : T.fury > 0 ? '163,128,143' : '159,189,184';
+    var pulse = 1 + 0.15 * Math.sin(T.t * 4);
+    g.strokeStyle = 'rgba(' + hc + ',.25)'; g.setLineDash([1, 3]); g.beginPath(); g.arc(hp[0], hp[1], TL.himRange(T) * U, 0, Math.PI * 2); g.stroke(); g.setLineDash([]);
+    g.fillStyle = 'rgba(' + hc + ',.3)'; g.beginPath(); g.arc(hp[0], hp[1], TL.HIM_R * U * 1.8 * pulse, 0, Math.PI * 2); g.fill();
+    g.fillStyle = 'rgb(' + hc + ')'; g.beginPath(); g.arc(Math.round(hp[0]), Math.round(hp[1]), TL.HIM_R * U, 0, Math.PI * 2); g.fill();
+    if (T.goal) { var gp = fxy(cv, T.goal.x, T.goal.y); g.fillStyle = 'rgba(159,189,184,.5)'; g.fillRect(Math.round(gp[0]) - 1, Math.round(gp[1]) - 1, 3, 3); }
     // 演出
-    g.globalCompositeOperation = 'lighter';
     trial.fx = trial.fx.filter(function (f) { f.t += 1 / 60 * trial.speed; return f.t < f.life; });
     trial.fx.forEach(function (f) {
       var k2 = 1 - f.t / f.life;
       if (f.kind === 'beam') {
-        var p = arenaXY(cv, f.a, f.r);
-        g.strokeStyle = (f.src === 'thymus' ? 'rgba(143,169,150,' : 'rgba(159,189,184,') + k2 + ')'; g.lineWidth = 2;
-        g.beginPath(); g.moveTo(cx, cy); g.lineTo(p[0], p[1]); g.stroke();
+        var a = fxy(cv, f.x1, f.y1), b2 = fxy(cv, f.x2, f.y2);
+        g.strokeStyle = (f.src === 'turret' ? 'rgba(214,216,210,' : f.src === 'thymus' ? 'rgba(143,169,150,' : 'rgba(159,189,184,') + k2 + ')';
+        g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b2[0], b2[1]); g.stroke();
       } else if (f.kind === 'ring') {
-        g.strokeStyle = f.color; g.globalAlpha = k2; g.lineWidth = 3;
-        g.beginPath(); g.arc(cx, cy, R * f.r * (1 - 0.5 * k2), 0, Math.PI * 2); g.stroke(); g.globalAlpha = 1;
-      } else if (f.kind === 'arc') {
-        g.strokeStyle = 'rgba(184,162,122,' + k2 + ')'; g.lineWidth = 6;
-        g.beginPath(); g.arc(cx, cy, R * 0.42, f.from, f.to); g.stroke();
-      } else if (f.kind === 'burst' || f.kind === 'spark') {
-        var p2 = arenaXY(cv, f.a, f.r);
-        var n = f.kind === 'burst' ? (f.boss ? 24 : 8) : 5;
-        g.strokeStyle = f.crit ? 'rgba(163,128,143,' + k2 + ')' : 'rgba(159,189,184,' + k2 + ')';
-        g.lineWidth = 1.5;
+        var c = fxy(cv, f.x, f.y);
+        g.strokeStyle = f.color; g.globalAlpha = k2; g.beginPath(); g.arc(c[0], c[1], f.r * U * (1 - 0.4 * k2), 0, Math.PI * 2); g.stroke(); g.globalAlpha = 1;
+      } else if (f.kind === 'zap') {
+        g.strokeStyle = 'rgba(200,196,224,' + k2 + ')'; g.beginPath();
+        f.pts.forEach(function (pt, i) { var q = fxy(cv, pt[0], pt[1]); g[i ? 'lineTo' : 'moveTo'](q[0] + (Math.random() - 0.5) * 2, q[1] + (Math.random() - 0.5) * 2); });
+        g.stroke();
+      } else if (f.kind === 'burst' || f.kind === 'pick') {
+        var p2 = fxy(cv, f.x, f.y);
+        var n = f.kind === 'burst' ? (f.boss ? 16 : 6) : 4;
+        g.fillStyle = f.kind === 'pick' ? 'rgba(184,162,122,' + k2 + ')' : 'rgba(159,189,184,' + k2 + ')';
         for (var i = 0; i < n; i++) {
-          var an2 = i / n * Math.PI * 2, d1 = (1 - k2) * (f.boss ? 60 : 22), d2 = d1 + 6;
-          g.beginPath(); g.moveTo(p2[0] + Math.cos(an2) * d1, p2[1] + Math.sin(an2) * d1); g.lineTo(p2[0] + Math.cos(an2) * d2, p2[1] + Math.sin(an2) * d2); g.stroke();
+          var an2 = i / n * Math.PI * 2, d1 = (1 - k2) * (f.boss ? 30 : f.kind === 'pick' ? 5 : 10);
+          g.fillRect(Math.round(p2[0] + Math.cos(an2) * d1), Math.round(p2[1] + Math.sin(an2) * d1), 1, 1);
         }
       } else if (f.kind === 'text') {
-        g.globalCompositeOperation = 'source-over';
-        g.fillStyle = f.color; g.globalAlpha = k2; g.font = Math.max(9, 22 * W / 560) + 'px DotGothic16, monospace'; g.textAlign = 'center';
-        g.fillText(f.text, cx, cy - R * 0.25 - (1 - k2) * 20); g.globalAlpha = 1;
-        g.globalCompositeOperation = 'lighter';
+        g.fillStyle = f.color; g.globalAlpha = k2; g.font = '10px DotGothic16, monospace'; g.textAlign = 'center';
+        g.fillText(f.text, hp[0], hp[1] - 14 - (1 - k2) * 10); g.globalAlpha = 1;
       }
     });
-    g.globalCompositeOperation = 'source-over';
-    if (trial.flash > 0) { g.fillStyle = 'rgba(169,82,76,' + trial.flash * 0.5 + ')'; g.fillRect(0, 0, W, H); }
+    if (trial.flash > 0) { g.fillStyle = 'rgba(169,82,76,' + trial.flash * 0.6 + ')'; g.fillRect(0, 0, W, H); }
     if (T.grasp > 0) { g.fillStyle = 'rgba(143,136,163,.08)'; g.fillRect(0, 0, W, H); }
+    if (T.phase === 'collect') { g.fillStyle = 'rgba(184,162,122,.8)'; g.fillRect(0, H - 2, W * T.phaseT / 4, 2); }
   }
 
   function updateTrialHud() {
     var T = trial.run;
-    if (!T || !$('trWave')) return;
-    setText($('trWave'), T.wave + '波');
-    setText($('trPhase'), TL.phaseOf(Math.max(1, T.wave)));
+    if (!T || !$('trRound')) return;
+    setText($('trRound'), String(T.round + (T.phase === 'prep' ? 1 : 0)));
+    setText($('trPhase'), TL.phaseOf(Math.max(1, T.round)));
     setText($('trKills'), String(T.kills));
+    setText($('trFood'), fmt(Math.floor(T.food)));
+    setText($('trShards'), fmt(Math.floor(T.shards)));
     $('trHp').style.width = Math.max(0, T.him.hp / T.him.maxHp * 100) + '%';
     $('trEn').style.width = Math.max(0, T.him.energy / T.him.maxEnergy * 100) + '%';
-    $('trHeat').style.width = Math.min(100, T.him.heat) + '%';
-    setText($('trHpN'), Math.ceil(T.him.hp) + ' / ' + Math.ceil(T.him.maxHp));
-    setText($('trEnN'), Math.floor(T.him.energy) + ' / ' + Math.floor(T.him.maxEnergy));
-    setText($('trHeatN'), String(Math.floor(T.him.heat)));
+    setText($('trHpN'), Math.ceil(T.him.hp) + '/' + Math.ceil(T.him.maxHp));
+    setText($('trEnN'), Math.floor(T.him.energy) + '/' + Math.floor(T.him.maxEnergy));
     var bn = $('trBanner');
     setText(bn, trial.bannerT > 0 ? trial.banner : '');
     bn.classList.toggle('boss', trial.bannerBoss);
-    SIG_KEYS.forEach(function (s) { var b = document.querySelector('[data-sig="' + s + '"]'); if (b) b.classList.toggle('on', T.signal === s); });
     TL.ACTIVES.forEach(function (a) {
       var b = document.querySelector('[data-act="' + a.id + '"]');
       if (!b) return;
@@ -4891,37 +5327,93 @@ if (typeof module !== 'undefined') module.exports = Core;
       var bar = b.querySelector('.cdb');
       if (bar) bar.style.width = ((T.cds[a.id] || 0) / a.cd * 100) + '%';
     });
+    if (T.phase === 'prep') {
+      Array.prototype.forEach.call(document.querySelectorAll('#trialBody [data-buy]'), function (b) { b.disabled = T.food < TL.placeCost(b.dataset.buy) || T.equip.length >= TL.MAX_EQUIP; });
+      var ub = document.querySelector('#trialBody [data-up]');
+      var q = trial.sel && TL.equipByUid(T, trial.sel);
+      if (ub && q) ub.disabled = q.lv >= TL.MAX_LV || T.food < TL.upgradeCost(q);
+    }
+  }
+
+  function canvasPoint(cv, ev) {
+    var rect = cv.getBoundingClientRect();
+    return { x: ((ev.clientX - rect.left) / rect.width) * 2 - 1, y: ((ev.clientY - rect.top) / rect.height) * 2 - 1 };
+  }
+  function bindCanvas(cv) {
+    var down = false;
+    cv.addEventListener('pointerdown', function (ev) {
+      var T = trial.run;
+      if (!T) return;
+      var p = canvasPoint(cv, ev);
+      if (T.phase === 'prep') {
+        var hit = TL.equipAt(T, p.x, p.y);
+        if (trial.pick && !hit) { TL.place(T, trial.pick, p.x, p.y); trial.built = false; renderTrial(true); return; }
+        trial.sel = hit ? hit.uid : null; trial.pick = null; trial.built = false; renderTrial(true);
+        return;
+      }
+      down = true;
+      try { cv.setPointerCapture(ev.pointerId); } catch (e) { /* 何もしない */ }
+      TL.setGoal(T, p.x, p.y);
+    });
+    cv.addEventListener('pointermove', function (ev) {
+      var T = trial.run;
+      if (!T) return;
+      var p = canvasPoint(cv, ev);
+      trial.ptr = p;
+      if (down && T.phase !== 'prep') TL.setGoal(T, p.x, p.y);
+    });
+    function up() { down = false; if (trial.run) TL.setGoal(trial.run, null); }
+    cv.addEventListener('pointerup', up);
+    cv.addEventListener('pointercancel', up);
+    cv.addEventListener('pointerleave', function () { trial.ptr = null; });
+  }
+
+  function prepControls(T) {
+    var h = '<div class="tr-shop">';
+    TL.EQUIP.forEach(function (d) {
+      if (!TL.equipUnlocked(d.id, T.best)) return;
+      h += '<button data-buy="' + d.id + '" class="' + (trial.pick === d.id ? 'on' : '') + '">' + esc(d.name) + '<small class="num">' + fmt(d.cost) + '</small></button>';
+    });
+    h += '</div>';
+    var q = trial.sel && TL.equipByUid(T, trial.sel);
+    if (q) {
+      var d = TL.EQUIP_BY_ID[q.id];
+      h += '<div class="tr-sel"><b>' + esc(d.name) + '</b> <span class="num">Lv' + q.lv + '</span>' +
+        (q.lv < TL.MAX_LV ? '<button data-up="1">強化 <span class="num">' + fmt(TL.upgradeCost(q)) + '</span></button>' : '') +
+        '<button data-sellq="1">売る <span class="num">+' + fmt(Math.floor(q.spent * 0.6)) + '</span></button></div>';
+    }
+    h += '<div class="tr-ctrl"><button data-next="1" class="go">第' + (T.round + 1) + 'ラウンドへ<small>Enter</small></button><button data-giveup="1">持ち帰る</button></div>';
+    return h;
+  }
+  function fightControls(T) {
+    var acts = TL.ACTIVES.filter(function (a) { return TL.activeAvailable(T, a.id); }).map(function (a) {
+      return '<button data-act="' + a.id + '"><span class="k">' + ACT_KEYS[a.id] + '</span>' + esc(a.name) + '<small class="num">' + a.cost + '</small><i class="cdb"></i></button>';
+    }).join('');
+    return '<div class="tr-ctrl">' + acts + '</div>' +
+      '<div class="tr-ctrl"><button data-speed="1">×' + trial.speed + '</button><button data-giveup="1">打ち切る</button></div>';
   }
 
   function renderTrial(force) {
     if (!C.trialUnlocked(state)) { setPanel('trialBody', ''); trial.built = false; return; }
-    if (trial.run) {
-      if (trial.built === 'run') return;
-      trial.built = 'run';
-      var T = trial.run;
-      var sigs = SIG_KEYS.map(function (s, i) { var d = TL.SIGNALS[s]; return '<button data-sig="' + s + '"><span class="k">' + (i + 1) + '</span>' + esc(d.name) + '</button>'; }).join('');
-      var acts = TL.ACTIVES.map(function (a) {
-        var ok = TL.activeAvailable(T, a.id);
-        return '<button data-act="' + a.id + '"' + (ok ? '' : ' disabled') + '><span class="k">' + ACT_KEYS[a.id] + '</span>' + esc(a.name) + '<small>' + (ok ? '気力' + a.cost + ' ' + esc(a.desc) : '器官がない') + '</small><i class="cdb"></i></button>';
-      }).join('');
-      setPanel('trialBody', '<div class="tr-wrap">' +
-        '<div class="tr-hud"><div>相<b id="trPhase"></b></div><div>波<b id="trWave"></b></div><div>撃破<b id="trKills"></b></div>' +
-        '<div>体力 <span id="trHpN" class="num"></span><div class="tr-bar"><i id="trHp" style="background:#8fa996"></i></div></div>' +
-        '<div>気力 <span id="trEnN" class="num"></span><div class="tr-bar"><i id="trEn" style="background:#9fbdb8"></i></div></div>' +
-        '<div>ヒート <span id="trHeatN" class="num"></span><div class="tr-bar"><i id="trHeat" style="background:#a9524c"></i></div></div></div>' +
-        '<div class="tr-banner" id="trBanner"></div>' +
-        '<canvas id="trialCanvas" width="280" height="280"></canvas>' +
-        '<div class="tr-ctrl">' + sigs + '</div><div class="tr-ctrl">' + acts + '</div>' +
-        '<div class="tr-ctrl"><button data-speed="1">速さ ×' + trial.speed + '</button><button data-giveup="1">打ち切る</button></div>' +
-        '</div>');
-      var cv = $('trialCanvas');
-      cv.addEventListener('pointerdown', function (ev) {
-        if (!trial.run) return;
-        var rect = cv.getBoundingClientRect();
-        var x = ((ev.clientX - rect.left) / rect.width - 0.5) * 2 / 0.92;
-        var y = ((ev.clientY - rect.top) / rect.height - 0.5) * 2 / 0.92;
-        TL.tap(trial.run, x, y);
-      });
+    var T = trial.run;
+    if (T) {
+      var key = 'run:' + (T.phase === 'prep' ? 'prep' : 'fight');
+      if (trial.built === key && !force) return;
+      if (trial.built === key && force && T.phase !== 'prep') return;
+      var keep = $('trialCanvas') && trial.built && trial.built.indexOf('run:') === 0;
+      if (!keep) {
+        setPanel('trialBody', '<div class="tr-wrap"><div class="tr-side">' +
+          '<div class="tr-hud"><div>相<b id="trPhase"></b></div><div>ラウンド<b id="trRound"></b></div><div>撃破<b id="trKills"></b></div>' +
+          '<div>養分<b id="trFood"></b></div><div>殻片<b id="trShards"></b></div><div></div>' +
+          '<div>体力 <span id="trHpN" class="num"></span><div class="tr-bar"><i id="trHp" style="background:#8fa996"></i></div></div>' +
+          '<div>気力 <span id="trEnN" class="num"></span><div class="tr-bar"><i id="trEn" style="background:#9fbdb8"></i></div></div><div></div></div>' +
+          '<div class="tr-banner" id="trBanner"></div><div id="trCtrl"></div></div>' +
+          '<canvas id="trialCanvas" width="320" height="320"></canvas></div>');
+        bindCanvas($('trialCanvas'));
+      }
+      var ctrl = $('trCtrl');
+      ctrl.innerHTML = T.phase === 'prep' ? prepControls(T) : fightControls(T);
+      trial.built = key;
       updateTrialHud();
       return;
     }
@@ -4930,22 +5422,21 @@ if (typeof module !== 'undefined') module.exports = Core;
     var h = '';
     if (trial.result) {
       var r = trial.result;
-      h += '<div class="tr-result howto"><div class="big">' + r.cleared + '波</div><p>' + esc(r.phase) + ' / 撃破 ' + r.kills + '</p>' +
-        '<p>殻片 <b>+' + r.shards + '</b>' + '' + '</p><button data-again="1">戻る</button></div>';
+      h += '<div class="tr-result howto"><div class="big">' + r.cleared + '</div><p>' + esc(r.phase) + ' / 撃破 ' + r.kills + '</p>' +
+        '<p>殻片 <b class="num">+' + fmt(r.shards) + '</b></p><button data-again="1">戻る</button></div>';
       setPanel('trialBody', h);
       return;
     }
     var st = C.trialStats(state, state.cells * trial.invest);
-    var abil = Object.keys(st.organs).filter(function (k) { return st.organs[k] > 0; }).map(function (k) { return ORGAN_ABILITY[k] + '(段階' + st.organs[k] + ')'; });
+    var abil = Object.keys(st.organs).filter(function (k) { return st.organs[k] > 0; }).map(function (k) { return ORGAN_ABILITY[k] + ' ' + st.organs[k]; });
     h += '<div class="tr-start">';
-    h += '<div class="howto">' +
-      '<p>攻撃 <b>' + st.power.toFixed(1) + '</b> / 体力 <b>' + Math.round(st.hp) + '</b> / 気力 <b>' + Math.round(st.energy) + '</b></p>' +
-      (abil.length ? '<p>' + abil.map(esc).join(' / ') + '</p>' : '') + '</div>';
+    h += '<div class="howto"><p class="num">攻撃 ' + st.power.toFixed(1) + ' / 体力 ' + Math.round(st.hp) + ' / 養分 ' + fmt(st.food0) + '</p>' +
+      (abil.length ? '<p class="hint">' + abil.map(esc).join(' / ') + '</p>' : '') + '</div>';
     h += '<div class="seg-row"><div class="seg">' + [0, 0.25, 0.5, 1].map(function (f) { return '<button data-invest="' + f + '" class="' + (trial.invest === f ? 'active' : '') + '">' + (f * 100) + '%</button>'; }).join('') + '</div>' +
       '<span class="hint num">' + fmt(state.cells * trial.invest) + '</span></div>';
-    h += '<button class="btn" data-start="1" style="padding:10px;font-size:14px">試験を始める</button>';
-    h += '<div class="tr-hist">到達点 ' + state.trial.best + '波(' + TL.phaseOf(Math.max(1, state.trial.best)) + ') / 試験 ' + state.trial.runs + '回<br>' +
-      state.trial.history.map(function (x) { return x.cleared + '波 殻片+' + x.shards + (x.record ? ' 新記録' : ''); }).join('<br>') + '</div>';
+    h += '<button class="btn" data-start="1" style="padding:10px;font-size:14px">耐用試験を始める</button>';
+    if (state.trial.runs) h += '<div class="tr-hist">最高 ' + state.trial.best + 'ラウンド<br>' +
+      state.trial.history.map(function (x) { return x.cleared + 'ラウンド 殻片+' + fmt(x.shards); }).join('<br>') + '</div>';
     h += '</div>';
     setPanel('trialBody', h);
   }
@@ -5026,6 +5517,7 @@ if (typeof module !== 'undefined') module.exports = Core;
         g.fillStyle = 'rgba(16,17,17,.9)';
         g.beginPath(); g.arc(p[0], p[1], r, 0, Math.PI * 2); g.fill(); g.stroke();
       }
+      if (!own && v === 'open') { g.fillStyle = can ? 'rgba(214,216,210,.85)' : 'rgba(135,139,134,.7)'; g.font = Math.max(6, 8 * z) + 'px DotGothic16, monospace'; g.textAlign = 'center'; g.fillText(fmt(TRE.cost(n.id)), p[0], p[1] + r + Math.max(6, 9 * z)); }
       if (tview.sel === n.id) { g.strokeStyle = '#b8a27a'; g.lineWidth = 2 * dpr; g.beginPath(); g.arc(p[0], p[1], r + 5 * dpr, 0, Math.PI * 2); g.stroke(); }
       if (key && (own || v === 'open' || rev)) {
         var s = TRE.SPHERE_BY_ID[n.id];
@@ -5111,18 +5603,20 @@ if (typeof module !== 'undefined') module.exports = Core;
     var h = n.kind === 'key' ? '<div class="t">' + ROMAN[s.no] + '</div>' : '';
     h += '<div>' + esc(n.label) + '</div>';
     if (n.text) h += '<div class="q">' + esc(n.text) + '</div>';
-    if (!own && can) h += '<button data-buy="' + id + '"' + (state.tree.shards < c ? ' disabled' : '') + '>殻片 ' + c + ' で開く</button>';
+    if (!own && can) h += '<button data-buy="' + id + '"' + (state.tree.shards < c ? ' disabled' : '') + '>殻片 <span class="num">' + fmt(c) + '</span> で開く</button>';
     setPanel('treeSel', h);
   }
 
   function renderTree(force) {
     var rev = C.treeRevealed(state);
     if (!$('treeCanvas')) {
-      setPanel('treeBody', '<div class="tree-top"><span>殻片 <b id="treeShards"></b></span><span class="seg"><button data-zoom="1.2">拡大</button><button data-zoom="0.83">縮小</button><button data-home="1">始まりへ</button></span></div>' +
+      setPanel('treeBody', '<div class="tree-top"><span>殻片 <b id="treeShards" class="num"></b> <span class="hint num" id="treeNext"></span></span><span class="seg"><button data-zoom="1.2">拡大</button><button data-zoom="0.83">縮小</button><button data-home="1">始まりへ</button></span></div>' +
         '<div id="treeView"><canvas id="treeCanvas"></canvas></div><div class="tree-sel" id="treeSel"></div>');
       bindTreeCanvas();
     }
-    setText($('treeShards'), String(state.tree.shards));
+    setText($('treeShards'), fmt(state.tree.shards));
+    var nc = C.nextNodeCost(state);
+    setText($('treeNext'), nc ? '次 ' + fmt(nc) : '');
     renderTreeSel();
   }
 
@@ -5237,7 +5731,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   if (state.story.cleared && !state.story.endingShown) showEnding();
 
   // テスト用の入り口(画面からは使わない)
-  window.__game = { get state() { return state; }, render: render, save: save, showHim: showHim, handleEvents: handleEvents, disableSave: function () { saveDisabled = true; } };
+  window.__game = { get state() { return state; }, render: render, save: save, showHim: showHim, handleEvents: handleEvents, disableSave: function () { saveDisabled = true; }, trial: function () { return trial.run; } };
 })();
 
 </script>
