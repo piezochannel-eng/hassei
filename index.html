@@ -5,103 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#04060d">
 <title>EMBRYO//GENESIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #04060d;
-  --bg2: #0a1222;
-  --panel: rgba(18, 38, 66, .38);
-  --panel2: rgba(30, 60, 100, .28);
-  --line: rgba(120, 220, 255, .38);
-  --line2: rgba(120, 220, 255, .18);
-  --cyan: #6ff3ff;
-  --magenta: #ff5ef7;
-  --violet: #9b8cff;
-  --amber: #ffd36b;
-  --red: #ff4d6d;
-  --green: #6dffb0;
-  --text: #d8f6ff;
-  --dim: #7fa3b8;
-  --holo: linear-gradient(100deg, #6ff3ff 0%, #9b8cff 35%, #ff5ef7 60%, #ffd36b 100%);
-  --glow: 0 0 10px rgba(111, 243, 255, .35);
-  --sans: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
-  --mono: "SFMono-Regular", "Menlo", "Consolas", "Roboto Mono", monospace;
+  --bg: #0b0c0c;
+  --bg2: #141615;
+  --panel: rgba(24, 26, 26, .38);
+  --panel2: rgba(34, 36, 36, .28);
+  --line: rgba(170, 185, 180, .38);
+  --line2: rgba(170, 185, 180, .18);
+  --cyan: #9fbdb8;
+  --magenta: #a3808f;
+  --violet: #8f88a3;
+  --amber: #b8a27a;
+  --red: #a9524c;
+  --green: #8fa996;
+  --text: #d6d8d2;
+  --dim: #878b86;
+  --holo: linear-gradient(90deg, rgba(159, 189, 184, .7), rgba(184, 162, 122, .5));
+  --glow: none;
+  --serif: "DotGothic16", "MS Gothic", "Osaka-Mono", monospace;
+  --sans: "DotGothic16", "MS Gothic", "Osaka-Mono", monospace;
+  --mono: "DotGothic16", "MS Gothic", "Osaka-Mono", monospace;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-tap-highlight-color: transparent; }
 body {
-  max-width: 560px; margin: 0 auto; padding: 0 0 90px; overscroll-behavior: none; min-height: 100vh;
+  margin: 0; padding: 0; overscroll-behavior: none; min-height: 100vh; overflow-x: hidden;
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(111, 243, 255, .16), transparent 60%),
-    radial-gradient(ellipse at 100% 60%, rgba(255, 94, 247, .08), transparent 55%),
-    linear-gradient(rgba(120, 220, 255, .045) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(90deg, rgba(120, 220, 255, .045) 1px, transparent 1px) 0 0 / 22px 22px,
+    radial-gradient(ellipse at 50% 40%, rgba(40, 42, 40, .55), transparent 70%),
+    radial-gradient(ellipse at 50% 120%, rgba(0, 0, 0, .8), transparent 60%),
     var(--bg);
 }
-#scan { position: fixed; inset: 0; pointer-events: none; z-index: 70; background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
+#scan { position: fixed; inset: 0; pointer-events: none; z-index: 70; opacity: .16; mix-blend-mode: overlay; image-rendering: pixelated; background-size: 384px 384px; animation: grain .9s steps(1) infinite; }
+@keyframes grain { 0% { background-position: 0 0; } 25% { background-position: -131px 77px; } 50% { background-position: 59px -173px; } 75% { background-position: -211px -38px; } }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 69;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px); }
 button { font: inherit; color: inherit; cursor: pointer; }
 .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-h3 { font-size: 12px; letter-spacing: .2em; margin: 18px 0 8px; color: var(--cyan); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-h3::before { content: ""; width: 14px; height: 2px; background: var(--holo); box-shadow: var(--glow); }
-h3.cursed-h { color: var(--red); }
-h3.cursed-h::before { background: var(--red); }
+h3 { font-family: var(--serif); font-weight: 400; font-size: 12.5px; letter-spacing: .24em; margin: 20px 0 8px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+h3::before { content: ""; width: 14px; height: 2px; background: var(--holo); box-shadow: none; }
 .hint { font-size: 12px; color: var(--dim); margin: 4px 0 10px; line-height: 1.7; }
 .holo-text { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* 枠(ホログラムの板) */
 .card-ui, .fac, .upg, .perk, .drug, .osc, .card, .slot, .howto, .stats, .grade, .page, .rel, .sig, .bp-editor, .bp-board, #window, .act, .cursed {
-  border: 1px solid var(--line); background: var(--panel); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
-  box-shadow: inset 0 0 18px rgba(111, 243, 255, .06);
+  border: 1px solid var(--line); background: var(--panel);
+  box-shadow: none;
 }
 
 /* ---------- 上の帯 ---------- */
-#top { position: sticky; top: 0; z-index: 20; background: linear-gradient(rgba(4, 6, 13, .96), rgba(4, 6, 13, .88)); border-bottom: 1px solid var(--line); padding: 8px 16px 8px; }
-#top::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--holo); opacity: .7; }
+#top { padding: 4px 2px 6px; }
 .brand { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-family: var(--mono); font-size: 11px; letter-spacing: .32em; font-weight: 700; background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; position: relative; animation: hue 8s linear infinite; }
+.logo { font-family: var(--serif); font-size: 11px; letter-spacing: .32em; color: var(--dim); }
 @keyframes hue { to { filter: hue-rotate(360deg); } }
-.rank { font-size: 11px; letter-spacing: .1em; border: 1px solid var(--magenta); color: var(--magenta); padding: 1px 8px; box-shadow: 0 0 8px rgba(255, 94, 247, .35); }
-.row1 { display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; }
+.rank { font-family: var(--serif); font-size: 11px; letter-spacing: .2em; color: var(--dim); padding: 1px 2px; }
+.row1 { display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px; }
 .stage { font-size: 12px; letter-spacing: .12em; color: var(--cyan); }
 #cps { font-size: 12px; color: var(--dim); }
 #cps.down { color: var(--red); }
-.cells { font-size: 30px; font-weight: 700; line-height: 1.1; text-shadow: 0 0 12px rgba(111, 243, 255, .5); }
+.cells { font-size: 28px; font-weight: 400; line-height: 1.1; letter-spacing: .02em; }
 .cells small { font-size: 12px; font-weight: 400; margin-left: 4px; color: var(--dim); font-family: var(--sans); }
 .heat { margin-top: 6px; }
 .heat .label { display: flex; justify-content: space-between; font-size: 11px; color: var(--dim); margin-bottom: 3px; letter-spacing: .06em; }
-.heat .bar { position: relative; height: 8px; border: 1px solid var(--line); background: linear-gradient(90deg, rgba(111, 243, 255, .08) 0 40%, rgba(255, 211, 107, .12) 40% 70%, rgba(255, 77, 109, .16) 70%); }
+.heat .bar { position: relative; height: 8px; border: 1px solid var(--line); background: linear-gradient(90deg, rgba(159, 189, 184, .08) 0 40%, rgba(184, 162, 122, .12) 40% 70%, rgba(169, 82, 76, .16) 70%); }
 .heat .bar i { position: absolute; top: -2px; bottom: -2px; width: 1px; background: var(--line); }
-.heat .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); transition: width .2s linear; }
-.heat .fill.s1 { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
-.heat .fill.s2, .heat .fill.s3 { background: var(--red); box-shadow: 0 0 12px var(--red); }
+.heat .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--cyan); box-shadow: none;  }
+.heat .fill.s1 { background: var(--amber); box-shadow: none; }
+.heat .fill.s2, .heat .fill.s3 { background: var(--red); box-shadow: none; }
 .heat .fill.s3 { animation: blink .5s steps(2) infinite; }
 @keyframes blink { 50% { opacity: .35; } }
 #status { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
 .chip { font-size: 10.5px; padding: 1px 7px; border: 1px solid var(--line); color: var(--text); letter-spacing: .04em; }
-.chip.red { border-color: var(--red); color: var(--red); box-shadow: 0 0 8px rgba(255, 77, 109, .4); }
+.chip.red { border-color: var(--red); color: var(--red); box-shadow: none; }
 .chip.blue { border-color: var(--violet); color: var(--violet); }
 .chip.yellow { border-color: var(--amber); color: var(--amber); }
 .chip.green { border-color: var(--green); color: var(--green); }
 
 /* ---------- 胚 ---------- */
 #embryoWrap { position: relative; display: flex; justify-content: center; padding: 14px 16px 2px; }
-#embryo { width: 220px; height: 220px; background: none; border: none; padding: 0; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
-#embryo svg { width: 100%; height: 100%; display: block; overflow: visible; transition: transform .08s; filter: drop-shadow(0 0 8px rgba(111, 243, 255, .45)); }
-#embryo:active svg { transform: scale(.95); }
-#embryo .spin { transform-origin: 100px 100px; animation: spin 24s linear infinite; }
-#embryo .spin2 { transform-origin: 100px 100px; animation: spin 40s linear infinite reverse; }
-@keyframes spin { to { transform: rotate(360deg); } }
-#embryo.shake svg { animation: shake .25s infinite; }
-#embryo.crash svg { filter: drop-shadow(0 0 10px rgba(255, 77, 109, .8)) saturate(.3); }
-@keyframes shake { 25% { transform: translate(1px, -1px); } 75% { transform: translate(-1px, 1px); } }
-.pop { position: absolute; pointer-events: none; font-family: var(--mono); font-size: 14px; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); animation: pop .8s ease-out forwards; }
+#embryo { width: min(100%, 300px); aspect-ratio: 1; height: auto; display: block; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none;  }
+#embryo:active { transform: scale(.97); }
+.pop { position: absolute; pointer-events: none; font-family: var(--mono); font-size: 14px; color: var(--cyan); animation: pop .8s steps(4) forwards; }
 @keyframes pop { to { transform: translateY(-50px); opacity: 0; } }
 #clickInfo { text-align: center; font-size: 11px; color: var(--dim); letter-spacing: .1em; }
 
 /* 声 */
 #voice { position: absolute; left: 50%; top: 6px; transform: translateX(-50%); width: min(90%, 400px); padding: 10px 12px 8px; display: none; z-index: 5;
-  border: 1px solid var(--cyan); background: rgba(6, 16, 30, .92); box-shadow: 0 0 18px rgba(111, 243, 255, .35); animation: drop .3s ease-out; }
+  border: 1px solid var(--cyan); background: rgba(16, 17, 17, .92); box-shadow: none; animation: drop .3s steps(4); }
 #voice.show { display: block; }
-#voice.has-card { border-color: var(--amber); box-shadow: 0 0 18px rgba(255, 211, 107, .4); }
+#voice.has-card { border-color: var(--amber); box-shadow: none; }
 #voice .who { font-size: 11px; color: var(--cyan); letter-spacing: .08em; display: flex; gap: 8px; align-items: center; }
 #voice .who #voiceRole { color: var(--dim); }
 #voice .vcard { display: none; margin-left: auto; color: var(--amber); border: 1px solid var(--amber); padding: 0 5px; font-size: 10px; }
@@ -112,17 +107,17 @@ h3.cursed-h::before { background: var(--red); }
 @keyframes drop { from { transform: translate(-50%, -12px); opacity: 0; } }
 
 /* 彼の声 */
-#him { position: fixed; left: 0; right: 0; top: 38%; z-index: 60; text-align: center; pointer-events: none; font-size: 20px; letter-spacing: .3em; color: #fff; opacity: 0;
-  text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan), 0 0 18px rgba(255, 94, 247, .6); font-weight: 300; padding: 0 16px; }
-#him.show { animation: him 9s ease-in-out forwards; }
+#him { position: fixed; left: 0; right: 0; top: 38%; z-index: 60; text-align: center; pointer-events: none; font-family: var(--serif); font-size: 19px; letter-spacing: .4em; color: #d9d6cf; opacity: 0;
+  text-shadow: none; font-weight: 300; padding: 0 16px; }
+#him.show { animation: him 9s steps(4) forwards; text-shadow: none; }
 @keyframes him {
-  0% { opacity: 0; transform: translateY(6px); filter: blur(4px); }
+  0% { opacity: 0; transform: translateY(6px);  }
   12% { opacity: .95; transform: none; filter: none; }
   14% { transform: translateX(3px); }
   15% { transform: translateX(-2px); }
   16% { transform: none; }
   75% { opacity: .85; }
-  100% { opacity: 0; filter: blur(6px); }
+  100% { opacity: 0;  }
 }
 
 /* 操作 */
@@ -130,14 +125,14 @@ h3.cursed-h::before { background: var(--red); }
 .act { padding: 8px 10px; text-align: left; position: relative; }
 .act b { display: block; font-size: 13px; font-weight: 600; letter-spacing: .06em; }
 .act span { font-size: 10.5px; color: var(--dim); }
-.act.on { border-color: var(--violet); box-shadow: 0 0 14px rgba(155, 140, 255, .45); }
+.act.on { border-color: var(--violet); box-shadow: none; }
 .act:disabled { opacity: .4; }
-.act .cd { position: absolute; left: 0; bottom: 0; height: 2px; background: var(--red); box-shadow: 0 0 6px var(--red); }
+.act .cd { position: absolute; left: 0; bottom: 0; height: 2px; background: var(--red); box-shadow: none; }
 
 /* 臨界期 */
 #window { margin: 0 16px 10px; display: none; }
 #window.show { display: block; }
-#window.open { border-color: var(--amber); box-shadow: 0 0 16px rgba(255, 211, 107, .3); }
+#window.open { border-color: var(--amber); box-shadow: none; }
 #window .head { display: flex; justify-content: space-between; padding: 6px 10px; font-size: 11px; letter-spacing: .1em; color: var(--amber); }
 #window .body { padding: 0 10px 10px; font-size: 13px; }
 #window .body p { margin: 2px 0 8px; font-size: 12px; color: var(--dim); }
@@ -146,33 +141,23 @@ h3.cursed-h::before { background: var(--red); }
 
 /* ボタン共通 */
 .btn, #window button, .fac .buy, .upg button, .perk button, .drug button, .osc button, .card button, .grade button, .danger, #modal button, #ending button, .seg button, .choices button, .bp-tools button {
-  border: 1px solid var(--cyan); background: rgba(111, 243, 255, .08); color: var(--cyan); padding: 6px 10px; font-size: 12px; letter-spacing: .06em;
+  border: 1px solid var(--cyan); background: rgba(159, 189, 184, .08); color: var(--cyan); padding: 6px 10px; font-size: 12px; letter-spacing: .06em;
 }
 button:disabled { opacity: .35; }
-#window button, .fac .buy { box-shadow: 0 0 10px rgba(111, 243, 255, .18); }
-
-/* ---------- タブ ---------- */
-#tabs { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); position: sticky; z-index: 10; background: rgba(4, 6, 13, .94); }
-#tabs button { border: none; background: none; padding: 10px 0; font-size: 11px; color: var(--dim); position: relative; letter-spacing: .02em; }
-#tabs button.active { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
-#tabs button.active::after { content: ""; position: absolute; left: 15%; right: 15%; bottom: 0; height: 2px; background: var(--holo); }
-#tabs .dot { position: absolute; top: 5px; right: 4px; width: 6px; height: 6px; border-radius: 50%; background: var(--magenta); box-shadow: 0 0 6px var(--magenta); display: none; }
-#tabs .dot.on { display: block; }
-.panel { display: none; padding: 10px 16px 24px; }
-.panel.active { display: block; }
+#window button, .fac .buy { box-shadow: none; }
 
 /* 切り替え */
 .seg-row { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
 .seg { display: flex; }
 .seg button { border-right-width: 0; color: var(--dim); border-color: var(--line); background: none; }
 .seg button:last-child { border-right-width: 1px; }
-.seg button.active { color: var(--bg); background: var(--cyan); border-color: var(--cyan); }
-#panel-fac.selling .fac .buy { border-color: var(--amber); color: var(--amber); background: rgba(255, 211, 107, .08); }
+.seg button.active { color: var(--text); background: rgba(159, 189, 184, .1); border-color: var(--dim); }
+#panel-fac.selling .fac .buy { border-color: var(--amber); color: var(--amber); background: rgba(184, 162, 122, .08); }
 
 /* 施設 */
 .fac { margin-bottom: 8px; }
 .fac .main { display: grid; grid-template-columns: 36px 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; }
-.fac .icon { width: 36px; height: 36px; filter: drop-shadow(0 0 4px rgba(111, 243, 255, .5)); }
+.fac .icon { width: 36px; height: 36px; }
 .fac .name { font-size: 14px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .fac .count { font-family: var(--mono); font-size: 12px; color: var(--cyan); }
 .fac .sub { font-size: 11px; color: var(--dim); margin-top: 2px; line-height: 1.5; }
@@ -191,15 +176,15 @@ button:disabled { opacity: .35; }
 .osc .ctrl { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 11px; color: var(--dim); }
 .osc .ctrl button { padding: 3px 8px; font-size: 11px; }
 .osc .ctrl button.on, .choices button.on { background: var(--cyan); color: var(--bg); }
-.cursed { border-color: rgba(255, 77, 109, .5); background: rgba(60, 10, 22, .35); }
+.cursed { border-color: rgba(169, 82, 76, .5); background: rgba(60, 10, 22, .35); }
 .cursed .t { color: var(--red); }
-.cursed button { border-color: var(--red); color: var(--red); background: rgba(255, 77, 109, .08); padding: 6px 10px; font-size: 12px; }
+.cursed button { border-color: var(--red); color: var(--red); background: rgba(169, 82, 76, .08); padding: 6px 10px; font-size: 12px; }
 .cursed.taken { opacity: .8; }
 .cursed .h { color: var(--red); font-size: 11px; margin-top: 3px; }
 .owned { font-size: 12px; line-height: 1.8; color: var(--dim); }
 .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; margin-bottom: 10px; }
 .slot { min-height: 64px; padding: 6px; font-size: 11px; border-style: dashed; color: var(--dim); }
-.slot.filled { border-style: solid; color: var(--text); box-shadow: 0 0 10px rgba(111, 243, 255, .2); }
+.slot.filled { border-style: solid; color: var(--text); box-shadow: none; }
 .slot .e { color: var(--cyan); margin-top: 4px; }
 .card .q { font-size: 13px; }
 .card .k { font-size: 10px; letter-spacing: .1em; margin-right: 6px; padding: 0 5px; border: 1px solid var(--line); color: var(--dim); }
@@ -207,7 +192,7 @@ button:disabled { opacity: .35; }
 .card .k.spirit { border-color: var(--violet); color: var(--violet); }
 .card .e { font-size: 11px; color: var(--cyan); margin-top: 2px; }
 .card .btns { display: flex; gap: 4px; }
-.card.on { border-color: var(--cyan); box-shadow: 0 0 12px rgba(111, 243, 255, .25); }
+.card.on { border-color: var(--cyan); box-shadow: none; }
 .card.dark-card .q { color: var(--red); }
 #drugActive { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 
@@ -218,27 +203,27 @@ button:disabled { opacity: .35; }
 .rel { padding: 6px 10px; margin-bottom: 6px; display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: center; font-size: 12px; }
 .rel svg { width: 26px; height: 26px; }
 .rel .tag { display: inline-block; margin: 2px 6px 0 0; padding: 0 5px; border: 1px solid var(--line); font-size: 10.5px; color: var(--text); }
-.rel .tag.emit { border-color: var(--cyan); color: var(--cyan); }
-.rel .tag.up { border-color: var(--green); color: var(--green); }
-.rel .tag.dn { border-color: var(--red); color: var(--red); }
-.rel .tag.win { border-color: var(--amber); color: var(--amber); }
-.rel .tag.cl { border-color: var(--violet); color: var(--violet); }
+.rel .tag.tg-emit { border-color: var(--cyan); color: var(--cyan); }
+.rel .tag.tg-up { border-color: var(--green); color: var(--green); }
+.rel .tag.tg-dn { border-color: var(--red); color: var(--red); }
+.rel .tag.tg-win { border-color: var(--amber); color: var(--amber); }
+.rel .tag.tg-cl { border-color: var(--violet); color: var(--violet); }
 #pageList { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .page { padding: 8px 10px; font-size: 12px; line-height: 1.7; min-height: 64px; }
 .page .no { font-family: var(--mono); font-size: 10px; color: var(--magenta); letter-spacing: .12em; }
 .page.missing { color: var(--dim); border-style: dashed; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; letter-spacing: .2em; }
-.page.final { grid-column: 1 / -1; border-color: var(--magenta); box-shadow: 0 0 16px rgba(255, 94, 247, .3); text-align: center; font-size: 14px; }
-.page.hint { border-color: rgba(255, 211, 107, .5); }
+.page.final { grid-column: 1 / -1; border-color: var(--magenta); box-shadow: none; text-align: center; font-size: 14px; }
+.page.hint { border-color: rgba(184, 162, 122, .5); }
 
 /* 記録 */
-#wave svg { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: rgba(6, 16, 30, .6); }
+#wave svg { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: rgba(16, 17, 17, .6); }
 .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; margin-top: 6px; color: var(--dim); }
 .legend i { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 4px; }
 .sigs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; }
 .stats { width: 100%; border-collapse: collapse; font-size: 12px; }
 .stats td { padding: 6px 10px; border-bottom: 1px solid var(--line2); }
 .stats td:last-child { text-align: right; font-family: var(--mono); color: var(--cyan); }
-.danger { margin-top: 12px; border-color: var(--red); color: var(--red); background: rgba(255, 77, 109, .06); }
+.danger { margin-top: 12px; border-color: var(--red); color: var(--red); background: rgba(169, 82, 76, .06); }
 .danger.armed { background: var(--red); color: var(--bg); }
 
 /* 継代 */
@@ -246,7 +231,7 @@ button:disabled { opacity: .35; }
 .grade .now { font-size: 22px; letter-spacing: .1em; }
 .grade .units { font-size: 13px; color: var(--magenta); margin: 4px 0; }
 .grade p { font-size: 12px; margin: 6px 0; line-height: 1.7; color: var(--dim); }
-.grade button { border-color: var(--magenta); color: var(--magenta); background: rgba(255, 94, 247, .08); padding: 8px 14px; }
+.grade button { border-color: var(--magenta); color: var(--magenta); background: rgba(163, 128, 143, .08); padding: 8px 14px; }
 .grade button.armed { background: var(--magenta); color: var(--bg); }
 
 /* 設計図 */
@@ -266,159 +251,294 @@ button:disabled { opacity: .35; }
 .bp-editor .desc { color: var(--dim); }
 .choices { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 6px 0; }
 .choices button { padding: 4px 8px; font-size: 12px; }
-.ax-r { color: #ff6b8a; } .ax-b { color: #6fb7ff; } .ax-y { color: var(--amber); } .ax-v { color: #ff4d4d; }
+.ax-r { color: #a8706a; } .ax-b { color: #86a0b3; } .ax-y { color: var(--amber); } .ax-v { color: #9c514b; }
 
-/* 通知 */
-#toasts { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); width: min(92%, 500px); z-index: 50; display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
-.toast { background: rgba(6, 16, 30, .94); color: var(--text); padding: 9px 12px; font-size: 12.5px; border: 1px solid var(--line); border-left: 3px solid var(--cyan); animation: tin .25s ease-out; box-shadow: 0 0 14px rgba(111, 243, 255, .2); }
-.toast.red { border-left-color: var(--red); }
-.toast.blue { border-left-color: var(--violet); }
-.toast.gold { border-left-color: var(--amber); }
-.toast.dark { border-left-color: var(--magenta); color: #ffd6fb; }
-@keyframes tin { from { transform: translateY(10px); opacity: 0; } }
+/* 通知(演出つき) */
+#toasts { position: fixed; right: 16px; bottom: 72px; width: min(360px, calc(100% - 32px)); z-index: 85; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast { position: relative; display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; overflow: hidden;
+  background: rgba(18, 19, 19, .94); color: var(--text); padding: 10px 12px 12px; font-size: 12.5px; line-height: 1.5;
+  border: 1px solid rgba(159, 189, 184, .45); box-shadow: none;
+  animation: tin .6s steps(4) both; --c: var(--cyan); }
+.toast::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .06), transparent); transform: translateX(-100%); animation: sweep 1.6s .1s steps(4); pointer-events: none; }
+.toast::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--c); box-shadow: none; transform-origin: left; animation: life var(--life, 4.2s) steps(4) forwards; }
+.toast .ic { width: 22px; height: 22px; color: var(--c); }
+.toast .ic svg { width: 22px; height: 22px; display: block; }
+.toast.out { animation: tout .35s steps(4) forwards; }
+.toast.red { --c: var(--red); border-color: rgba(169, 82, 76, .55); }
+.toast.blue { --c: var(--violet); border-color: rgba(143, 136, 163, .55); }
+.toast.gold { --c: var(--amber); border-color: rgba(184, 162, 122, .55); }
+.toast.dark { --c: var(--magenta); border-color: rgba(163, 128, 143, .6); color: #ddd0d2; }
+.toast.dark .tx { text-shadow: none; }
+@keyframes tin { 0% { opacity: 0; transform: translateY(6px);  } 100% { opacity: 1; transform: none; filter: none; } }
+@keyframes tout { to { opacity: 0;  } }
+@keyframes sweep { to { transform: translateX(100%); } }
+@keyframes life { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
 /* モーダルと結末 */
 #modal { position: fixed; inset: 0; background: rgba(2, 4, 10, .7); display: none; align-items: center; justify-content: center; z-index: 80; padding: 16px; }
 #modal.show { display: flex; }
-#modal .box { background: rgba(8, 18, 34, .96); border: 1px solid var(--cyan); box-shadow: 0 0 30px rgba(111, 243, 255, .3); padding: 16px; width: min(100%, 400px); }
+#modal .box { background: rgba(18, 19, 19, .96); border: 1px solid var(--cyan); box-shadow: none; padding: 16px; width: min(100%, 400px); }
 #modal h2 { margin: 0 0 8px; font-size: 16px; letter-spacing: .12em; color: var(--cyan); font-weight: 500; }
 #modal p { margin: 4px 0; font-size: 13px; line-height: 1.7; }
 #modal button { margin-top: 12px; }
 #ending { position: fixed; inset: 0; z-index: 90; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; }
 #ending.show { display: flex; }
-#ending .lines p { opacity: 0; margin: 12px 0; font-size: 15px; letter-spacing: .14em; line-height: 1.9; color: #e9fbff; text-shadow: 0 0 12px rgba(255, 94, 247, .5); animation: ein 2.4s ease forwards; }
-#ending .lines p:last-child { font-size: 18px; background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#endingCanvas { width: min(56vh, 80vw); height: min(56vh, 80vw); opacity: 0; animation: ein 6s steps(4) forwards; }
+#ending .lines p { opacity: 0; margin: 8px 0; font-family: var(--serif); font-size: 15px; letter-spacing: .2em; line-height: 1.9; color: #bdbab2; animation: ein 2.4s steps(4) forwards; }
+#ending .lines p:last-child { font-size: 17px; color: #e6e2d8; }
 @keyframes ein { to { opacity: 1; } }
-#ending button { margin-top: 28px; opacity: 0; animation: ein 2s ease forwards; border-color: var(--magenta); color: var(--magenta); background: none; padding: 8px 18px; }
+#ending button { margin-top: 20px; opacity: 0; animation: ein 2s steps(4) forwards; border-color: var(--line); color: var(--dim); background: none; padding: 8px 18px; }
+
+/* ---------- 小窓(PC) ---------- */
+#desk { position: relative; }
+.win { display: block; }
+.win-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 12px; font-family: var(--serif); font-size: 12px; letter-spacing: .2em; color: var(--text);
+  border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .02); user-select: none; -webkit-user-select: none; }
+.win-t .logo { font-size: 10px; }
+.win-x { border: none; background: none; color: var(--dim); font-size: 16px; line-height: 1; padding: 0 4px; }
+.win-x:hover { color: var(--red); }
+.win-b { padding: 10px 12px 14px; }
+
+@media (min-width: 900px) {
+  body { height: 100vh; overflow: hidden; }
+  #desk { position: fixed; inset: 0 0 52px 0; overflow: hidden; }
+  .win { position: absolute; border: 1px solid var(--line); background: rgba(16, 17, 17, .82);
+    box-shadow: none;
+    display: flex; flex-direction: column; resize: both; overflow: hidden; min-width: 260px; min-height: 160px; animation: winin .35s steps(4); }
+  .win.closed { display: none; }
+  .win.focus { border-color: rgba(159, 189, 184, .7); box-shadow: none; }
+  .win.focus .win-h { background: rgba(255, 255, 255, .045); }
+  .win-h { cursor: move; flex: none; }
+  .win-b { flex: 1; overflow: auto; }
+  .win-b::-webkit-scrollbar { width: 6px; height: 6px; }
+  .win-b::-webkit-scrollbar-thumb { background: rgba(159, 189, 184, .3); }
+  #win-core .win-x { display: none; }
+  #tabs { display: none; }
+  #dock { position: fixed; left: 0; right: 0; bottom: 0; height: 52px; z-index: 40; display: flex; gap: 4px; align-items: center; justify-content: center;
+    background: rgba(11, 12, 12, .92); border-top: 1px solid var(--line); }
+  #dock::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--holo); opacity: .6; }
+  #dock button { position: relative; border: 1px solid transparent; background: none; color: var(--dim); padding: 6px 12px; font-size: 12px; letter-spacing: .08em; }
+  #dock button.open { color: var(--cyan); border-color: var(--line); background: rgba(159, 189, 184, .06); }
+  #dock button:hover { color: var(--text); }
+  #dock .dot { position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; border-radius: 0; background: var(--magenta); box-shadow: none; display: none; }
+  #dock .dot.on { display: block; }
+  #toasts { bottom: 66px; }
+  #voice { width: 92%; }
+}
+@keyframes winin { from { opacity: 0; transform: scale(.97);  } }
+
+/* ---------- スマホ(タブ) ---------- */
+@media (max-width: 899px) {
+  body { padding-bottom: 90px; }
+  #desk { max-width: 560px; margin: 0 auto; }
+  #win-core .win-h { position: static; }
+  #win-core { border-bottom: 1px solid var(--line); }
+  #win-core .win-x { display: none; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel .win-h { display: none; }
+  #tabs { display: flex; overflow-x: auto; position: sticky; top: 0; z-index: 10; background: rgba(11, 12, 12, .95); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); scrollbar-width: none; }
+  #tabs::-webkit-scrollbar { display: none; }
+  #tabs button { flex: none; border: none; background: none; padding: 11px 13px; font-size: 12px; color: var(--dim); position: relative; }
+  #tabs button.active { color: var(--cyan); }
+  #tabs button.active::after { content: ""; position: absolute; left: 20%; right: 20%; bottom: 0; height: 1px; background: var(--dim); }
+  #tabs .dot { position: absolute; top: 6px; right: 4px; width: 6px; height: 6px; border-radius: 0; background: var(--magenta); display: none; }
+  #tabs .dot.on { display: block; }
+  #dock { display: none; }
+  #toasts { left: 50%; right: auto; transform: translateX(-50%); bottom: 14px; }
+}
+
+/* ---------- 試験 ---------- */
+.tr-wrap { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.tr-hud { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 11px; color: var(--dim); }
+.tr-hud b { display: block; font-family: var(--mono); font-size: 15px; color: var(--text); font-weight: 400; }
+.tr-bar { height: 6px; border: 1px solid var(--line); position: relative; margin-top: 3px; }
+.tr-bar i { position: absolute; left: 0; top: 0; bottom: 0; }
+#trialCanvas { width: 100%; max-width: 560px; aspect-ratio: 1; display: block; margin: 0 auto; cursor: crosshair; touch-action: none; border: 1px solid var(--line);
+  background: radial-gradient(circle at 50% 50%, rgba(159, 189, 184, .07), rgba(11, 12, 12, .9) 70%); }
+.tr-ctrl { display: flex; flex-wrap: wrap; gap: 4px; }
+.tr-ctrl button { border: 1px solid var(--line); background: rgba(159, 189, 184, .05); color: var(--text); padding: 6px 8px; font-size: 11.5px; position: relative; min-width: 64px; text-align: left; }
+.tr-ctrl button small { display: block; color: var(--dim); font-size: 9.5px; }
+.tr-ctrl button.on { border-color: var(--cyan); box-shadow: none; color: var(--cyan); }
+.tr-ctrl button .k { position: absolute; top: 2px; right: 4px; font-family: var(--mono); font-size: 9px; color: var(--dim); }
+.tr-ctrl button .cdb { position: absolute; left: 0; bottom: 0; height: 2px; background: var(--magenta); }
+.tr-start { display: grid; gap: 10px; }
+.tr-start .howto b { color: var(--amber); }
+.tr-result { text-align: center; padding: 10px; }
+.tr-result .big { font-family: var(--mono); font-size: 34px; color: var(--cyan); }
+.tr-hist { font-size: 11px; color: var(--dim); font-family: var(--mono); line-height: 1.8; }
+.tr-banner { text-align: center; font-size: 13px; letter-spacing: .3em; color: var(--amber); min-height: 18px; }
+.tr-banner.boss { color: var(--red); }
+
+/* ---------- 樹 ---------- */
+#treeCanvas { width: 100%; height: 440px; display: block; border: 1px solid var(--line); background: radial-gradient(ellipse at 50% 30%, rgba(143, 136, 163, .08), rgba(8, 8, 8, .95) 75%); touch-action: none; cursor: grab; }
+#win-tree .win-b { display: flex; flex-direction: column; gap: 8px; }
+@media (min-width: 900px) { #treeCanvas { height: 100%; min-height: 300px; } #treeBody { flex: 1; display: flex; flex-direction: column; gap: 8px; } #treeView { flex: 1; min-height: 0; } }
+.tree-top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--dim); }
+.tree-top b { font-family: var(--mono); color: var(--magenta); font-size: 15px; font-weight: 400; }
+.tree-sel { border: 1px solid var(--line); padding: 8px 10px; font-size: 12px; min-height: 54px; background: var(--panel); }
+.tree-sel .t { color: var(--cyan); font-size: 13px; }
+.tree-sel .q { color: var(--dim); font-style: italic; margin-top: 2px; }
+.tree-sel button { margin-top: 6px; border-color: var(--magenta); color: var(--magenta); }
+#win-tree.revealed .win-h { color: var(--magenta); }
+
+/* ---------- 通信ログ ---------- */
+#logList { font-size: 12px; line-height: 1.6; }
+.log { padding: 5px 0; border-bottom: 1px solid var(--line2); display: grid; grid-template-columns: 56px 1fr; gap: 8px; }
+.log .tm { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+.log .who { color: var(--cyan); margin-right: 6px; }
+.log.him .tx { color: #d8c8cd; letter-spacing: .2em; text-shadow: none; }
+.log.event .tx { color: var(--amber); }
+
+
+.win.locked, .panel.locked { display: none !important; }
+#dock button[hidden], #tabs button[hidden] { display: none !important; }
+
+/* ---------- 粗い画面 ---------- */
+html, body { -webkit-font-smoothing: none; font-smooth: never; text-rendering: optimizeSpeed; }
+body { background: var(--bg); }
+canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+h3::before { height: 4px; width: 4px; background: var(--dim); }
+.card-ui, .fac, .upg, .perk, .drug, .osc, .card, .slot, .howto, .stats, .grade, .page, .rel, .sig, .bp-editor, .bp-board, #window, .act, .cursed { background: #111312; }
+.btn, #window button, .fac .buy, .upg button, .perk button, .drug button, .osc button, .card button, .grade button, .danger, #modal button, #ending button, .seg button, .choices button, .bp-tools button { background: #151817; }
+button:not(:disabled):active { background: var(--cyan) !important; color: #0b0c0c !important; }
+.toast::before { display: none; }
+.toast { background: #101211 !important; }
+.heat .bar { background: #121413; }
+.heat .fill { background-image: repeating-linear-gradient(90deg, transparent 0 3px, rgba(0, 0, 0, .55) 3px 4px); }
+@media (min-width: 900px) {
+  .win { background: #0f1110; }
+  .win-h { background: #1a1d1c; }
+  .win.focus .win-h { background: #2a302e; color: #e4e2d8; }
+  .win.focus { border-color: var(--cyan); }
+}
+#treeCanvas, #trialCanvas { background: #0b0c0c; }
 
 </style>
 </head>
 <body>
 <div id="scan" aria-hidden="true"></div>
-<header id="top">
-  <div class="brand"><span class="logo" data-text="EMBRYO//GENESIS">EMBRYO//GENESIS</span><span id="rank" class="rank">見学者</span></div>
-  <div class="row1">
-    <span id="stage" class="stage">受精卵</span>
-    <span id="cps" class="num">毎秒 0</span>
-  </div>
-  <div id="cells" class="num cells">0<small>細胞</small></div>
-  <div class="heat">
-    <div class="label"><span id="heatLabel">ヒート 0 安定</span><span id="heatNum" class="num"></span></div>
-    <div class="bar" id="heatBar"><div class="fill" id="heatFill"></div><i style="left:40%"></i><i style="left:70%"></i></div>
-  </div>
-  <div id="status"></div>
-</header>
+<div id="desk">
 
-<section id="embryoWrap">
-  <button id="embryo" aria-label="分裂させる"><svg viewBox="0 0 200 200" id="embryoSvg"></svg></button>
-  <div id="voice" role="button" aria-label="声を拾う">
-    <div class="who"><span id="voiceName"></span><span id="voiceRole"></span><span id="voiceCard" class="vcard">カード</span></div>
-    <div class="text" id="voiceText"></div>
-    <div class="hint"><span>タップで拾う</span><span id="voiceLeft"></span></div>
-    <div class="timer" id="voiceTimer"></div>
-  </div>
-</section>
-<div id="clickInfo" class="num">タップで分裂 +1</div>
-
-<section id="actions">
-  <button class="act" id="btnDormant"><b>休眠</b><span>ヒートが上がらない / 生産-30%</span></button>
-  <button class="act" id="btnApoptosis"><b>アポトーシス</b><span id="apoText">細胞の30%と引きかえにヒート-45</span><i class="cd" id="apoCd"></i></button>
-</section>
-
-<section id="window">
-  <div class="head"><span id="windowHead"></span><span id="windowTime" class="num"></span></div>
-  <div class="body">
-    <div><b id="windowName"></b></div>
-    <p id="windowDesc"></p>
-    <button id="btnWindow">獲得</button>
+<section class="win" id="win-core" data-title="胚">
+  <header class="win-h"><span class="win-t">胚 / <span class="logo">EMBRYO//GENESIS</span></span><span id="rank" class="rank">見学者</span></header>
+  <div class="win-b">
+    <div id="top">
+      <div class="row1"><span id="stage" class="stage">受精卵</span><span id="cps" class="num">毎秒 0</span></div>
+      <div id="cells" class="num cells">0<small>細胞</small></div>
+      <div class="heat">
+        <div class="label"><span id="heatLabel">ヒート 安定</span><span id="heatNum" class="num"></span></div>
+        <div class="bar" id="heatBar"><div class="fill" id="heatFill"></div><i style="left:40%"></i><i style="left:70%"></i></div>
+      </div>
+      <div id="status"></div>
+    </div>
+    <section id="embryoWrap">
+      <canvas id="embryo" width="150" height="150" aria-label="分裂させる"></canvas>
+      <div id="voice" role="button" aria-label="声を拾う">
+        <div class="who"><span id="voiceName"></span><span id="voiceRole"></span><span id="voiceCard" class="vcard">カード</span></div>
+        <div class="text" id="voiceText"></div>
+        <div class="hint"><span></span><span id="voiceLeft"></span></div>
+        <div class="timer" id="voiceTimer"></div>
+      </div>
+    </section>
+    <div id="clickInfo" class="num">+1</div>
+    <section id="actions">
+      <button class="act" id="btnDormant"><b>休眠</b><span>-30%</span></button>
+      <button class="act" id="btnApoptosis"><b>アポトーシス</b><span id="apoText"></span><i class="cd" id="apoCd"></i></button>
+    </section>
+    <section id="window">
+      <div class="head"><span id="windowHead"></span><span id="windowTime" class="num"></span></div>
+      <div class="body"><div><b id="windowName"></b></div><p id="windowDesc"></p><button id="btnWindow">獲得</button></div>
+    </section>
   </div>
 </section>
 
-<nav id="tabs">
-  <button data-tab="fac" class="active">培養<i class="dot"></i></button>
-  <button data-tab="upg">強化<i class="dot"></i></button>
-  <button data-tab="drug">薬品庫<i class="dot"></i></button>
-  <button data-tab="bp">設計図<i class="dot"></i></button>
-  <button data-tab="codex">写本<i class="dot"></i></button>
-  <button data-tab="rec">記録<i class="dot"></i></button>
-  <button data-tab="grade">継代<i class="dot"></i></button>
-</nav>
+<nav id="tabs"></nav>
 
-<section class="panel active" id="panel-fac">
-  <div class="seg-row">
-    <div class="seg" id="facMode"><button data-m="buy" class="active">購入</button><button data-m="sell">売却</button></div>
-    <div class="seg" id="qty"><button data-q="1" class="active">×1</button><button data-q="10">×10</button><button data-q="max">最大</button></div>
+<section class="win panel" id="win-fac" data-title="培養">
+  <header class="win-h"><span class="win-t">培養</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b">
+    <div class="seg-row">
+      <div class="seg" id="facMode"><button data-m="buy" class="active">購入</button><button data-m="sell">売却</button></div>
+      <div class="seg" id="qty"><button data-q="1" class="active">×1</button><button data-q="10">×10</button><button data-q="max">最大</button></div>
+    </div>
+    <div id="facList"></div>
   </div>
-  <div id="facList"></div>
 </section>
 
-<section class="panel" id="panel-upg">
-  <div id="upgList"></div>
-  <h3>装置</h3>
-  <div id="oscList"></div>
-  <h3>カード</h3>
-  <div class="slots" id="slots"></div>
-  <div id="cardList"></div>
-  <h3 class="cursed-h">呪われた強化</h3>
-  <div id="cursedList"></div>
-  <h3>手に入れたもの</h3>
-  <div class="owned" id="upgOwned"></div>
-</section>
-
-<section class="panel" id="panel-drug">
-  <p class="hint">何度でも買える。値段は今の生産に合わせて変わる。</p>
-  <div id="drugActive"></div>
-  <div id="drugList"></div>
-</section>
-
-<section class="panel" id="panel-bp">
-  <div id="bpBody"></div>
-</section>
-
-<section class="panel" id="panel-codex">
-  <h3>手引き</h3>
-  <div class="howto">
-    <p>胚をタップして細胞を増やし、施設を買って自動で増えるようにする。</p>
-    <p>施設はシグナルを出したり、シグナルに反応したりする。シグナルはほかの施設を強めることも、弱めることもある。</p>
-    <p>WntとFGFが濃いほどヒートが上がる。ヒートが高いほど生産は増えるが、100に届くと暴走する。暴走中の90秒は生産-99%、明けてからの60秒は不応期で生産が半分。</p>
-    <p>休眠するとヒートは上がらないが、生産が3割減る。アポトーシスは細胞を捨ててヒートを下げる。</p>
-    <p>臨界期は時計で開閉し、開いている間だけ買える強化がある。研究所の人々の声は、拾うとちょっとだけいいことがある。</p>
+<section class="win panel" id="win-upg" data-title="強化">
+  <header class="win-h"><span class="win-t">強化</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b">
+    <div id="upgList"></div><div id="cursedList"></div>
+    <h3>装置</h3><div id="oscList"></div>
+    <h3>カード</h3><div class="slots" id="slots"></div><div id="cardList"></div>
+    <h3>手に入れたもの</h3><div class="owned" id="upgOwned"></div>
   </div>
-  <div id="bpGuide"></div>
-  <h3>施設どうしの関係</h3>
-  <p class="hint">一度手に入れた施設だけ載る。</p>
-  <div id="relList"></div>
-  <h3 id="codexTitle">胞衣写本</h3>
-  <p class="hint" id="codexHint"></p>
-  <div id="pageList"></div>
 </section>
 
-<section class="panel" id="panel-rec">
-  <h3>波形</h3>
-  <p class="hint">直近10分のシグナルとヒート。2秒ごとに記録する(開いている間だけ)。</p>
-  <div id="wave"></div>
-  <div class="legend" id="waveLegend"></div>
-  <h3>記録</h3>
-  <table class="stats" id="stats"></table>
-  <h3>このデモについて</h3>
-  <div class="howto" id="about">
-    <p>画像や音はまだ入れていない。図形はすべて仮。</p>
-    <p id="speedNote"></p>
+<section class="win panel" id="win-drug" data-title="薬品庫">
+  <header class="win-h"><span class="win-t">薬品庫</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b">
+    <div id="drugActive"></div><div id="drugList"></div>
   </div>
-  <button class="danger" id="btnReset">最初からやり直す</button>
 </section>
 
-<section class="panel" id="panel-grade">
-  <div id="gradeBox"></div>
-  <h3>手技</h3>
-  <p class="hint">残滓を使って身につける。継代しても失われない。</p>
-  <div id="perkList"></div>
+<section class="win panel" id="win-bp" data-title="設計図">
+  <header class="win-h"><span class="win-t">設計図</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b"><div id="bpBody"></div></div>
 </section>
 
+<section class="win panel" id="win-trial" data-title="試験">
+  <header class="win-h"><span class="win-t">試験</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b"><div id="trialBody"></div></div>
+</section>
+
+<section class="win panel" id="win-tree" data-title="樹">
+  <header class="win-h"><span class="win-t" id="treeTitle">樹</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b"><div id="treeBody"></div></div>
+</section>
+
+<section class="win panel" id="win-codex" data-title="写本">
+  <header class="win-h"><span class="win-t">写本と手引き</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b">
+    <div id="guide"></div>
+    <div id="bpGuide"></div>
+    <div id="relWrap"><h3>施設</h3><div id="relList"></div></div>
+    <h3 id="codexTitle">胞衣写本</h3><p class="hint" id="codexHint"></p><div id="pageList"></div>
+  </div>
+</section>
+
+<section class="win panel" id="win-rec" data-title="記録">
+  <header class="win-h"><span class="win-t">記録</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b">
+    <h3>波形</h3>
+    <div id="wave"></div><div class="legend" id="waveLegend"></div>
+    <h3>記録</h3><table class="stats" id="stats"></table>
+    <p id="speedNote" class="hint num"></p>
+    <button class="danger" id="btnLayout">小窓の配置を元に戻す</button>
+    <button class="danger" id="btnReset">最初からやり直す</button>
+  </div>
+</section>
+
+<section class="win panel" id="win-log" data-title="通信">
+  <header class="win-h"><span class="win-t">通信ログ</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b"><div id="logList"></div></div>
+</section>
+
+<section class="win panel" id="win-grade" data-title="継代">
+  <header class="win-h"><span class="win-t">継代と手技</span><button class="win-x" aria-label="閉じる">×</button></header>
+  <div class="win-b">
+    <div id="gradeBox"></div>
+    <h3>手技</h3><div id="perkList"></div>
+  </div>
+</section>
+
+</div>
+<nav id="dock"></nav>
 <div id="him" aria-live="polite"></div>
 <div id="toasts"></div>
 <div id="modal"><div class="box"><h2 id="modalTitle"></h2><div id="modalBody"></div><button id="modalOk">閉じる</button></div></div>
-<div id="ending"><div class="lines" id="endingLines"></div><button id="endingOk">続ける</button></div>
+<div id="ending"><canvas id="endingCanvas" width="200" height="200"></canvas><div class="lines" id="endingLines"></div><button id="endingOk">続ける</button></div>
 
 <script>
 /*
@@ -1084,8 +1204,6 @@ var Content = (function () {
     '設計図のすべての線が、ひとつの点へ流れ込んでいく。',
     '研究所の灯りが、ひとつずつ消えた。',
     '誰も、もう数えていない。',
-    'あなたが育てたのではなかった。あなたは、使われた。',
-    'それでも、踏み台は誇っていい。',
     '胚(だったもの)は、完全に顕現した。',
   ];
 
@@ -1100,6 +1218,538 @@ if (typeof module !== 'undefined') module.exports = Content;
 </script>
 <script>
 /*
+ * 樹の計算部分
+ *   10の球と22の道でできた大きな樹。最初は始まりの節のまわりしか見えない。
+ *   生命の樹を180度回した形。球の名前は画面には出さない。
+ *   画面にもゲーム本体にも依存しない。
+ */
+var Tree = (function () {
+  'use strict';
+
+  /* ---------- 球 ----------
+   * pos: 生命の樹での位置(x: 左右の柱、y: 上から下)。描くときは180度回して逆さにする
+   * theme: 道や輪の節の効果の系統
+   */
+  var SPHERES = [
+    { id: 'lilith', no: 10, sephira: 'マルクト', name: 'リリス', title: '夜の女', pos: [0, 7.5], theme: 'growth',
+      key: { effect: { global: 1.1 }, label: '全体+10%', text: 'ここから始まる。殻の内側から。' } },
+    { id: 'gamaliel', no: 9, sephira: 'イェソド', name: 'ガマリエル', title: '穢れた者', pos: [0, 6], theme: 'idle',
+      key: { effect: { offline: 4, dormancy: 0.15 }, label: '閉じている間の上限+4時間、休眠中の生産+15%', text: '眠っている間も、夢は育つ。' } },
+    { id: 'samael', no: 8, sephira: 'ホド', name: 'サマエル', title: '神の毒', pos: [-1, 5], theme: 'strike',
+      key: { effect: { trialDmg: 1.5, tap: 2 }, label: '試験の攻撃1.5倍、タップ2倍', text: '毒は、正しく使えば薬と呼ばれる。' } },
+    { id: 'arab', no: 7, sephira: 'ネツァク', name: 'アラブ・ズラク', title: '散らす烏', pos: [1, 5], theme: 'heat',
+      key: { effect: { cooling: 1.25, trialHeat: 0.7 }, label: 'ヒートの冷め方+25%、試験のヒート-30%', text: '散らせば、熱はどこにも留まらない。' } },
+    { id: 'thagirion', no: 6, sephira: 'ティファレト', name: 'タギリロン', title: '争う者', pos: [0, 4], theme: 'design',
+      key: { effect: { bpBranch: 1, bpExp: 1 }, label: '設計図の分岐+1、設計図の倍率2倍', text: '中心に座るものは、いつも二つに引き裂かれている。' } },
+    { id: 'golachab', no: 5, sephira: 'ゲブラー', name: 'ゴラケブ', title: '燃やす者', pos: [-1, 3], theme: 'fury',
+      key: { effect: { trialRate: 1.3, trialCrit: 0.1, trialHp: 0.9 }, label: '試験の発射の速さ+30%、会心+10%。体力-10%', text: '燃やすものは、自らも燃える。' } },
+    { id: 'gamchicoth', no: 4, sephira: 'ケセド', name: 'ガシェクラー', title: '貪る者', pos: [1, 3], theme: 'greed',
+      key: { effect: { cost: 0.85, shards: 1.3 }, label: '施設の値段-15%、殻片+30%', text: '与えるふりをして、すべてを呑む。' } },
+    { id: 'satariel', no: 3, sephira: 'ビナー', name: 'サタリエル', title: '隠す者', pos: [-1, 1], theme: 'veil',
+      key: { effect: { cardSlots: 1, trialReveal: 0.3, himRate: 1.5 }, label: 'カードの枠+1、影を見抜く範囲+30%。彼の声が増える', text: '見えないものほど、よく見ている。' } },
+    { id: 'ghagiel', no: 2, sephira: 'コクマー', name: 'ガギエル', title: '妨げる者', pos: [1, 1], theme: 'bulwark',
+      key: { effect: { trialHp: 1.6, trialRegen: 3 }, label: '試験の体力1.6倍、毎秒3回復', text: '何者も通さない。内側からも。' } },
+    { id: 'thaumiel', no: 1, sephira: 'ケテル', name: 'タウミエル', title: '双頭', pos: [0, 0], theme: 'crown',
+      key: { effect: { global: 10, trialDmg: 3 }, label: '全体10倍、試験の攻撃3倍', text: '頭は二つ。片方は、あなたの顔をしている。' } },
+  ];
+  var SPHERE_BY_ID = {};
+  SPHERES.forEach(function (s) { SPHERE_BY_ID[s.id] = s; });
+  var START = 'lilith';
+
+  // 生命の樹の22の道(セフィラの組)。ここでは対応するクリフォトの球で書く
+  var PATHS = [
+    ['thaumiel', 'ghagiel'], ['thaumiel', 'satariel'], ['thaumiel', 'thagirion'], ['ghagiel', 'satariel'], ['ghagiel', 'thagirion'],
+    ['ghagiel', 'gamchicoth'], ['satariel', 'thagirion'], ['satariel', 'golachab'], ['gamchicoth', 'golachab'], ['gamchicoth', 'thagirion'],
+    ['gamchicoth', 'arab'], ['golachab', 'thagirion'], ['golachab', 'samael'], ['thagirion', 'arab'], ['thagirion', 'gamaliel'],
+    ['thagirion', 'samael'], ['arab', 'samael'], ['arab', 'gamaliel'], ['arab', 'lilith'], ['samael', 'gamaliel'],
+    ['samael', 'lilith'], ['gamaliel', 'lilith'],
+  ];
+
+  /* ---------- 系統ごとの小さな効果 ---------- */
+  var THEMES = {
+    growth: [{ effect: { global: 1.05 }, label: '全体+5%' }, { effect: { tap: 1.25 }, label: 'タップ+25%' }, { effect: { global: 1.08 }, label: '全体+8%' }],
+    idle: [{ effect: { offline: 1 }, label: '閉じている間の上限+1時間' }, { effect: { dormancy: 0.05 }, label: '休眠中の生産+5%' }, { effect: { global: 1.04 }, label: '全体+4%' }],
+    strike: [{ effect: { trialDmg: 1.1 }, label: '試験の攻撃+10%' }, { effect: { trialTap: 1.25 }, label: '試験でのタップ+25%' }, { effect: { tap: 1.3 }, label: 'タップ+30%' }],
+    heat: [{ effect: { heatGain: 0.95 }, label: 'ヒートの上がり方-5%' }, { effect: { cooling: 1.06 }, label: 'ヒートの冷め方+6%' }, { effect: { trialHeat: 0.9 }, label: '試験のヒート-10%' }],
+    design: [{ effect: { bpBridges: 1 }, label: '設計図の交差+1' }, { effect: { bpExp: 0.25 }, label: '設計図の倍率+19%' }, { effect: { global: 1.05 }, label: '全体+5%' }],
+    fury: [{ effect: { trialRate: 1.08 }, label: '試験の発射の速さ+8%' }, { effect: { trialCrit: 0.04 }, label: '試験の会心+4%' }, { effect: { trialDmg: 1.08 }, label: '試験の攻撃+8%' }],
+    greed: [{ effect: { cost: 0.97 }, label: '施設の値段-3%' }, { effect: { drugPrice: 0.9 }, label: '薬の値段-10%' }, { effect: { shards: 1.08 }, label: '殻片+8%' }, { effect: { residue: 1.1 }, label: '継代の残滓+10%' }],
+    veil: [{ effect: { trialReveal: 0.08 }, label: '影を見抜く範囲+8%' }, { effect: { trialEnergy: 1.1 }, label: '試験の気力+10%' }, { effect: { codex: 1.15 }, label: '写本が見つかりやすい' }],
+    bulwark: [{ effect: { trialHp: 1.1 }, label: '試験の体力+10%' }, { effect: { trialRegen: 0.5 }, label: '試験で毎秒0.5回復' }, { effect: { trialArmor: 0.04 }, label: '試験で受ける傷-4%' }],
+    crown: [{ effect: { global: 1.2 }, label: '全体+20%' }, { effect: { trialDmg: 1.2 }, label: '試験の攻撃+20%' }],
+  };
+
+  /* ---------- 節を並べる ---------- */
+  var UNIT_X = 230, UNIT_Y = 150, RING = 46, RING_N = 5;
+  function worldPos(p) { return [-p[0] * UNIT_X, (7.5 - p[1]) * UNIT_Y]; }   // 180度回して逆さに
+
+  var NODES = [];
+  var NODE_BY_ID = {};
+  var ADJ = {};
+  function addNode(n) { NODES.push(n); NODE_BY_ID[n.id] = n; ADJ[n.id] = []; return n; }
+  function link(a, b) { if (ADJ[a].indexOf(b) === -1) { ADJ[a].push(b); ADJ[b].push(a); } }
+
+  (function build() {
+    SPHERES.forEach(function (s) {
+      var c = worldPos(s.pos);
+      s.x = c[0]; s.y = c[1];
+      addNode({ id: s.id, sphere: s.id, kind: 'key', x: c[0], y: c[1], effect: s.key.effect, label: s.key.label, text: s.key.text });
+      var pool = THEMES[s.theme];
+      for (var i = 0; i < RING_N; i++) {
+        var a = -Math.PI / 2 + i * 2 * Math.PI / RING_N;
+        var e = pool[i % pool.length];
+        var id = s.id + '.r' + i;
+        addNode({ id: id, sphere: s.id, kind: 'ring', x: c[0] + RING * Math.cos(a), y: c[1] + RING * Math.sin(a), effect: e.effect, label: e.label });
+        link(s.id, id);
+        if (i > 0) link(id, s.id + '.r' + (i - 1));
+      }
+      link(s.id + '.r0', s.id + '.r' + (RING_N - 1));
+    });
+    PATHS.forEach(function (pair, pi) {
+      var A = SPHERE_BY_ID[pair[0]], B = SPHERE_BY_ID[pair[1]];
+      var dx = B.x - A.x, dy = B.y - A.y, len = Math.sqrt(dx * dx + dy * dy);
+      var ux = dx / len, uy = dy / len;
+      var m = Math.max(2, Math.min(4, Math.round((len - 2 * RING) / 80)));
+      // 両端の輪の節のうち、道の向きに近いもの
+      function nearestRing(S, tx, ty) {
+        var best = null, bd = Infinity;
+        for (var i = 0; i < RING_N; i++) {
+          var n = NODE_BY_ID[S.id + '.r' + i];
+          var d = (n.x - tx) * (n.x - tx) + (n.y - ty) * (n.y - ty);
+          if (d < bd) { bd = d; best = n.id; }
+        }
+        return best;
+      }
+      var startRing = nearestRing(A, A.x + ux * RING * 2, A.y + uy * RING * 2);
+      var endRing = nearestRing(B, B.x - ux * RING * 2, B.y - uy * RING * 2);
+      var poolA = THEMES[A.theme], poolB = THEMES[B.theme];
+      var prev = startRing;
+      for (var k = 1; k <= m; k++) {
+        var t = (RING + (len - 2 * RING) * k / (m + 1)) / len;
+        var src = k <= m / 2 ? poolA : poolB;
+        var e = src[(pi + k) % src.length];
+        // 道の節は、輪の節より効果が少し弱い
+        var eff = {};
+        Object.keys(e.effect).forEach(function (key) {
+          var v = e.effect[key];
+          eff[key] = (key === 'offline' || key === 'bpBridges' || key === 'trialRegen' || key === 'trialCrit' || key === 'trialReveal' || key === 'dormancy' || key === 'bpExp' || key === 'trialArmor') ? v : v;
+        });
+        var id = 'p' + pi + '.' + k;
+        addNode({ id: id, sphere: null, path: pi, kind: 'path', x: A.x + dx * t, y: A.y + dy * t, effect: eff, label: e.label });
+        link(prev, id);
+        prev = id;
+      }
+      link(prev, endRing);
+    });
+    // 始まりからの道のりの長さ(値段の基準)
+    var dist = {}; dist[START] = 0;
+    var q = [START];
+    while (q.length) {
+      var cur = q.shift();
+      ADJ[cur].forEach(function (nb) { if (dist[nb] === undefined) { dist[nb] = dist[cur] + 1; q.push(nb); } });
+    }
+    NODES.forEach(function (n) { n.depth = dist[n.id]; });
+  })();
+
+  function cost(id) {
+    var n = NODE_BY_ID[id];
+    var c = Math.ceil(3 * Math.pow(1.13, n.depth));
+    return n.kind === 'key' ? c * 4 : c;
+  }
+
+  /** 見える節: 持っている節と、その隣(買える)。そのさらに隣は、ぼんやり見える */
+  function visibility(owned) {
+    var vis = {};
+    Object.keys(owned).forEach(function (id) {
+      if (!owned[id] || !NODE_BY_ID[id]) return;
+      vis[id] = 'owned';
+    });
+    Object.keys(vis).forEach(function (id) {
+      ADJ[id].forEach(function (nb) { if (!vis[nb]) vis[nb] = 'open'; });
+    });
+    Object.keys(vis).forEach(function (id) {
+      if (vis[id] !== 'open') return;
+      ADJ[id].forEach(function (nb) { if (!vis[nb]) vis[nb] = 'fog'; });
+    });
+    return vis;
+  }
+
+  function canBuy(owned, id) {
+    if (!NODE_BY_ID[id] || owned[id]) return false;
+    return ADJ[id].some(function (nb) { return owned[nb]; });
+  }
+
+  /** 持っている節の効果をまとめる(掛けるものは掛け、足すものは足す) */
+  var ADDITIVE = { offline: 1, dormancy: 1, bpBranch: 1, bpBridges: 1, bpExp: 1, trialCrit: 1, trialRegen: 1, trialReveal: 1, cardSlots: 1, trialArmor: 1 };
+  function effects(owned) {
+    var fx = { global: 1, tap: 1, offline: 0, dormancy: 0, trialDmg: 1, trialTap: 1, heatGain: 1, cooling: 1, trialHeat: 1, bpBranch: 0, bpBridges: 0, bpExp: 0,
+      trialRate: 1, trialCrit: 0, trialHp: 1, trialRegen: 0, trialArmor: 0, cost: 1, drugPrice: 1, shards: 1, residue: 1, trialReveal: 0, trialEnergy: 1,
+      codex: 1, cardSlots: 0, himRate: 1 };
+    Object.keys(owned || {}).forEach(function (id) {
+      var n = NODE_BY_ID[id];
+      if (!owned[id] || !n) return;
+      Object.keys(n.effect).forEach(function (k) {
+        if (ADDITIVE[k]) fx[k] += n.effect[k];
+        else fx[k] *= n.effect[k];
+      });
+    });
+    return fx;
+  }
+
+  /** 全部の球の核を持っているか(正体が明かされる) */
+  function revealed(owned) { return SPHERES.every(function (s) { return owned && owned[s.id]; }); }
+
+  return {
+    SPHERES: SPHERES, SPHERE_BY_ID: SPHERE_BY_ID, PATHS: PATHS, NODES: NODES, NODE_BY_ID: NODE_BY_ID, ADJ: ADJ, START: START, THEMES: THEMES,
+    cost: cost, visibility: visibility, canBuy: canBuy, effects: effects, revealed: revealed,
+  };
+})();
+
+if (typeof module !== 'undefined') module.exports = Tree;
+
+</script>
+<script>
+/*
+ * 試験(リアルタイム)の計算部分
+ *   中央の him に、外側から負荷が押し寄せる。器官がそれぞれ自動で迎え撃ち、
+ *   プレイヤーはタップ・シグナルの切り替え・器官の技・ヒートの管理で支える。
+ *   何波目まで耐えたかが到達点。画面にもゲーム本体にも依存しない。
+ *   座標: him が原点、場の半径が1。角度は画面の右が0で、下向きに回る(画面の座標と同じ)。
+ */
+var Trial = (function () {
+  'use strict';
+
+  var CORE_R = 0.08;          // him の大きさ
+  var BASE_RANGE = 0.7;
+
+  var THREATS = {
+    bact: { name: '細菌', hp: 1, speed: 0.16, dmg: 4, color: '#8fa996' },
+    tera: { name: '催奇形因子', hp: 3, speed: 0.10, dmg: 8, armor: 0.6, color: '#9b90a8' },
+    immune: { name: '免疫細胞', hp: 8, speed: 0.07, dmg: 15, color: '#d6d8d2' },
+    shade: { name: '影', hp: 2, speed: 0.12, dmg: 10, hidden: true, color: '#a3808f' },
+    boss: { name: '介入', hp: 30, speed: 0.035, dmg: 40, boss: true, color: '#a9524c' },
+  };
+
+  var BOSSES = ['白石の通報', '春日の鎮静処置', '鳴海の廃棄処分', '鷺沼の契約解除', '灰原の観察終了', '久遠寺の中止命令'];
+  function bossName(wave) { var i = wave / 10 - 1; return i < BOSSES.length ? BOSSES[i] : '研究所の封鎖'; }
+
+  function phaseOf(wave) {
+    if (wave <= 10) return '第Ⅰ相';
+    if (wave <= 25) return '第Ⅱ相';
+    if (wave <= 50) return '第Ⅲ相';
+    return '第Ⅳ相';
+  }
+
+  var SIGNALS = {
+    wnt: { name: 'Wnt', desc: '発射が1.5倍速くなる。ヒートが上がる', heat: 10 },
+    bmp: { name: 'BMP', desc: '受ける傷が4割減る', heat: 0 },
+    shh: { name: 'Shh', desc: '催奇形因子の守りを貫き、会心+15%', heat: 0 },
+    fgf: { name: 'FGF', desc: '毎秒3回復する。ヒートが上がる', heat: 6 },
+    ra: { name: 'レチノイン酸', desc: '届く距離が1.3倍になる', heat: 0 },
+  };
+
+  var ACTIVES = [
+    { id: 'pulse', name: '拍動', organ: 'heart', cost: 15, cd: 12, desc: '周りの負荷をまとめて叩く' },
+    { id: 'grasp', name: '掌握', organ: 'brain', cost: 25, cd: 30, desc: 'すべての負荷を止める' },
+    { id: 'fury', name: '闘争', organ: 'adrenal', cost: 20, cd: 30, desc: 'しばらく攻撃2倍' },
+    { id: 'detox', name: '解毒', organ: 'liver', cost: 20, cd: 25, desc: '体力を回復する' },
+    { id: 'cool', name: '冷却', organ: null, cost: 10, cd: 15, desc: 'ヒート-50' },
+  ];
+  var ACTIVE_BY_ID = {};
+  ACTIVES.forEach(function (a) { ACTIVE_BY_ID[a.id] = a; });
+
+  function rng(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+  /**
+   * stats: {
+   *   power, hp, energy, energyRegen, rate, crit, armor, regen, reveal, heatMult, tap, range,
+   *   organs: { 器官id: 段階0〜3 }
+   * }
+   */
+  function create(stats, seed) {
+    var o = stats.organs || {};
+    var tier = function (id) { return o[id] || 0; };
+    var T = {
+      t: 0, wave: 0, cleared: 0, spawnLeft: 0, spawnTimer: 0, breakTimer: 1.5, boss: null,
+      threats: [], nextId: 1, kills: 0, over: false, events: [],
+      stats: stats, tier: tier,
+      him: { hp: stats.hp, maxHp: stats.hp, energy: stats.energy, maxEnergy: stats.energy, heat: 0, stun: 0, revived: false },
+      signal: null, signalCd: 0,
+      cds: {}, fury: 0, grasp: 0,
+      turrets: [],
+      rand: rng(seed || 1),
+    };
+    // 迎撃する器官(膜は最初からある)
+    T.turrets.push({ id: 'membrane', name: '細胞膜', every: 1.0, timer: 0, dmg: 1, target: tier('brain') ? 'strongest' : 'nearest' });
+    if (tier('thymus')) T.turrets.push({ id: 'thymus', name: '胸腺', every: 0.6 / (1 + 0.25 * (tier('thymus') - 1)), timer: 0.3, dmg: 0.7 * tier('thymus'), target: 'nearest' });
+    if (tier('heart')) T.turrets.push({ id: 'heart', name: '心臓', every: 4, timer: 2, dmg: 0.8 * tier('heart'), area: 0.3 + 0.05 * tier('heart') });
+    [['armL', Math.PI, 1.5 * Math.PI], ['armR', 1.5 * Math.PI, 2 * Math.PI], ['legL', 0.5 * Math.PI, Math.PI], ['legR', 0, 0.5 * Math.PI]].forEach(function (q) {
+      if (tier(q[0])) T.turrets.push({ id: q[0], name: { armL: '左上肢', armR: '右上肢', legL: '左下肢', legR: '右下肢' }[q[0]], every: 3, timer: 1, dmg: 0.5 * tier(q[0]), sweep: [q[1], q[2]] });
+    });
+    return T;
+  }
+
+  function range(T) { return (T.stats.range || BASE_RANGE) + 0.08 * T.tier('arch') * (1) * (T.signal === 'ra' ? 1 : 1); }
+  function effRange(T) { return range(T) * (T.signal === 'ra' ? 1.3 : 1); }
+  function revealR(T) { return 0.25 + (T.tier('pineal') ? 0.1 + 0.15 * T.tier('pineal') : 0) + (T.stats.reveal || 0); }
+  function visible(T, th) { return !th.hidden || th.r <= revealR(T); }
+  function rateMult(T) { return (T.stats.rate || 1) * (1 + 0.1 * T.tier('thyroid')) * (T.signal === 'wnt' ? 1.5 : 1); }
+  function dmgMult(T) { return (T.fury > 0 ? 2 : 1); }
+
+  /* ---------- 波 ---------- */
+  function waveSize(n) { return 6 + Math.floor(1.6 * n); }
+  function hpScale(n) { return Math.pow(1.2, n - 1); }
+  function spawnEvery(n) { return Math.max(0.25, 0.7 * Math.pow(0.98, n)); }
+
+  function pickType(T, n) {
+    var w = [['bact', 6]];
+    if (n >= 3) w.push(['tera', 3]);
+    if (n >= 6) w.push(['immune', 2]);
+    if (n >= 12) w.push(['shade', 2]);
+    var tot = w.reduce(function (a, b) { return a + b[1]; }, 0);
+    var r = T.rand() * tot;
+    for (var i = 0; i < w.length; i++) { r -= w[i][1]; if (r <= 0) return w[i][0]; }
+    return 'bact';
+  }
+
+  function spawn(T, type) {
+    var d = THREATS[type];
+    var n = T.wave;
+    var hp = d.hp * hpScale(n) * (d.boss ? 1 + n / 10 : 1);
+    var th = { id: T.nextId++, wave: n, type: type, a: T.rand() * Math.PI * 2, r: 1, hp: hp, maxHp: hp, speed: d.speed * (1 + 0.01 * n),
+      dmg: d.dmg * (1 + 0.08 * n), armor: d.armor || 0, hidden: !!d.hidden, boss: !!d.boss, slow: 1, knocks: 0 };
+    if (th.boss) { th.name = bossName(n); T.boss = th.id; }
+    T.threats.push(th);
+    return th;
+  }
+
+  function startWave(T) {
+    T.wave++;
+    T.spawnLeft = waveSize(T.wave);
+    T.spawnTimer = 0;
+    T.events.push({ type: 'wave', wave: T.wave, phase: phaseOf(T.wave) });
+    if (T.wave % 10 === 0) { var b = spawn(T, 'boss'); T.events.push({ type: 'boss', name: b.name }); }
+  }
+
+  /* ---------- 傷 ---------- */
+  function hurt(T, th, base, source) {
+    if (th.hp <= 0) return 0;
+    var d = base * T.stats.power * dmgMult(T);
+    if (th.armor && T.signal !== 'shh') d *= (1 - th.armor);
+    var crit = (T.stats.crit || 0) + (T.signal === 'shh' ? 0.15 : 0);
+    var isCrit = T.rand() < crit;
+    if (isCrit) d *= 2;
+    // 介入がいる間は、ほかの負荷が少し硬い
+    if (T.boss && !th.boss) d *= 0.7;
+    th.hp -= d;
+    T.events.push({ type: 'hit', id: th.id, source: source, dmg: d, crit: isCrit, a: th.a, r: th.r });
+    if (th.hp <= 0) {
+      T.kills++;
+      T.events.push({ type: 'kill', id: th.id, a: th.a, r: th.r, boss: th.boss });
+      if (th.boss) T.boss = null;
+    }
+    return d;
+  }
+
+  function damageHim(T, amount) {
+    var armor = Math.min(0.8, (T.stats.armor || 0) + (T.signal === 'bmp' ? 0.4 : 0));
+    T.him.hp -= amount * (1 - armor);
+    if (T.him.hp <= 0) {
+      if (!T.him.revived && T.tier('gonad')) {
+        T.him.revived = true;
+        T.him.hp = T.him.maxHp * 0.25 * T.tier('gonad');
+        T.events.push({ type: 'revive' });
+      } else { T.him.hp = 0; T.over = true; T.events.push({ type: 'over', wave: T.wave, cleared: T.cleared }); }
+    }
+  }
+
+  function pickTarget(T, mode, maxR) {
+    var best = null;
+    T.threats.forEach(function (th) {
+      if (th.hp <= 0 || th.r > maxR || !visible(T, th)) return;
+      if (!best) { best = th; return; }
+      if (mode === 'strongest' ? th.hp > best.hp : th.r < best.r) best = th;
+    });
+    return best;
+  }
+
+  /* ---------- 1歩 ---------- */
+  function step(T, dt) {
+    if (T.over) return;
+    T.t += dt;
+    var h = T.him;
+    // 波の進行
+    if (T.spawnLeft > 0) {
+      T.spawnTimer -= dt;
+      while (T.spawnLeft > 0 && T.spawnTimer <= 0) { spawn(T, pickType(T, T.wave)); T.spawnLeft--; T.spawnTimer += spawnEvery(T.wave); }
+      if (T.spawnLeft === 0) T.pressure = 8;
+    } else {
+      // 出し切った波は、場が空になるか、8秒たつと次の波が来る
+      T.pressure = (T.pressure || 0) - dt;
+      if (T.wave > 0 && T.cleared < T.wave && !T.threats.some(function (th) { return th.wave === T.wave; })) {
+        T.cleared = T.wave; T.events.push({ type: 'cleared', wave: T.wave });
+      }
+      if (T.wave === 0 || T.threats.length === 0 || T.pressure <= 0) {
+        T.breakTimer -= dt;
+        if (T.breakTimer <= 0) { startWave(T); T.breakTimer = T.threats.length ? 0 : 2; }
+      }
+    }
+    // 気力・ヒート・回復
+    h.energy = Math.min(h.maxEnergy, h.energy + ((T.stats.energyRegen || 1) + 0.5 * T.tier('tail')) * dt);
+    var heatUp = (T.signal ? SIGNALS[T.signal].heat : 0) * (T.stats.heatMult || 1);
+    h.heat = Math.max(0, h.heat + (heatUp - 6) * dt);
+    if (h.heat >= 100 && h.stun <= 0) { h.stun = 4; h.heat = 30; T.events.push({ type: 'overheat' }); }
+    h.stun = Math.max(0, h.stun - dt);
+    var regen = (T.stats.regen || 0) + 0.6 * T.tier('liver') + (T.signal === 'fgf' ? 3 : 0);
+    h.hp = Math.min(h.maxHp, h.hp + regen * dt);
+    T.fury = Math.max(0, T.fury - dt);
+    T.grasp = Math.max(0, T.grasp - dt);
+    T.signalCd = Math.max(0, T.signalCd - dt);
+    Object.keys(T.cds).forEach(function (k) { T.cds[k] = Math.max(0, T.cds[k] - dt); });
+
+    // 負荷の移動
+    var slowAura = 0.12 * (T.tier('kidneyL') + T.tier('kidneyR'));
+    T.threats.forEach(function (th) {
+      if (th.hp <= 0) return;
+      var sp = th.speed * (T.grasp > 0 ? 0 : 1) * (th.r < 0.5 ? Math.max(0.3, 1 - slowAura) : 1);
+      th.r -= sp * dt;
+      if (th.r <= CORE_R) { damageHim(T, th.dmg); th.hp = 0; th.reached = true; T.events.push({ type: 'reach', id: th.id, a: th.a }); if (th.boss) T.boss = null; }
+    });
+
+    // 迎撃
+    if (h.stun <= 0 && !T.over) {
+      var rm = rateMult(T);
+      var R = effRange(T);
+      T.turrets.forEach(function (tu) {
+        tu.timer -= dt * rm;
+        if (tu.timer > 0) return;
+        tu.timer += tu.every;
+        if (tu.area) {
+          var any = false;
+          T.threats.forEach(function (th) { if (th.hp > 0 && th.r <= tu.area && visible(T, th)) { hurt(T, th, tu.dmg, tu.id); any = true; } });
+          if (any) T.events.push({ type: 'pulse', source: tu.id, r: tu.area });
+        } else if (tu.sweep) {
+          var hitAny = false;
+          T.threats.forEach(function (th) {
+            if (th.hp <= 0 || th.r > 0.45 || !visible(T, th)) return;
+            var a = ((th.a % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+            if (a < tu.sweep[0] || a >= tu.sweep[1]) return;
+            hurt(T, th, tu.dmg, tu.id);
+            if (!th.boss && th.knocks < 2) { th.r = Math.min(1, th.r + 0.2); th.knocks++; }
+            hitAny = true;
+          });
+          if (hitAny) T.events.push({ type: 'sweep', source: tu.id, from: tu.sweep[0], to: tu.sweep[1] });
+          else tu.timer = Math.min(tu.timer, 0.2);
+        } else {
+          var tg = pickTarget(T, tu.target, R);
+          if (tg) { T.events.push({ type: 'shot', source: tu.id, a: tg.a, r: tg.r }); hurt(T, tg, tu.dmg, tu.id); }
+          else tu.timer = Math.min(tu.timer, 0.1);
+        }
+      });
+    }
+    T.threats = T.threats.filter(function (th) { return th.hp > 0; });
+  }
+
+  /* ---------- プレイヤーの操作 ---------- */
+  /** 負荷を直接叩く(画面のタップ)。座標は場の中の位置 */
+  function tap(T, x, y) {
+    if (T.over) return null;
+    var best = null, bd = 0.12 * 0.12;
+    T.threats.forEach(function (th) {
+      if (th.hp <= 0 || !visible(T, th)) return;
+      var tx = th.r * Math.cos(th.a), ty = th.r * Math.sin(th.a);
+      var d = (tx - x) * (tx - x) + (ty - y) * (ty - y);
+      if (d < bd) { bd = d; best = th; }
+    });
+    if (!best) return null;
+    hurt(T, best, 0.6 * (T.stats.tap || 1), 'tap');
+    return best;
+  }
+
+  function setSignal(T, id) {
+    if (T.over || T.signalCd > 0) return false;
+    if (id === T.signal) { T.signal = null; T.signalCd = 0.5; return true; }
+    if (id && !SIGNALS[id]) return false;
+    if (id && T.him.energy < 3) return false;
+    if (id) T.him.energy -= 3;
+    T.signal = id || null;
+    T.signalCd = 1;
+    return true;
+  }
+
+  function activeAvailable(T, id) {
+    var a = ACTIVE_BY_ID[id];
+    if (!a) return false;
+    return !a.organ || T.tier(a.organ) > 0;
+  }
+
+  function useActive(T, id) {
+    var a = ACTIVE_BY_ID[id];
+    if (T.over || !a || !activeAvailable(T, id) || (T.cds[id] || 0) > 0 || T.him.energy < a.cost) return false;
+    T.him.energy -= a.cost;
+    T.cds[id] = a.cd;
+    var t = a.organ ? T.tier(a.organ) : 1;
+    if (id === 'pulse') T.threats.forEach(function (th) { if (th.r <= 0.6 && visible(T, th)) hurt(T, th, 3 * t, 'pulse'); });
+    else if (id === 'grasp') T.grasp = 2 + t;
+    else if (id === 'fury') T.fury = 5 + t;
+    else if (id === 'detox') T.him.hp = Math.min(T.him.maxHp, T.him.hp + T.him.maxHp * (0.2 + 0.1 * t));
+    else if (id === 'cool') T.him.heat = Math.max(0, T.him.heat - 50);
+    T.events.push({ type: 'active', id: id });
+    T.threats = T.threats.filter(function (th) { return th.hp > 0; });
+    return true;
+  }
+
+  function takeEvents(T) { var e = T.events; T.events = []; return e; }
+
+  /** 報酬の殻片(耐えきった波の数から) */
+  function shardsFor(cleared) {
+    var s = 0;
+    for (var w = 1; w <= cleared; w++) s += 1 + Math.floor(w / 5);
+    return s;
+  }
+
+  /** 自動で遊ぶ(難しさの調整と検証用)。active が true なら、操作もする */
+  function autoplay(stats, opts) {
+    opts = opts || {};
+    var T = create(stats, opts.seed || 7);
+    var dt = 0.1, tapEvery = opts.taps ? 1 / opts.taps : 0, tapT = 0;
+    var limit = opts.maxSeconds || 3600;
+    while (!T.over && T.t < limit) {
+      if (opts.active) {
+        if (T.him.heat > 70 && T.signal === 'wnt') setSignal(T, 'bmp');
+        else if (T.him.heat < 30 && T.signal !== 'wnt') setSignal(T, 'wnt');
+        if (T.him.hp < T.him.maxHp * 0.5) useActive(T, 'detox');
+        if (T.threats.filter(function (th) { return th.r < 0.6; }).length >= 4) useActive(T, 'pulse');
+        if (T.boss) useActive(T, 'fury');
+        if (T.threats.filter(function (th) { return th.r < 0.3; }).length >= 3) useActive(T, 'grasp');
+        if (T.him.heat > 85) useActive(T, 'cool');
+      }
+      if (tapEvery) {
+        tapT -= dt;
+        if (tapT <= 0) {
+          tapT += tapEvery;
+          var near = T.threats.filter(function (th) { return visible(T, th); }).sort(function (a, b) { return a.r - b.r; })[0];
+          if (near) tap(T, near.r * Math.cos(near.a), near.r * Math.sin(near.a));
+        }
+      }
+      step(T, dt);
+      T.events = [];
+    }
+    return { cleared: T.cleared, wave: T.wave, seconds: T.t, kills: T.kills };
+  }
+
+  return {
+    THREATS: THREATS, SIGNALS: SIGNALS, ACTIVES: ACTIVES, ACTIVE_BY_ID: ACTIVE_BY_ID, CORE_R: CORE_R, BOSSES: BOSSES,
+    create: create, step: step, tap: tap, setSignal: setSignal, useActive: useActive, activeAvailable: activeAvailable, takeEvents: takeEvents,
+    shardsFor: shardsFor, phaseOf: phaseOf, bossName: bossName, waveSize: waveSize, effRange: effRange, revealR: revealR, visible: visible, autoplay: autoplay,
+  };
+})();
+
+if (typeof module !== 'undefined') module.exports = Trial;
+
+</script>
+<script>
+/*
  * EMBRYO//GENESIS の計算部分
  * 画面には依存しない。ブラウザでもNode.jsでも同じように動く。
  * 生物学の説明文は、ゲーム用に単純化してある。
@@ -1108,6 +1758,8 @@ var Core = (function () {
   'use strict';
   var BP = (typeof Blueprint !== 'undefined') ? Blueprint : require('./blueprint.js');
   var CT = (typeof Content !== 'undefined') ? Content : require('./content.js');
+  var TR = (typeof Tree !== 'undefined') ? Tree : require('./tree.js');
+  var TL = (typeof Trial !== 'undefined') ? Trial : require('./trial.js');
 
   /* ============================================================
    * 調整用の数値(遊びの手触りはほぼここで決まる)
@@ -1403,6 +2055,9 @@ var Core = (function () {
       bp: { tiles: {}, vessels: [], rev: 0 },
       osc: { owned: {}, installed: {} },   // 振動子 { signal: { level, period } }
       story: { pages: [], cleared: false, nextDropAt: CONFIG.codex.dropEverySeconds, endingShown: false },
+      tree: { owned: { lilith: true }, shards: 0, revealed: false },   // 樹(継代しても残る)
+      trial: { best: 0, runs: 0, unlocked: false, history: [] },      // 試験の記録(継代しても残る)
+      log: [],                   // 通信ログ(画面が書く)
       lastSavedMs: nowMs === undefined ? Date.now() : nowMs,
     };
   }
@@ -1412,6 +2067,9 @@ var Core = (function () {
   /* ============================================================
    * 効果のまとめ(カード・呪い・手技)
    * ========================================================== */
+  function treeFx(state) { return TR.effects(state.tree ? state.tree.owned : {}); }
+
+  /** カードと樹の効果のまとめ */
   function cardFx(state) {
     var fx = { global: 1, tap: 1, heatGain: 1, cooling: 1, sell: 1, drugPrice: 1, drugDuration: 1, offline: 0, codex: 1, tapCps: 0,
       refractory: 1, apoCooldown: 1, dormancy: 0, residue: 1, voiceRate: 1, himRate: 1, bpExp: 0 };
@@ -1423,6 +2081,12 @@ var Core = (function () {
         else fx[k] *= c.effect[k];
       });
     });
+    // 樹の効果も、ここにまとめて重ねる
+    var t = treeFx(state);
+    ['global', 'tap', 'heatGain', 'cooling', 'drugPrice', 'residue', 'codex', 'himRate'].forEach(function (k) { fx[k] *= t[k]; });
+    fx.offline += t.offline;
+    fx.dormancy += t.dormancy;
+    fx.bpExp += t.bpExp;
     return fx;
   }
 
@@ -1697,7 +2361,8 @@ var Core = (function () {
     var z = Math.max(0, openZoneCount(state) - 1) / 5;
     var p = (state.story ? state.story.pages.length : 0) / CT.PAGES.length;
     var c = Math.min(state.promotions || 0, 10) / 10;
-    return Math.max(0, Math.min(1, 0.5 * z + 0.3 * p + 0.2 * c));
+    var b = Math.min(state.trial ? state.trial.best : 0, 50) / 50;
+    return Math.max(0, Math.min(1, 0.4 * z + 0.25 * p + 0.15 * c + 0.2 * b));
   }
 
   /** 研究所の誰かの声を出す */
@@ -1764,7 +2429,7 @@ var Core = (function () {
    * カード
    * ========================================================== */
   function cardSlots(state) {
-    return CONFIG.cardSlots + perkLevel(state, 'clinical') + bpMults(state).special.cardSlots;
+    return CONFIG.cardSlots + perkLevel(state, 'clinical') + bpMults(state).special.cardSlots + treeFx(state).cardSlots;
   }
 
   function equipCard(state, id) {
@@ -1859,6 +2524,8 @@ var Core = (function () {
         events.push({ type: 'page', id: pg.id, drop: true });
       }
     }
+    // 樹の正体
+    if (!state.tree.revealed && treeRevealed(state)) { state.tree.revealed = true; events.push({ type: 'qliphoth' }); }
     // 結末
     var r = bpEvaluate(state);
     if (r && r.altar && !state.story.cleared) {
@@ -1889,7 +2556,11 @@ var Core = (function () {
   }
 
   function bpTools(state) {
-    return BP.toolsFor(openZoneCount(state), { theOne: zoneOpen(state, 'g') });
+    var t = BP.toolsFor(openZoneCount(state), { theOne: zoneOpen(state, 'g') });
+    var fx = treeFx(state);
+    t.branch += fx.bpBranch;
+    t.bridges += fx.bpBridges;
+    return t;
   }
 
   function bpPieceAvailable(state, id) {
@@ -2061,6 +2732,77 @@ var Core = (function () {
   }
 
   /* ============================================================
+   * 樹
+   * ========================================================== */
+  function treeCost(id) { return TR.cost(id); }
+  function buyNode(state, id) {
+    var tr = state.tree;
+    if (!TR.canBuy(tr.owned, id)) return false;
+    var c = TR.cost(id);
+    if (tr.shards < c) return false;
+    tr.shards -= c;
+    tr.owned[id] = true;
+    state.bp.rev++;
+    return true;
+  }
+  /** 正体が明かされたか(すべての球の核を持つか、結末を迎えたとき) */
+  function treeRevealed(state) { return !!(state.tree.revealed || TR.revealed(state.tree.owned) || state.story.cleared); }
+
+  /* ============================================================
+   * 試験
+   * ========================================================== */
+  var TRIAL_UNLOCK = 5e4;
+  function trialUnlocked(state) { return !!(state.trial.unlocked || state.totalCells >= TRIAL_UNLOCK); }
+
+  /** 試験に持ち込む力。invested は持ち込む細胞(気力と体力が少し増える) */
+  function trialStats(state, invested) {
+    var fx = treeFx(state);
+    var card = cardFx(state);
+    var cps = computeRates(state).cps * CONFIG.speed;
+    var r = bpEvaluate(state);
+    var organs = {};
+    BP.ORGANS.forEach(function (o) { var res = r && r.organs[o.id]; organs[o.id] = res && res.open && !res.empty ? res.tier : 0; });
+    var inv = Math.max(0, invested || 0);
+    var life = (state.lifetimeCells || 0) + state.totalCells;
+    return {
+      power: (1 + Math.log10(1 + cps)) * fx.trialDmg,
+      hp: 100 * (1 + 0.05 * Math.log10(1 + life)) * (1 + 0.02 * Math.log10(1 + inv)) * fx.trialHp,
+      energy: (30 + 6 * Math.log10(1 + inv)) * fx.trialEnergy,
+      energyRegen: 1 * fx.trialEnergy,
+      rate: fx.trialRate,
+      crit: fx.trialCrit,
+      armor: fx.trialArmor,
+      regen: fx.trialRegen,
+      reveal: fx.trialReveal,
+      heatMult: fx.trialHeat,
+      tap: card.tap * fx.trialTap,
+      organs: organs,
+    };
+  }
+
+  /** 試験を始める(持ち込む細胞を払う)。Trial の状態を返す */
+  function startTrial(state, fraction, seed) {
+    if (!trialUnlocked(state)) return null;
+    state.trial.unlocked = true;
+    var inv = state.cells * Math.max(0, Math.min(1, fraction || 0));
+    state.cells -= inv;
+    state.trial.runs++;
+    return TL.create(trialStats(state, inv), seed || (Date.now() % 100000));
+  }
+
+  /** 試験の結果を受け取る。もらえた殻片を返す */
+  function finishTrial(state, T) {
+    var cleared = T.cleared;
+    var record = cleared > state.trial.best;
+    var shards = Math.floor(TL.shardsFor(cleared) * treeFx(state).shards * (record ? 1.5 : 1));
+    state.tree.shards += shards;
+    if (record) state.trial.best = cleared;
+    state.trial.history.unshift({ cleared: cleared, shards: shards, record: record, at: state.stats.playSeconds });
+    state.trial.history = state.trial.history.slice(0, 10);
+    return { shards: shards, record: record, cleared: cleared };
+  }
+
+  /* ============================================================
    * 手技と継代
    * ========================================================== */
   function perkLevel(state, id) { return (state.perks && state.perks[id]) || 0; }
@@ -2070,7 +2812,7 @@ var Core = (function () {
     if (id === 'biochemistry') return Math.pow(2, lv);
     return 1;
   }
-  function costMult(state) { return Math.pow(0.95, perkLevel(state, 'embryology')) * cursedFx(state).cost; }
+  function costMult(state) { return Math.pow(0.95, perkLevel(state, 'embryology')) * cursedFx(state).cost * treeFx(state).cost; }
   function perkCost(state, id) { return PERK_BY_ID[id].baseCost * (perkLevel(state, id) + 1); }
   function buyPerk(state, id) {
     var p = PERK_BY_ID[id];
@@ -2103,7 +2845,7 @@ var Core = (function () {
     var keep = {
       units: state.units + u, promotions: state.promotions + 1, perks: state.perks, cards: state.cards,
       lifetimeCells: state.lifetimeCells + state.totalCells, stats: state.stats, clicks: state.clicks, seen: state.seen,
-      bp: state.bp, story: state.story, osc: state.osc, nextHimIn: state.nextHimIn,
+      bp: state.bp, story: state.story, osc: state.osc, nextHimIn: state.nextHimIn, tree: state.tree, trial: state.trial, log: state.log,
     };
     var fresh = newState(nowMs);
     Object.keys(state).forEach(function (k) { delete state[k]; });
@@ -2478,7 +3220,7 @@ var Core = (function () {
     if (!data || data.version !== 2) return fresh;
     Object.keys(fresh).forEach(function (k) {
       if (data[k] === undefined) return;
-      if (k === 'counts' || k === 'signals' || k === 'stats' || k === 'bp' || k === 'story' || k === 'osc' || k === 'run') fresh[k] = Object.assign(fresh[k], data[k]);
+      if (k === 'counts' || k === 'signals' || k === 'stats' || k === 'bp' || k === 'story' || k === 'osc' || k === 'run' || k === 'tree' || k === 'trial') fresh[k] = Object.assign(fresh[k], data[k]);
       else fresh[k] = data[k];
     });
     return fresh;
@@ -2520,7 +3262,8 @@ var Core = (function () {
     BP: BP, CT: CT, BP_LINKS: BP_LINKS,
     newState: newState, clone: clone, step: step, tick: tick, computeRates: computeRates, clickValue: clickValue, buildEnv: buildEnv,
     responseFactor: responseFactor, effectiveCount: effectiveCount, facMods: facMods, heatStage: heatStage, heatCooling: heatCooling, clockFactor: clockFactor,
-    cardFx: cardFx, cursedFx: cursedFx, progress: progress,
+    cardFx: cardFx, cursedFx: cursedFx, treeFx: treeFx, progress: progress, TR: TR, TL: TL,
+    treeCost: treeCost, buyNode: buyNode, treeRevealed: treeRevealed, trialUnlocked: trialUnlocked, trialStats: trialStats, startTrial: startTrial, finishTrial: finishTrial,
     spawnVoice: spawnVoice, catchVoice: catchVoice, spawnHim: spawnHim,
     cardSlots: cardSlots, equipCard: equipCard, discardCard: discardCard, checkProgress: checkProgress, meets: meets,
     bpUnlocked: bpUnlocked, zoneOpen: zoneOpen, openZoneCount: openZoneCount, bpTools: bpTools, bpPieceAvailable: bpPieceAvailable,
@@ -2554,6 +3297,16 @@ if (typeof module !== 'undefined') module.exports = Core;
   var BP = C.BP;
   var SAVE_KEY = 'embryo-genesis-v2';
   var $ = function (id) { return document.getElementById(id); };
+  // 粗い砂目(低い解像度の乱数を引き伸ばす)
+  (function () {
+    try {
+      var c = document.createElement('canvas'); c.width = c.height = 128;
+      var g = c.getContext('2d'), im = g.createImageData(128, 128);
+      for (var i = 0; i < im.data.length; i += 4) { var v = Math.random() * 255 | 0; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+      g.putImageData(im, 0, 0);
+      $('scan').style.backgroundImage = 'url(' + c.toDataURL() + ')';
+    } catch (e) { /* 何もしない */ }
+  })();
   var sessionStart = performance.now();
 
   // ?speed=10 で生産を速める(試す用)
@@ -2580,17 +3333,29 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (m > 0) return m + '分' + (sec % 60) + '秒';
     return sec + '秒';
   }
-  var SIG_COLOR = { wnt: '#ff6b8a', bmp: '#6fb7ff', shh: '#ffd36b', fgf: '#6dffb0', ra: '#c38cff' };
+  var SIG_COLOR = { wnt: '#a8706a', bmp: '#86a0b3', shh: '#b8a27a', fgf: '#8fa996', ra: '#9b90a8' };
   function sessionSeconds() { return (performance.now() - sessionStart) / 1000; }
 
+  var TOAST_ICON = {
+    '': '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2.5" fill="currentColor"/></svg>',
+    red: '<svg viewBox="0 0 22 22"><path d="M11 2 L20 19 L2 19 Z" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="11" y1="8" x2="11" y2="13" stroke="currentColor" stroke-width="1.8"/><circle cx="11" cy="16" r="1.2" fill="currentColor"/></svg>',
+    blue: '<svg viewBox="0 0 22 22"><path d="M3 6 H19 V15 H10 L5 19 V15 H3 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+    gold: '<svg viewBox="0 0 22 22"><path d="M11 2 L13.5 8.5 L20 9 L15 13.5 L16.5 20 L11 16.5 L5.5 20 L7 13.5 L2 9 L8.5 8.5 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+    dark: '<svg viewBox="0 0 22 22"><ellipse cx="11" cy="11" rx="9" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="3" fill="currentColor"/></svg>',
+  };
   function toast(text, kind) {
+    kind = kind || '';
     var box = $('toasts');
     var el = document.createElement('div');
+    var life = kind === 'dark' ? 6 : 4.2;
     el.className = 'toast' + (kind ? ' ' + kind : '');
-    el.textContent = text;
+    el.style.setProperty('--life', life + 's');
+    el.innerHTML = '<span class="ic">' + (TOAST_ICON[kind] || TOAST_ICON['']) + '</span><span class="tx"></span>';
+    el.querySelector('.tx').textContent = text;
     box.appendChild(el);
-    while (box.children.length > 3) box.removeChild(box.firstChild);
-    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 4200);
+    while (box.children.length > 4) box.removeChild(box.firstChild);
+    setTimeout(function () { el.classList.add('out'); }, life * 1000);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, life * 1000 + 400);
   }
   function showModal(title, html) {
     $('modalTitle').textContent = title;
@@ -2618,68 +3383,25 @@ if (typeof module !== 'undefined') module.exports = Core;
   })();
 
   /* ---------- 施設のアイコン(仮の図形、線画) ---------- */
-  var IC = 'fill="none" stroke="#6ff3ff" stroke-width="2"';
+  var IC = 'fill="none" stroke="#9fbdb8" stroke-width="2"';
   var ICONS = {
     cleavage: '<circle cx="14" cy="20" r="9" ' + IC + '/><circle cx="26" cy="20" r="9" ' + IC + '/>',
-    trophoblast: '<circle cx="20" cy="20" r="14" ' + IC + '/><circle cx="20" cy="20" r="9" fill="none" stroke="#ff5ef7" stroke-width="1.5"/>',
-    yolk: '<circle cx="20" cy="20" r="15" ' + IC + '/><circle cx="20" cy="20" r="4" fill="#ffd36b"/>',
-    organizer: '<rect x="6" y="6" width="28" height="28" ' + IC + '/><circle cx="20" cy="20" r="5" fill="#6ff3ff"/>',
-    neural: '<path d="M4 28 A16 16 0 0 1 36 28" ' + IC + '/><line x1="4" y1="32" x2="36" y2="32" stroke="#ff5ef7" stroke-width="2"/>',
-    regulator: '<path d="M5 8 L35 8 L20 34 Z" ' + IC + '/><line x1="12" y1="14" x2="28" y2="14" stroke="#9b8cff" stroke-width="2"/>',
-    somite: '<rect x="12" y="3" width="16" height="9" ' + IC + '/><rect x="12" y="15" width="16" height="9" ' + IC + '/><rect x="12" y="27" width="16" height="9" fill="none" stroke="#ff5ef7" stroke-width="2"/>',
+    trophoblast: '<circle cx="20" cy="20" r="14" ' + IC + '/><circle cx="20" cy="20" r="9" fill="none" stroke="#a3808f" stroke-width="1.5"/>',
+    yolk: '<circle cx="20" cy="20" r="15" ' + IC + '/><circle cx="20" cy="20" r="4" fill="#b8a27a"/>',
+    organizer: '<rect x="6" y="6" width="28" height="28" ' + IC + '/><circle cx="20" cy="20" r="5" fill="#9fbdb8"/>',
+    neural: '<path d="M4 28 A16 16 0 0 1 36 28" ' + IC + '/><line x1="4" y1="32" x2="36" y2="32" stroke="#a3808f" stroke-width="2"/>',
+    regulator: '<path d="M5 8 L35 8 L20 34 Z" ' + IC + '/><line x1="12" y1="14" x2="28" y2="14" stroke="#8f88a3" stroke-width="2"/>',
+    somite: '<rect x="12" y="3" width="16" height="9" ' + IC + '/><rect x="12" y="15" width="16" height="9" ' + IC + '/><rect x="12" y="27" width="16" height="9" fill="none" stroke="#a3808f" stroke-width="2"/>',
     notochord: '<rect x="16" y="2" width="8" height="36" ' + IC + '/>',
-    epidermis: '<rect x="4" y="4" width="15" height="15" ' + IC + '/><rect x="21" y="4" width="15" height="15" ' + IC + '/><rect x="4" y="21" width="15" height="15" ' + IC + '/><rect x="21" y="21" width="15" height="15" fill="none" stroke="#ff5ef7" stroke-width="2"/>',
-    neuralCrest: '<path d="M4 30 L14 10 L24 30" ' + IC + '/><circle cx="30" cy="12" r="4" fill="none" stroke="#ffd36b" stroke-width="2"/><circle cx="34" cy="26" r="3" fill="#ff5ef7"/>',
-    lateral: '<rect x="3" y="8" width="8" height="24" ' + IC + '/><rect x="29" y="8" width="8" height="24" ' + IC + '/><line x1="20" y1="8" x2="20" y2="32" stroke="#c38cff" stroke-width="2"/>',
-    heart: '<path d="M10 6 Q32 6 32 20 Q32 34 10 34" fill="none" stroke="#ff6b8a" stroke-width="3"/><circle cx="10" cy="6" r="3" fill="#6ff3ff"/>',
-    tailbud: '<path d="M4 20 Q20 4 36 20 Q20 36 4 20 Z" ' + IC + '/><circle cx="30" cy="20" r="3" fill="#6dffb0"/>',
-    sprouty: '<line x1="6" y1="20" x2="34" y2="20" stroke="#9b8cff" stroke-width="2"/><line x1="20" y1="6" x2="20" y2="34" stroke="#6dffb0" stroke-width="2"/><circle cx="20" cy="20" r="5" ' + IC + '/>',
-    limb: '<rect x="4" y="15" width="18" height="10" ' + IC + '/><path d="M22 8 A12 12 0 0 1 22 32" fill="none" stroke="#6dffb0" stroke-width="2"/>',
-    pharyngeal: '<line x1="6" y1="7" x2="34" y2="7" ' + IC + '/><line x1="6" y1="16" x2="30" y2="16" ' + IC + '/><line x1="6" y1="25" x2="26" y2="25" ' + IC + '/><line x1="6" y1="34" x2="22" y2="34" stroke="#c38cff" stroke-width="2"/>',
+    epidermis: '<rect x="4" y="4" width="15" height="15" ' + IC + '/><rect x="21" y="4" width="15" height="15" ' + IC + '/><rect x="4" y="21" width="15" height="15" ' + IC + '/><rect x="21" y="21" width="15" height="15" fill="none" stroke="#a3808f" stroke-width="2"/>',
+    neuralCrest: '<path d="M4 30 L14 10 L24 30" ' + IC + '/><circle cx="30" cy="12" r="4" fill="none" stroke="#b8a27a" stroke-width="2"/><circle cx="34" cy="26" r="3" fill="#a3808f"/>',
+    lateral: '<rect x="3" y="8" width="8" height="24" ' + IC + '/><rect x="29" y="8" width="8" height="24" ' + IC + '/><line x1="20" y1="8" x2="20" y2="32" stroke="#9b90a8" stroke-width="2"/>',
+    heart: '<path d="M10 6 Q32 6 32 20 Q32 34 10 34" fill="none" stroke="#a8706a" stroke-width="3"/><circle cx="10" cy="6" r="3" fill="#9fbdb8"/>',
+    tailbud: '<path d="M4 20 Q20 4 36 20 Q20 36 4 20 Z" ' + IC + '/><circle cx="30" cy="20" r="3" fill="#8fa996"/>',
+    sprouty: '<line x1="6" y1="20" x2="34" y2="20" stroke="#8f88a3" stroke-width="2"/><line x1="20" y1="6" x2="20" y2="34" stroke="#8fa996" stroke-width="2"/><circle cx="20" cy="20" r="5" ' + IC + '/>',
+    limb: '<rect x="4" y="15" width="18" height="10" ' + IC + '/><path d="M22 8 A12 12 0 0 1 22 32" fill="none" stroke="#8fa996" stroke-width="2"/>',
+    pharyngeal: '<line x1="6" y1="7" x2="34" y2="7" ' + IC + '/><line x1="6" y1="16" x2="30" y2="16" ' + IC + '/><line x1="6" y1="25" x2="26" y2="25" ' + IC + '/><line x1="6" y1="34" x2="22" y2="34" stroke="#9b90a8" stroke-width="2"/>',
   };
-
-  /* ---------- 胚(線画のホログラム) ---------- */
-  var embryoKey = '';
-  function drawEmbryo() {
-    var stage = C.stageOf(state.totalCells);
-    var hs = state.crashLeft > 0 ? 3 : C.heatStage(state.heat);
-    var key = stage.parts + ':' + hs + ':' + (state.story.cleared ? 1 : 0);
-    var btn = $('embryo');
-    btn.classList.toggle('shake', hs === 2 && state.crashLeft <= 0);
-    btn.classList.toggle('crash', state.crashLeft > 0);
-    if (key === embryoKey) return;
-    embryoKey = key;
-    var col = ['#6ff3ff', '#ffd36b', '#ff6b8a', '#ff4d6d'][hs];
-    var n = stage.parts;
-    var cellR = n === 1 ? 70 : 74 / Math.sqrt(n);
-    var R = n === 1 ? 0 : 78 - cellR;
-    var out = '<g class="spin"><circle cx="100" cy="100" r="96" fill="none" stroke="#6ff3ff" stroke-width="1" stroke-dasharray="2 6" opacity=".7"/></g>' +
-      '<g class="spin2"><circle cx="100" cy="100" r="90" fill="none" stroke="#ff5ef7" stroke-width="1" stroke-dasharray="40 14 4 14" opacity=".55"/></g>';
-    for (var i = 0; i < n; i++) {
-      var r = n === 1 ? 0 : R * Math.sqrt((i + 0.5) / n);
-      var th = i * 2.39996;
-      var x = 100 + r * Math.cos(th), y = 100 + r * Math.sin(th);
-      var c = i % 5 === 0 ? col : (i % 7 === 3 ? '#ff5ef7' : '#6ff3ff');
-      out += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (cellR * 0.92).toFixed(1) + '" fill="' + c + '" fill-opacity=".07" stroke="' + c + '" stroke-width="' + (n > 40 ? 0.8 : 1.4) + '"/>';
-    }
-    if (state.story.cleared) out += '<circle cx="100" cy="100" r="18" fill="#fff" opacity=".85"/><circle cx="100" cy="100" r="30" fill="none" stroke="#fff" stroke-width="1"/>';
-    $('embryoSvg').innerHTML = out;
-  }
-
-  $('embryo').addEventListener('click', function (ev) {
-    var v = C.click(state);
-    var wrap = $('embryoWrap');
-    var rect = wrap.getBoundingClientRect();
-    var p = document.createElement('div');
-    p.className = 'pop';
-    p.textContent = '+' + fmt(v);
-    var x = (ev.clientX || rect.left + rect.width / 2) - rect.left;
-    var y = (ev.clientY || rect.top + rect.height / 2) - rect.top;
-    p.style.left = (x - 12 + Math.random() * 24) + 'px';
-    p.style.top = (y - 20) + 'px';
-    wrap.appendChild(p);
-    setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 800);
-  });
 
   /* ---------- 声 ---------- */
   $('voice').addEventListener('click', function () {
@@ -2687,42 +3409,26 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (!res) return;
     var msg = res.effect.label;
     if (res.effect.id === 'snack') msg = '差し入れ: +' + fmt(res.detail) + ' 細胞';
-    toast(res.voice.name + '「' + res.voice.text + '」 ' + msg, 'blue');
-    if (res.card) { toast('カード「' + CT.CARD_BY_ID[res.card].name + '」を手に入れた', 'gold'); newCard = true; }
+    toast(res.voice.name + '「' + res.voice.text + '」', 'blue');
+    if (res.card) { toast(CT.CARD_BY_ID[res.card].name, 'gold'); newCard = true; pushLog('event', 'カード', CT.CARD_BY_ID[res.card].name); }
   });
 
   /* ---------- 休眠・アポトーシス ---------- */
   $('btnDormant').addEventListener('click', function () {
     C.setDormant(state, !state.dormant);
-    toast(state.dormant ? '休眠に入った' : '休眠から覚めた', 'blue');
   });
   $('btnApoptosis').addEventListener('click', function () {
-    if (C.apoptosis(state)) toast('アポトーシス。細胞を減らしてヒートを下げた', 'red');
+    if (C.apoptosis(state)) toast('アポトーシス', 'red');
   });
 
   /* ---------- 臨界期 ---------- */
   $('btnWindow').addEventListener('click', function () {
     var w = C.criticalWindow(state, Date.now());
     var name = w.upgrade && w.upgrade.name;
-    if (C.buyWindowUpgrade(state, Date.now())) toast('臨界期の強化「' + name + '」を手に入れた', '');
+    if (C.buyWindowUpgrade(state, Date.now())) toast(name, '');
   });
 
-  /* ---------- タブ ---------- */
-  var activeTab = 'fac';
-  var TAB_INDEX = { fac: 0, upg: 1, drug: 2, bp: 3, codex: 4, rec: 5, grade: 6 };
   var htmlCache = {};
-  Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) {
-    b.addEventListener('click', function () {
-      activeTab = b.dataset.tab;
-      Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (x) { x.classList.toggle('active', x === b); });
-      Array.prototype.forEach.call(document.querySelectorAll('.panel'), function (p) { p.classList.toggle('active', p.id === 'panel-' + activeTab); });
-      if (activeTab === 'upg') newCard = false;
-      if (activeTab === 'codex') newPage = false;
-      if (activeTab === 'bp') bpSeenUnlock = true;
-      htmlCache = {};
-      render(true);
-    });
-  });
   function setPanel(id, html) {
     if (htmlCache[id] === html) return;
     htmlCache[id] = html;
@@ -2744,7 +3450,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     });
   }
   bindSeg('qty', 'q', function (v) { qty = v; });
-  bindSeg('facMode', 'm', function (v) { facMode = v; $('panel-fac').classList.toggle('selling', v === 'sell'); });
+  bindSeg('facMode', 'm', function (v) { facMode = v; $('win-fac').classList.toggle('selling', v === 'sell'); });
 
   var facRows = {};
   var newGuide = false;
@@ -2761,14 +3467,14 @@ if (typeof module !== 'undefined') module.exports = Core;
         if (facMode === 'sell') {
           var n = qty === 'max' ? 'all' : Number(qty);
           var got = C.sellFacility(state, f.id, n);
-          if (got > 0) toast(f.name + 'を売った。+' + fmt(got) + ' 細胞', 'gold');
+          if (got > 0) toast('+' + fmt(got), 'gold');
           render(true);
           return;
         }
         var q = qty === 'max' ? 'max' : Number(qty);
         var wasSeen = state.seen && state.seen[f.id];
         if (C.buyFacility(state, f.id, q)) {
-          if (!wasSeen) { toast(f.name + 'を見つけた。写本の手引きに載った', ''); newGuide = true; }
+          if (!wasSeen) newGuide = true;
           render(true);
         }
       });
@@ -2793,7 +3499,7 @@ if (typeof module !== 'undefined') module.exports = Core;
         row.el.classList.remove('open');
         setText(row.nm, '？？？');
         setText(row.count, '');
-        setText(row.sub, 'まだ姿を見せていない');
+        setText(row.sub, '');
         row.buy.disabled = true;
         setHTML(row.buy, fmt(f.baseCost * cm) + '<small>細胞</small>');
         return;
@@ -2833,32 +3539,28 @@ if (typeof module !== 'undefined') module.exports = Core;
   }
 
   /* ---------- 強化・装置・カード・呪い ---------- */
-  $('panel-upg').addEventListener('click', function (ev) {
+  $('win-upg').addEventListener('click', function (ev) {
     var b = ev.target.closest('button');
     if (!b) return;
     var d = b.dataset;
-    if (d.upg) { if (C.buyUpgrade(state, d.upg)) toast('強化を手に入れた', ''); }
-    else if (d.oscBuy) { if (C.buyOscillator(state, d.oscBuy)) toast(C.SIGNAL_BY_ID[d.oscBuy].name + '振動子を手に入れた', ''); }
-    else if (d.oscSell) { var g = C.sellOscillator(state, d.oscSell); if (g) toast('振動子を売った。+' + fmt(g), 'gold'); }
+    if (d.upg) { C.buyUpgrade(state, d.upg); }
+    else if (d.oscBuy) { C.buyOscillator(state, d.oscBuy); }
+    else if (d.oscSell) { var g = C.sellOscillator(state, d.oscSell); if (g) toast('+' + fmt(g), 'gold'); }
     else if (d.oscOn !== undefined) {
       var id = d.oscOn;
       var cur = state.osc.installed[id];
       if (cur) C.setOscillator(state, id, null);
-      else if (!C.setOscillator(state, id, { level: 1, period: 90 })) toast('同時に動かせるのは' + C.CONFIG.oscillatorSlots + 'つまで', 'red');
+      else if (!C.setOscillator(state, id, { level: 1, period: 90 })) toast(C.CONFIG.oscillatorSlots + 'つまで', 'red');
     } else if (d.oscLv) { var kv = d.oscLv.split(':'); var c1 = state.osc.installed[kv[0]]; if (c1) C.setOscillator(state, kv[0], { level: Number(kv[1]), period: c1.period }); }
     else if (d.oscPd) { var kp = d.oscPd.split(':'); var c2 = state.osc.installed[kp[0]]; if (c2) C.setOscillator(state, kp[0], { level: c2.level, period: Number(kp[1]) }); }
     else if (d.equip) {
       var was = state.cards.equipped.indexOf(d.equip) !== -1;
-      if (!C.equipCard(state, d.equip)) toast('装着できるのは' + C.cardSlots(state) + '枚まで', 'red');
-      else toast(was ? 'カードを外した' : 'カードを装着した', '');
+      if (!C.equipCard(state, d.equip)) toast(C.cardSlots(state) + '枚まで', 'red');
     } else if (d.discard) {
-      if (discardArmed === d.discard) { if (C.discardCard(state, d.discard)) toast('カードを捨てた', ''); discardArmed = null; }
+      if (discardArmed === d.discard) { C.discardCard(state, d.discard); discardArmed = null; }
       else { discardArmed = d.discard; setTimeout(function () { discardArmed = null; htmlCache = {}; }, 3000); }
     } else if (d.cursed) {
-      if (cursedArmed === d.cursed) {
-        if (C.buyCursed(state, d.cursed)) { var cz = C.CURSED_BY_ID[d.cursed]; toast('「' + cz.name + '」を受け入れた。' + cz.hidden, 'dark'); }
-        cursedArmed = null;
-      } else { cursedArmed = d.cursed; setTimeout(function () { cursedArmed = null; htmlCache = {}; }, 3000); }
+      if (C.buyCursed(state, d.cursed)) toast(C.CURSED_BY_ID[d.cursed].name, '');
     } else return;
     htmlCache = {};
     render(true);
@@ -2867,7 +3569,7 @@ if (typeof module !== 'undefined') module.exports = Core;
 
   function renderUpgrades() {
     var list = C.availableUpgrades(state);
-    var html = list.length ? '' : '<p class="hint">今買える強化はない。施設を増やすと出てくる。</p>';
+    var html = list.length ? '' : '';
     list.forEach(function (u) {
       var label, disabled;
       if (!u.unlocked) { label = 'あと' + (u.need - state.counts[u.key.split(':')[0]]) + '個'; disabled = true; }
@@ -2879,9 +3581,9 @@ if (typeof module !== 'undefined') module.exports = Core;
 
     // 装置
     var oh = '';
-    if (!C.oscillatorsAvailable(state)) oh = '<p class="hint">もう少し育つと、装置が手に入るようになる。</p>';
+    if (!C.oscillatorsAvailable(state)) oh = '';
     else {
-      oh = '<p class="hint">シグナルの濃さに波をつくる。同時に動かせるのは' + C.CONFIG.oscillatorSlots + 'つまで。</p>';
+      oh = '';
       C.OSCILLATORS.forEach(function (o) {
         var owned = state.osc.owned[o.id];
         var ins = state.osc.installed[o.id];
@@ -2909,7 +3611,7 @@ if (typeof module !== 'undefined') module.exports = Core;
       slots += c ? '<div class="slot filled"><div>' + esc(c.name) + '</div><div class="e">' + esc(c.label) + '</div></div>' : '<div class="slot">空き</div>';
     }
     setPanel('slots', slots);
-    var ch = state.cards.owned.length ? '' : '<p class="hint">研究所の人々の言葉を拾ったり、何かをしたりすると見つかる。</p>';
+    var ch = '';
     state.cards.owned.forEach(function (cid) {
       var cd = CT.CARD_BY_ID[cid];
       if (!cd) return;
@@ -2919,39 +3621,33 @@ if (typeof module !== 'undefined') module.exports = Core;
         (cd.sticky ? '' : '<button data-discard="' + cid + '">' + (discardArmed === cid ? '本当に捨てる' : '捨てる') + '</button>') + '</div></div>';
     });
     var hidden = CT.CARDS.filter(function (cd) { return state.cards.owned.indexOf(cd.id) === -1; }).length;
-    if (hidden) ch += '<p class="hint">まだ見つけていないカード: ' + hidden + '枚</p>';
+    if (hidden) ch += '<p class="hint num">' + state.cards.owned.length + ' / ' + (state.cards.owned.length + hidden) + '</p>';
     setPanel('cardList', ch);
 
-    // 呪われた強化
-    var avail = C.cursedAvailable(state);
+    // 見た目はほかの強化と同じ。受け入れたものは一覧から消える
     var cuh = '';
-    if (!avail.length) cuh = '<p class="hint">まだ何も並んでいない。</p>';
-    else {
-      cuh = '<p class="hint">この周回だけ効く。良いことしか書いていない。</p>';
-      avail.forEach(function (cz) {
-        var taken = state.cursed[cz.id];
-        var price = C.cursedPrice(state, cz.id);
-        cuh += '<div class="cursed' + (taken ? ' taken' : '') + '"><div><div class="t">' + esc(cz.name) + '</div><div class="d">' + esc(cz.desc) + '</div>' +
-          (taken ? '<div class="h">' + esc(cz.hidden) + '</div>' : '') + '</div>' +
-          (taken ? '<span class="chip red">受け入れた</span>' : '<button class="num" data-cursed="' + cz.id + '"' + (state.cells < price ? ' disabled' : '') + '>' +
-            (cursedArmed === cz.id ? '本当に?' : (price ? fmt(price) : '受け取る')) + '</button>') + '</div>';
-      });
-    }
+    C.cursedAvailable(state).forEach(function (cz) {
+      if (state.cursed[cz.id]) return;
+      var price = C.cursedPrice(state, cz.id);
+      cuh += '<div class="upg"><div><div class="t">' + esc(cz.name) + '</div><div class="d">' + esc(cz.desc) + '</div></div>' +
+        '<button class="num" data-cursed="' + cz.id + '"' + (state.cells < price ? ' disabled' : '') + '>' + (price ? fmt(price) : '受け取る') + '</button></div>';
+    });
     setPanel('cursedList', cuh);
 
     var owned = [];
     C.CLICK_UPGRADES.forEach(function (u) { if (state.upgrades[u.id]) owned.push(u.name); });
     C.FACILITIES.forEach(function (f) { C.UPGRADE_TIERS.forEach(function (t, i) { if (state.upgrades[f.id + ':' + i]) owned.push(f.upgrades[i].name); }); });
-    C.WINDOW_UPGRADES.forEach(function (w) { if (state.windowUpgrades[w.id]) owned.push(w.name + '(臨界期)'); });
-    setPanel('upgOwned', owned.length ? owned.map(esc).join(' / ') : 'まだない');
+    C.WINDOW_UPGRADES.forEach(function (w) { if (state.windowUpgrades[w.id]) owned.push(w.name); });
+    Object.keys(state.cursed).forEach(function (k) { if (C.CURSED_BY_ID[k]) owned.push(C.CURSED_BY_ID[k].name); });
+    setPanel('upgOwned', owned.map(esc).join(' / '));
   }
   function anyUpgradeBuyable() { return C.availableUpgrades(state).some(function (u) { return u.unlocked && state.cells >= u.cost; }); }
 
   /* ---------- 薬品庫 ---------- */
-  $('panel-drug').addEventListener('click', function (ev) {
+  $('win-drug').addEventListener('click', function (ev) {
     var b = ev.target.closest('button[data-drug]');
     if (!b) return;
-    if (C.buyDrug(state, b.dataset.drug)) toast(C.DRUG_BY_ID[b.dataset.drug].name + 'を使った', '');
+    if (C.buyDrug(state, b.dataset.drug)) toast(C.DRUG_BY_ID[b.dataset.drug].name, '');
     htmlCache = {};
     render(true);
   });
@@ -2978,25 +3674,40 @@ if (typeof module !== 'undefined') module.exports = Core;
     (f.responses || []).forEach(function (r) {
       if (r.type === 'activate') t.push(['up', name(r.signal) + 'で強まる']);
       else if (r.type === 'inhibit') t.push(['dn', name(r.signal) + 'で弱まる']);
-      else t.push(['win', name(r.signal) + 'はほどほどがいい']);
+      else t.push(['win', name(r.signal) + 'は程々に']);
     });
-    if (f.selfInhibit) t.push(['dn', '数が増えると1つあたりが弱まる']);
+    if (f.selfInhibit) t.push(['dn', '群れると鈍る']);
     if (f.upgradeKind === 'cooling') t.push(['cl', 'ヒートを冷ます']);
-    if (f.globalPenalty) t.push(['dn', '全体の生産を少し下げる']);
+    if (f.globalPenalty) t.push(['dn', '全体を鈍らせる']);
     if (f.id === 'somite') t.push(['emit', 'Wntが波打つ']);
-    if (BP.PIECES.some(function (p) { return p.facility === f.id; })) t.push(['cl', '設計図の原基になれる']);
+    if (C.bpUnlocked(state) && BP.PIECES.some(function (p) { return p.facility === f.id; })) t.push(['cl', '原基']);
     return t;
   }
+  var GUIDE = [
+    ['fac', function () { return C.FACILITIES.some(function (f) { return state.counts[f.id] > 0; }); }, '施設は、手を離しても増やし続ける。'],
+    ['heat', function () { return state.heat >= 30; }, 'WntとFGFが濃くなると、胚は熱を帯びる。'],
+    ['crash', function () { return state.stats.crashes > 0; }, '熱が満ちると暴走する。明けた後も、しばらく鈍い。'],
+    ['dorm', function () { return state.stats.dormantSeconds > 0; }, '眠っているあいだは熱を持たない。そのぶん遅い。'],
+    ['window', function () { return C.criticalWindow(state, Date.now()).open || Object.keys(state.windowUpgrades).length > 0; }, '臨界期は、時計に従って開き、閉じる。'],
+    ['osc', function () { return Object.keys(state.osc.owned).length > 0; }, '振動子は、シグナルに波をつくる。'],
+    ['card', function () { return state.cards.owned.length > 0; }, 'カードは、身につけているあいだだけ効く。'],
+    ['drug', function () { return state.stats.drugsUsed > 0; }, '薬は効く。効きすぎることもある。'],
+    ['promote', function () { return state.promotions > 0 || C.promotionUnits(state) > 0; }, '継代すれば、胚は始まりに戻る。残滓だけが残る。'],
+    ['trial', function () { return C.trialUnlocked(state); }, '試験は、himがどこまで耐えるかを測る。'],
+    ['tree', function () { return state.tree.shards > 0 || Object.keys(state.tree.owned).length > 1; }, '殻片は、樹に。'],
+  ];
   function renderCodex() {
+    var gs = state.story.guide || (state.story.guide = {});
+    var gl = '';
+    GUIDE.forEach(function (g) { if (!gs[g[0]] && g[1]()) gs[g[0]] = 1; if (gs[g[0]]) gl += '<p>' + esc(g[2]) + '</p>'; });
+    setPanel('guide', gl ? '<h3>手引き</h3><div class="howto">' + gl + '</div>' : '');
     // 設計図の決まり
     if (C.bpUnlocked(state)) {
       var tools = C.bpTools(state);
       var mods = BP.MODS.filter(function (m) { return tools.mods[m.id]; });
       setPanel('bpGuide', '<h3>設計図</h3><div class="howto">' +
-        '<p>設計図の中には、<span class="ax-r">頭尾</span>・<span class="ax-b">背腹</span>・<span class="ax-y">左右</span>・<span class="ax-v">血流</span>の4つの流れがある。左右だけは、向きが逆(マイナス)にもなる。血流は心臓だけがつくる。</p>' +
-        '<p>空いたマスに原基を置き、始点と終点をタップして血管を引く。道は自動で探す。1つの始点から出せる血管の本数は、区画が開くほど増える。流れは本数で等しく分かれる。</p>' +
-        '<p>器官は決まった流れを受け取るほど完成度が上がり、上位の施設が伸びる。器官が完成するほど、設計図全体の倍率が2の何乗という形で伸びる。完成させると何かを送り出す器官もある。</p>' +
-        '<p>今使える道具: 1つの始点から' + tools.branch + '本まで、交差' + tools.bridges + 'か所まで' + (mods.length ? '、血管に付けるもの(' + mods.map(function (m) { return m.name; }).join('・') + ')' : '') + '。</p>' +
+        '<p><span class="ax-r">頭尾</span> <span class="ax-b">背腹</span> <span class="ax-y">左右</span> <span class="ax-v">血流</span></p>' +
+        '<p class="num">分岐 ' + tools.branch + ' / 交差 ' + tools.bridges + (mods.length ? ' / ' + mods.map(function (m) { return m.name; }).join('・') : '') + '</p>' +
         '</div>');
     } else setPanel('bpGuide', '');
     var rel = '';
@@ -3004,15 +3715,16 @@ if (typeof module !== 'undefined') module.exports = Core;
       if (!(state.seen && state.seen[f.id])) return;
       var tags = relationTags(f);
       rel += '<div class="rel"><svg viewBox="0 0 40 40">' + ICONS[f.id] + '</svg><div><b>' + esc(f.name) + '</b><br>' +
-        (tags.length ? tags.map(function (x) { return '<span class="tag ' + x[0] + '">' + esc(x[1]) + '</span>'; }).join('') : '<span class="tag">ほかとは関わらない</span>') + '</div></div>';
+        tags.map(function (x) { return '<span class="tag tg-' + x[0] + '">' + esc(x[1]) + '</span>'; }).join('') + '</div></div>';
     });
-    setPanel('relList', rel || '<p class="hint">まだ何も手に入れていない。</p>');
+    setPanel('relList', rel);
+    $('relWrap').style.display = rel ? '' : 'none';
     var pages = state.story.pages;
-    setText($('codexHint'), CT.CODEX_NAME + 'の断片 ' + pages.length + ' / ' + CT.PAGES.length + '。時が経つと拾えるものもあれば、何かをしないと現れないものもある。');
+    setText($('codexHint'), '');
+    $('codexTitle').style.display = pages.length ? '' : 'none';
     var ph = '';
     CT.PAGES.forEach(function (p) {
-      var has = pages.indexOf(p.id) !== -1;
-      if (!has) { ph += '<div class="page missing' + (p.kind === 'final' ? ' final' : '') + '">第' + p.no + '頁</div>'; return; }
+      if (pages.indexOf(p.id) === -1) return;
       ph += '<div class="page ' + (p.kind === 'final' ? 'final' : p.kind) + '"><div class="no">第' + p.no + '頁</div>' + esc(p.text) + '</div>';
     });
     setPanel('pageList', ph);
@@ -3027,10 +3739,10 @@ if (typeof module !== 'undefined') module.exports = Core;
   }
   function renderWave() {
     var W = 360, H = 160;
-    if (wave.length < 2) { setPanel('wave', '<p class="hint">記録を始めたところ。</p>'); setPanel('waveLegend', ''); return; }
+    if (wave.length < 2) { setPanel('wave', ''); setPanel('waveLegend', ''); return; }
     var series = C.SIGNALS.map(function (s) { return { id: s.id, name: s.name, color: SIG_COLOR[s.id] }; }).concat([{ id: 'heat', name: 'ヒート', color: '#ffffff' }]);
     var out = '<svg viewBox="0 0 ' + W + ' ' + H + '">';
-    for (var g = 1; g < 4; g++) out += '<line x1="0" y1="' + (H * g / 4) + '" x2="' + W + '" y2="' + (H * g / 4) + '" stroke="rgba(120,220,255,.12)"/>';
+    for (var g = 1; g < 4; g++) out += '<line x1="0" y1="' + (H * g / 4) + '" x2="' + W + '" y2="' + (H * g / 4) + '" stroke="rgba(170,185,180,.12)"/>';
     var legend = '';
     series.forEach(function (s) {
       var vals = wave.map(function (w) { return w[s.id]; });
@@ -3060,33 +3772,32 @@ if (typeof module !== 'undefined') module.exports = Core;
       ['売った数', st.sold + '個'],
       ['カード', state.cards.owned.length + ' / ' + CT.CARDS.length + '枚'],
       ['写本の断片', state.story.pages.length + ' / ' + CT.PAGES.length + '頁'],
-      ['遊んだ時間(閉じていた間も含む)', duration(st.playSeconds)],
+      ['遊んだ時間', duration(st.playSeconds)],
     ];
     setPanel('stats', rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join(''));
   }
-  $('speedNote').textContent = C.CONFIG.speed !== 1 ? '今は生産が ×' + C.CONFIG.speed + ' 倍速で動いている(試す用)。' : 'URLの末尾に ?speed=10 をつけると、生産が10倍速になる(試す用)。';
+  $('speedNote').textContent = C.CONFIG.speed !== 1 ? '×' + C.CONFIG.speed : '';
   var resetArmed = 0;
   $('btnReset').addEventListener('click', function () {
     var b = $('btnReset');
     if (Date.now() - resetArmed > 4000) {
       resetArmed = Date.now();
       b.classList.add('armed');
-      b.textContent = 'もう一度押すと、継代も設計図も含めてすべて消える';
+      b.textContent = 'もう一度';
       setTimeout(function () { b.classList.remove('armed'); b.textContent = '最初からやり直す'; }, 4000);
       return;
     }
     storageDel();
     state = C.newState(Date.now());
-    embryoKey = ''; htmlCache = {}; wave = [];
+    htmlCache = {}; wave = [];
     b.classList.remove('armed');
     b.textContent = '最初からやり直す';
-    toast('最初からやり直した', 'red');
     render(true);
   });
 
   /* ---------- 継代と手技 ---------- */
   var promoteArmed = 0;
-  $('panel-grade').addEventListener('click', function (ev) {
+  $('win-grade').addEventListener('click', function (ev) {
     var b = ev.target.closest('button');
     if (!b) return;
     if (b.id === 'btnPromote') {
@@ -3096,12 +3807,12 @@ if (typeof module !== 'undefined') module.exports = Core;
       var before = C.titleOf(state.promotions, state.story.cleared);
       var u = C.promote(state, Date.now());
       if (u > 0) {
-        embryoKey = ''; htmlCache = {};
+        htmlCache = {};
         save();
-        showModal('継代', '<p>' + esc(before) + ' から <b>' + esc(C.titleOf(state.promotions, state.story.cleared)) + '</b> になった。</p><p>残滓 +' + u + '</p><p>胚は受精卵からやり直し。手技・カード・設計図・写本・装置はそのまま。</p>');
+        showModal('継代', '<p>' + esc(before) + ' → <b>' + esc(C.titleOf(state.promotions, state.story.cleared)) + '</b></p><p>残滓 +' + u + '</p>');
       }
     } else if (b.dataset.perk) {
-      if (C.buyPerk(state, b.dataset.perk)) toast(C.PERK_BY_ID[b.dataset.perk].name + 'を身につけた', '');
+      if (C.buyPerk(state, b.dataset.perk)) toast(C.PERK_BY_ID[b.dataset.perk].name, '');
     } else return;
     htmlCache = {};
     render(true);
@@ -3111,10 +3822,10 @@ if (typeof module !== 'undefined') module.exports = Core;
     var armed = Date.now() - promoteArmed <= 4000;
     var html = '<div class="grade"><div class="now">' + esc(C.titleOf(state.promotions, state.story.cleared)) + '</div><div class="units num">残滓 ' + state.units + '</div>';
     if (u > 0) {
-      html += '<p>今継代すると <b>+' + u + ' 残滓</b>。細胞・施設・強化・臨界期・呪いはすべて手放し、受精卵からやり直す。育てるほど残滓は増えるが、増え方はゆるやかになる。</p>' +
-        '<button id="btnPromote" class="' + (armed ? 'armed' : '') + '">' + (armed ? 'もう一度押すと継代する' : '継代する') + '</button>';
+      html += '<p>残滓 <b>+' + u + '</b></p>' +
+        '<button id="btnPromote" class="' + (armed ? 'armed' : '') + '">' + (armed ? 'もう一度' : '継代する') + '</button>';
     } else {
-      html += '<p>継代するには、胚を' + esc(C.stageOf(C.PROMOTION.minTotal).name) + 'まで育てる(この周回で累計 ' + fmt(C.PROMOTION.minTotal) + ' 細胞)。</p><button id="btnPromote" disabled>まだ継代できない</button>';
+      html += '<p class="hint">' + esc(C.stageOf(C.PROMOTION.minTotal).name) + '</p><button id="btnPromote" disabled>継代する</button>';
     }
     setPanel('gradeBox', html + '</div>');
     var ph = '';
@@ -3149,16 +3860,13 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (state.dormant) chips.push('<span class="chip blue">休眠中</span>');
     state.buffs.forEach(function (b) { chips.push('<span class="chip yellow">' + (b.id === 'fervor' ? '発奮' : esc(C.DRUG_BY_ID[b.id] ? C.DRUG_BY_ID[b.id].name : b.id)) + ' ×' + b.mult + ' ' + Math.ceil(b.left) + '秒</span>'); });
     state.drugs.forEach(function (d) { chips.push('<span class="chip green">' + esc(C.DRUG_BY_ID[d.id].name) + ' ' + Math.ceil(d.left) + '秒</span>'); });
-    Object.keys(state.cursed).forEach(function (k) { chips.push('<span class="chip red">' + esc(C.CURSED_BY_ID[k].name) + '</span>'); });
     var bpm = C.bpMults(state);
     if (bpm.exponent > 0) chips.push('<span class="chip blue">設計図 ×' + fmt(bpm.global) + '</span>');
     setHTML($('status'), chips.join(''));
-    $('tabs').style.top = $('top').offsetHeight + 'px';
   }
 
   function renderMiddle() {
-    drawEmbryo();
-    setText($('clickInfo'), 'タップで分裂 +' + fmt(C.clickValue(state)));
+    setText($('clickInfo'), '+' + fmt(C.clickValue(state)));
     var v = $('voice');
     if (state.voice) {
       v.classList.add('show');
@@ -3171,11 +3879,11 @@ if (typeof module !== 'undefined') module.exports = Core;
     } else v.classList.remove('show');
     var bd = $('btnDormant');
     bd.classList.toggle('on', state.dormant);
-    bd.querySelector('b').textContent = state.dormant ? '休眠中(タップで覚める)' : '休眠';
+    bd.querySelector('b').textContent = state.dormant ? '休眠中' : '休眠';
     var ba = $('btnApoptosis');
     ba.disabled = !C.canApoptosis(state);
     var lv = C.perkLevel(state, 'pharmacology');
-    setText($('apoText'), C.cursedFx(state).noApoptosis ? '痛みのない体には、もう効かない' : '細胞の' + Math.round(Math.max(0.1, C.CONFIG.apoptosis.costFraction - 0.05 * lv) * 100) + '%と引きかえにヒート-' + C.CONFIG.apoptosis.heatDrop);
+    setText($('apoText'), C.cursedFx(state).noApoptosis ? '—' : '-' + Math.round(Math.max(0.1, C.CONFIG.apoptosis.costFraction - 0.05 * lv) * 100) + '% / 熱-' + C.CONFIG.apoptosis.heatDrop);
     var cdMax = C.CONFIG.apoptosis.cooldownSeconds * Math.max(0.4, 1 - 0.15 * lv) * C.cardFx(state).apoCooldown;
     $('apoCd').style.width = Math.min(100, state.apoptosisCooldown / cdMax * 100) + '%';
     var w = C.criticalWindow(state, Date.now());
@@ -3199,6 +3907,522 @@ if (typeof module !== 'undefined') module.exports = Core;
   }
 
   /* ============================================================
+   * 小窓(PC)とタブ(スマホ)。ui.js の中に差し込まれる
+   * ========================================================== */
+  var WINDOWS = [
+    { id: 'fac', title: '培養' }, { id: 'upg', title: '強化' }, { id: 'drug', title: '薬品庫' }, { id: 'bp', title: '設計図' },
+    { id: 'trial', title: '試験' }, { id: 'tree', title: '樹' }, { id: 'codex', title: '写本' }, { id: 'log', title: '通信' },
+    { id: 'rec', title: '記録' }, { id: 'grade', title: '継代' },
+  ];
+  var LAYOUT_KEY = 'embryo-genesis-layout';
+  var deskMQ = window.matchMedia('(min-width: 900px)');
+  function isDesk() { return deskMQ.matches; }
+  var activeTab = 'fac';
+  var layout = null;
+  var zTop = 10;
+
+  function defaultLayout() {
+    var W = window.innerWidth, H = window.innerHeight - 52;
+    var col = function (f) { return Math.round(W * f); };
+    var L = {
+      core: { x: 12, y: 12, w: 340, h: Math.min(H - 24, 760), open: true },
+      fac: { x: 364, y: 12, w: Math.max(360, col(0.27)), h: Math.round(H * 0.62), open: true },
+      log: { x: 364, y: Math.round(H * 0.62) + 24, w: Math.max(360, col(0.27)), h: Math.round(H * 0.38) - 36, open: true },
+      bp: { x: 376 + Math.max(360, col(0.27)), y: 12, w: Math.max(420, W - (388 + Math.max(360, col(0.27))) - 12), h: H - 24, open: true },
+    };
+    var cx = Math.round(W / 2), cy = Math.round(H / 2);
+    ['upg', 'drug', 'codex', 'rec', 'grade'].forEach(function (id, i) { L[id] = { x: cx - 220 + i * 26, y: 40 + i * 26, w: 440, h: Math.min(620, H - 80), open: false }; });
+    L.trial = { x: Math.max(12, cx - 330), y: 12, w: 660, h: H - 24, open: false };
+    L.tree = { x: Math.max(12, cx - 360), y: 24, w: 720, h: H - 48, open: false };
+    return L;
+  }
+  function loadLayout() {
+    var d = defaultLayout();
+    try {
+      var saved = JSON.parse(localStorage.getItem(LAYOUT_KEY) || 'null');
+      if (saved) Object.keys(d).forEach(function (k) { if (saved[k]) d[k] = Object.assign(d[k], saved[k]); });
+    } catch (e) { /* 読めなければ初期の配置 */ }
+    return d;
+  }
+  function saveLayout() { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { /* 何もしない */ } }
+
+  function winEl(id) { return $('win-' + id); }
+  function applyLayout() {
+    if (!isDesk()) {
+      ['core'].concat(WINDOWS.map(function (w) { return w.id; })).forEach(function (id) { var el = winEl(id); el.style.cssText = ''; el.classList.remove('closed'); });
+      return;
+    }
+    var W = window.innerWidth, H = window.innerHeight - 52;
+    Object.keys(layout).forEach(function (id) {
+      var el = winEl(id), L = layout[id];
+      if (!el) return;
+      L.x = Math.max(0, Math.min(L.x, W - 120));
+      L.y = Math.max(0, Math.min(L.y, H - 40));
+      el.style.left = L.x + 'px'; el.style.top = L.y + 'px';
+      el.style.width = Math.min(L.w, W) + 'px'; el.style.height = Math.min(L.h, H) + 'px';
+      el.style.zIndex = L.z || 1;
+      el.classList.toggle('closed', !L.open);
+    });
+  }
+  function focusWin(id) {
+    if (!isDesk()) return;
+    zTop++;
+    layout[id].z = zTop;
+    winEl(id).style.zIndex = zTop;
+    Array.prototype.forEach.call(document.querySelectorAll('.win'), function (w) { w.classList.toggle('focus', w.id === 'win-' + id); });
+  }
+  function openWin(id, on) {
+    if (!isDesk()) { selectTab(id); return; }
+    layout[id].open = on === undefined ? !layout[id].open : on;
+    applyLayout();
+    if (layout[id].open) focusWin(id);
+    saveLayout();
+    htmlCache = {};
+    render(true);
+  }
+  function shown(id) { return isDesk() ? !!(layout[id] && layout[id].open) : activeTab === id; }
+
+  function selectTab(id) {
+    activeTab = id;
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (x) { x.classList.toggle('active', x.dataset.tab === id); });
+    WINDOWS.forEach(function (w) { winEl(w.id).classList.toggle('active', w.id === id); });
+    seenWin(id);
+    htmlCache = {};
+    render(true);
+  }
+  function seenWin(id) {
+    if (id === 'upg') newCard = false;
+    if (id === 'codex') { newPage = false; newGuide = false; }
+    if (id === 'bp') bpSeenUnlock = true;
+    if (id === 'log') newLog = false;
+    if (id === 'tree') newShards = false;
+  }
+
+  (function buildNav() {
+    var tabs = $('tabs'), dock = $('dock');
+    WINDOWS.forEach(function (w) {
+      var t = document.createElement('button');
+      t.dataset.tab = w.id; t.innerHTML = esc(w.title) + '<i class="dot"></i>';
+      t.addEventListener('click', function () { selectTab(w.id); });
+      tabs.appendChild(t);
+      var d = document.createElement('button');
+      d.dataset.win = w.id; d.innerHTML = esc(w.title) + '<i class="dot"></i>';
+      d.addEventListener('click', function () { if (layout[w.id].open && !winEl(w.id).classList.contains('focus')) { focusWin(w.id); seenWin(w.id); return; } openWin(w.id); seenWin(w.id); });
+      dock.appendChild(d);
+    });
+    // 閉じるボタン
+    Array.prototype.forEach.call(document.querySelectorAll('.win-x'), function (b) {
+      b.addEventListener('click', function (ev) { ev.stopPropagation(); var id = b.closest('.win').id.slice(4); openWin(id, false); });
+    });
+    // 小窓を動かす・前に出す・大きさを覚える
+    Array.prototype.forEach.call(document.querySelectorAll('.win'), function (el) {
+      var id = el.id.slice(4);
+      el.addEventListener('pointerdown', function () { if (isDesk()) { focusWin(id); seenWin(id); } }, true);
+      var h = el.querySelector('.win-h');
+      h.addEventListener('pointerdown', function (ev) {
+        if (!isDesk() || ev.target.closest('button')) return;
+        ev.preventDefault();
+        var sx = ev.clientX, sy = ev.clientY, ox = layout[id].x, oy = layout[id].y;
+        function mv(e) { layout[id].x = ox + e.clientX - sx; layout[id].y = Math.max(0, oy + e.clientY - sy); el.style.left = layout[id].x + 'px'; el.style.top = layout[id].y + 'px'; }
+        function up() { window.removeEventListener('pointermove', mv); window.removeEventListener('pointerup', up); applyLayout(); saveLayout(); }
+        window.addEventListener('pointermove', mv);
+        window.addEventListener('pointerup', up);
+      });
+      if (window.ResizeObserver) new ResizeObserver(function () {
+        if (!isDesk() || el.classList.contains('closed')) return;
+        var w = el.offsetWidth, hh = el.offsetHeight;
+        if (Math.abs(w - layout[id].w) > 2 || Math.abs(hh - layout[id].h) > 2) { layout[id].w = w; layout[id].h = hh; saveLayout(); }
+      }).observe(el);
+    });
+    layout = loadLayout();
+    Object.keys(layout).forEach(function (id) { zTop = Math.max(zTop, layout[id].z || 0); });
+    applyLayout();
+    selectTabSilently('fac');
+    deskMQ.addEventListener ? deskMQ.addEventListener('change', function () { applyLayout(); htmlCache = {}; }) : deskMQ.addListener(function () { applyLayout(); });
+    window.addEventListener('resize', function () { if (isDesk()) applyLayout(); });
+  })();
+  function selectTabSilently(id) {
+    activeTab = id;
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (x) { x.classList.toggle('active', x.dataset.tab === id); });
+    WINDOWS.forEach(function (w) { winEl(w.id).classList.toggle('active', w.id === id); });
+  }
+  $('btnLayout').addEventListener('click', function () { layout = defaultLayout(); applyLayout(); saveLayout(); });
+
+  var WIN_LOCK = {
+    bp: function () { return C.bpUnlocked(state); },
+    trial: function () { return C.trialUnlocked(state); },
+    tree: function () { return state.trial.runs > 0 || state.tree.shards > 0 || Object.keys(state.tree.owned).length > 1; },
+    grade: function () { return state.promotions > 0 || state.units > 0 || C.promotionUnits(state) > 0; },
+  };
+  function winOpenable(id) {
+    var gs = state.story.guide || (state.story.guide = {});
+    if (!WIN_LOCK[id] || gs['w_' + id]) return true;
+    if (WIN_LOCK[id]()) { gs['w_' + id] = 1; return true; }
+    return false;
+  }
+  function updateNavLocks() {
+    Object.keys(WIN_LOCK).forEach(function (id) {
+      var ok = winOpenable(id);
+      var a = document.querySelector('#tabs button[data-tab="' + id + '"]');
+      var b = document.querySelector('#dock button[data-win="' + id + '"]');
+      if (a) a.hidden = !ok;
+      if (b) b.hidden = !ok;
+      winEl(id).classList.toggle('locked', !ok);
+    });
+  }
+  function setDot(id, on) {
+    var a = document.querySelector('#tabs button[data-tab="' + id + '"] .dot');
+    var b = document.querySelector('#dock button[data-win="' + id + '"] .dot');
+    var visible = shown(id) && (!isDesk() || winEl(id).classList.contains('focus'));
+    if (a) a.classList.toggle('on', on && !visible);
+    if (b) b.classList.toggle('on', on && !visible);
+    var d = document.querySelector('#dock button[data-win="' + id + '"]');
+    if (d) d.classList.toggle('open', !!(layout[id] && layout[id].open));
+  }
+
+  /* ---------- 通信ログ ---------- */
+  var newLog = false;
+  function pushLog(kind, who, text) {
+    if (!state.log) state.log = [];
+    state.log.unshift({ k: kind, w: who || '', t: text, s: Math.floor(state.stats.playSeconds) });
+    if (state.log.length > 120) state.log.length = 120;
+    newLog = true;
+  }
+  function clock(sec) { var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60); return h + ':' + String(m).padStart(2, '0'); }
+  function renderLog() {
+    var list = state.log || [];
+    var h = '';
+    list.forEach(function (l) {
+      h += '<div class="log ' + l.k + '"><span class="tm">' + clock(l.s) + '</span><span>' + (l.w ? '<span class="who">' + esc(l.w) + '</span>' : '') + '<span class="tx">' + esc(l.t) + '</span></span></div>';
+    });
+    setPanel('logList', h);
+  }
+
+  /* ============================================================
+   * ホログラムの胚(canvas)。ui.js の中に差し込まれる
+   *   段階ごとに点の並べ方を変え、ゆっくり回す。投影の光、走査線、色のにじみ、ときどき乱れる。
+   * ========================================================== */
+  var emb = { pts: [], key: '', rot: 0, ripples: [], glitch: 0, last: performance.now() };
+
+  function fib(n, r, cx, cy, cz, sx, sy, sz) {
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var y = 1 - (i + 0.5) / n * 2, rad = Math.sqrt(1 - y * y), th = i * 2.39996;
+      out.push([cx + Math.cos(th) * rad * r * (sx || 1), cy + y * r * (sy || 1), cz + Math.sin(th) * rad * r * (sz || 1)]);
+    }
+    return out;
+  }
+  function ball(n, r) {
+    // 中まで詰まった球(卵割期)
+    if (n === 1) return [[0, 0, 0, 1]];
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var f = Math.cbrt((i + 0.5) / n);
+      var p = fib(1, 1, 0, 0, 0)[0];
+      var y = 1 - (i + 0.5) / n * 2, rad = Math.sqrt(1 - y * y), th = i * 2.39996;
+      p = [Math.cos(th) * rad, y, Math.sin(th) * rad];
+      out.push([p[0] * r * f * 1.15, p[1] * r * f * 1.15, p[2] * r * f * 1.15]);
+    }
+    return out;
+  }
+  function buildEmbryoPoints(parts, cleared) {
+    var pts = [];
+    var big = function (p, s) { p[3] = s; return p; };
+    if (cleared) return buildFetus(1, true);
+    if (parts === 1) {
+      // 受精卵: 大きな1つの細胞と、2つの前核、外側の透明帯
+      pts.push([0, 0, 0, 5.2]);
+      pts.push([0.12, -0.05, 0.05, 1.1]);
+      pts.push([-0.14, 0.06, -0.04, 1.0]);
+      fib(36, 0.86, 0, 0, 0).forEach(function (p) { pts.push(big(p, 0.18)); });
+      return pts;
+    }
+    if (parts <= 16) {
+      var r = 0.55;
+      var size = parts === 1 ? 2.6 : 1.9 / Math.cbrt(parts);
+      ball(parts, r).forEach(function (p) { pts.push(big(p, size)); });
+      return pts;
+    }
+    if (parts <= 48) {
+      // 胚盤胞: 中空の殻と、片側に寄った内細胞塊
+      fib(Math.round(parts * 1.2), 0.85, 0, 0, 0).forEach(function (p) { pts.push(big(p, 0.55)); });
+      fib(Math.round(parts * 0.5), 0.3, 0, -0.42, 0).forEach(function (p) { pts.push(big(p, 0.6)); });
+      return pts;
+    }
+    if (parts <= 96) {
+      // 神経胚〜咽頭胚: 細長い体と、並んだ体節
+      var segs = Math.round(parts / 6);
+      for (var i = 0; i < segs; i++) {
+        var t = i / (segs - 1), y = -0.9 + t * 1.8;
+        var rr = 0.32 * (1 - 0.5 * Math.pow(Math.abs(t - 0.35), 1.5));
+        for (var k = 0; k < 6; k++) { var a = k / 6 * Math.PI * 2 + i * 0.4; pts.push([Math.cos(a) * rr, y, Math.sin(a) * rr, 0.5]); }
+      }
+      fib(18, 0.33, 0, -0.85, 0).forEach(function (p) { pts.push(big(p, 0.55)); });
+      return pts;
+    }
+    return buildFetus(Math.min(1, 0.35 + parts / 400), false);
+  }
+
+  /* 胎児。detail で点の密度、full で羊膜・臍帯・心拍まで */
+  function crSpline(P, n) {
+    var out = [];
+    for (var i = 0; i < P.length - 1; i++) {
+      var p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+      for (var k = 0; k < n; k++) {
+        var t = k / n, t2 = t * t, t3 = t2 * t, q = [];
+        for (var d = 0; d < p1.length; d++) q.push(0.5 * (2 * p1[d] + (-p0[d] + p2[d]) * t + (2 * p0[d] - 5 * p1[d] + 4 * p2[d] - p3[d]) * t2 + (-p0[d] + 3 * p1[d] - 3 * p2[d] + p3[d]) * t3));
+        out.push(q);
+      }
+    }
+    out.push(P[P.length - 1].slice());
+    return out;
+  }
+  function tube(pts, ctrl, per, ring, size, flag, seed) {
+    // ctrl: [x, y, z, r]
+    var line = crSpline(ctrl, per);
+    for (var i = 0; i < line.length; i++) {
+      var a = line[Math.max(0, i - 1)], b = line[Math.min(line.length - 1, i + 1)];
+      var tx = b[0] - a[0], ty = b[1] - a[1], tl = Math.hypot(tx, ty) || 1;
+      var nx = -ty / tl, ny = tx / tl;   // xy 面の法線
+      for (var k = 0; k < ring; k++) {
+        var th = k / ring * Math.PI * 2 + i * (seed || 0.7);
+        var c = Math.cos(th), sn = Math.sin(th), r = line[i][3];
+        pts.push([line[i][0] + nx * c * r, line[i][1] + ny * c * r, line[i][2] + sn * r, size, flag || 0]);
+      }
+    }
+    return line;
+  }
+  function center(pts) { pts.forEach(function (p) { if (p[4] !== 4) { p[0] -= 0.12; p[1] += 0.08; } else { p[0] -= 0.05; } }); return pts; }
+  function buildFetus(detail, full) {
+    var pts = [];
+    var d = detail;
+    // 頭: 大きく、前に傾いている
+    fib(Math.round(520 * d), 1, 0, 0, 0).forEach(function (p) {
+      var x = p[0] * 0.36, y = p[1] * 0.33, z = p[2] * 0.3;
+      var a = -0.35, X = x * Math.cos(a) - y * Math.sin(a), Y = x * Math.sin(a) + y * Math.cos(a);
+      pts.push([0.15 + X, -0.37 + Y, z, 0.26, 0]);
+    });
+    // 眼の窪み、耳
+    [1, -1].forEach(function (sd) {
+      fib(Math.round(14 * d) + 4, 0.045, 0.39, -0.35, 0.15 * sd).forEach(function (p) { pts.push([p[0], p[1], p[2], 0.3, 2]); });
+      fib(Math.round(10 * d) + 3, 0.04, 0.05, -0.28, 0.28 * sd).forEach(function (p) { pts.push([p[0], p[1], p[2], 0.3, 0]); });
+    });
+    // 体幹: 丸まった背
+    var body = tube(pts, [
+      [0.1, -0.16, 0, 0.15], [-0.07, 0.03, 0, 0.23], [-0.16, 0.24, 0, 0.24], [-0.09, 0.43, 0, 0.19], [0.06, 0.53, 0, 0.1], [0.16, 0.52, 0, 0.035],
+    ], Math.round(9 * d) + 3, Math.round(16 * d) + 6, 0.3, 0, 0.9);
+    // 背骨(背側に並ぶ点)
+    body.forEach(function (q, i) {
+      if (i % 2) return;
+      var a = body[Math.max(0, i - 1)], b = body[Math.min(body.length - 1, i + 1)];
+      var tx = b[0] - a[0], ty = b[1] - a[1], tl = Math.hypot(tx, ty) || 1;
+      pts.push([q[0] + (ty / tl) * q[3] * 0.82, q[1] - (tx / tl) * q[3] * 0.82, 0, 0.55, 2]);
+    });
+    // 腕と脚(左右)
+    [1, -1].forEach(function (sd) {
+      tube(pts, [[0.02, -0.02, 0.15 * sd, 0.055], [0.14, 0.08, 0.22 * sd, 0.048], [0.26, -0.04, 0.2 * sd, 0.042], [0.32, -0.14, 0.15 * sd, 0.03]], Math.round(5 * d) + 2, Math.round(7 * d) + 4, 0.28, 0, 1.3);
+      fib(Math.round(16 * d) + 4, 0.055, 0.34, -0.17, 0.13 * sd).forEach(function (p) { pts.push([p[0], p[1], p[2], 0.28, 0]); });
+      tube(pts, [[-0.08, 0.38, 0.14 * sd, 0.075], [0.12, 0.33, 0.21 * sd, 0.06], [0.24, 0.38, 0.19 * sd, 0.05], [0.2, 0.52, 0.16 * sd, 0.04]], Math.round(5 * d) + 2, Math.round(8 * d) + 4, 0.28, 0, 1.1);
+      fib(Math.round(14 * d) + 4, 0.05, 0.25, 0.56, 0.16 * sd).forEach(function (p) { pts.push([p[0] * 1.3 - 0.075, p[1], p[2], 0.28, 0]); });
+    });
+    if (!full) return center(pts);
+    // 臍帯: ねじれながら下へ
+    var cord = [];
+    for (var i = 0; i <= 90; i++) {
+      var t = i / 90;
+      var cx = 0.1 + 0.55 * t + 0.08 * Math.sin(t * 9), cy = 0.26 + 0.5 * t * t + 0.06 * Math.sin(t * 7), cz = 0.12 * Math.sin(t * 5);
+      for (var k = 0; k < 3; k++) {
+        var th = t * 38 + k * 2.09;
+        cord.push([cx + Math.cos(th) * 0.03, cy + Math.sin(th) * 0.02, cz + Math.sin(th) * 0.03, 0.3, 3]);
+      }
+    }
+    pts.push.apply(pts, cord);
+    // 羊膜
+    fib(420, 0.98, 0.05, 0.06, 0).forEach(function (p) { pts.push([p[0], p[1], p[2], 0.2, 4]); });
+    // 心
+    pts.push([0.04, 0.1, 0, 1, 1]);
+    return center(pts);
+  }
+
+  function embryoColor(hs, crash) {
+    if (state.story.cleared) return [214, 208, 196];
+    if (crash) return [169, 82, 76];
+    return [[159, 189, 184], [184, 162, 122], [176, 128, 120], [169, 82, 76]][hs];
+  }
+
+  function drawEmbryoFrame(now) {
+    var cv = $('embryo');
+    if (!cv || !cv.getContext) return;
+    var dt = Math.min(0.1, (now - emb.last) / 1000);
+    emb.last = now;
+    var stage = C.stageOf(state.totalCells);
+    var key = stage.parts + ':' + (state.story.cleared ? 1 : 0);
+    if (key !== emb.key) { emb.key = key; emb.pts = buildEmbryoPoints(stage.parts, state.story.cleared); emb.glitch = 0.4; }
+    var crash = state.crashLeft > 0;
+    var hs = C.heatStage(state.heat);
+    emb.rot += dt * (crash ? 1.0 : 0.22 + 0.08 * hs);
+    if (crash && Math.random() < 0.04) emb.glitch = 0.12;
+    if (!crash && Math.random() < 0.002) emb.glitch = 0.08;
+    emb.glitch = Math.max(0, emb.glitch - dt);
+
+    drawHolo(cv, emb.pts, emb.rot, embryoColor(hs, crash), now, { ripples: emb.ripples, dt: dt, glitch: emb.glitch, heat: hs });
+  }
+
+  function drawHolo(cv, pts, rot, col, now, o) {
+    var g = cv.getContext('2d');
+    var W = cv.width, H = cv.height;
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, W, H);
+    var cx = W / 2, cy = H * 0.46, S = W * 0.34;
+    var C3 = col.join(',');
+    // 投影の光(弱く)
+    var base = g.createRadialGradient(cx, H * 0.93, 2, cx, H * 0.93, W * 0.26);
+    base.addColorStop(0, 'rgba(159,189,184,.28)'); base.addColorStop(1, 'rgba(159,189,184,0)');
+    g.fillStyle = base;
+    g.beginPath(); g.ellipse(cx, H * 0.93, W * 0.26, H * 0.03, 0, 0, Math.PI * 2); g.fill();
+    var cone = g.createLinearGradient(0, H * 0.93, 0, H * 0.2);
+    cone.addColorStop(0, 'rgba(159,189,184,.06)'); cone.addColorStop(1, 'rgba(159,189,184,0)');
+    g.fillStyle = cone;
+    g.beginPath(); g.moveTo(cx - W * 0.05, H * 0.93); g.lineTo(cx + W * 0.05, H * 0.93); g.lineTo(cx + W * 0.4, H * 0.2); g.lineTo(cx - W * 0.4, H * 0.2); g.closePath(); g.fill();
+    // 目盛りの輪
+    g.save(); g.translate(cx, cy);
+    g.strokeStyle = 'rgba(159,189,184,.16)'; g.lineWidth = 1;
+    g.setLineDash([2, 10]); g.lineDashOffset = -rot * 30;
+    g.beginPath(); g.ellipse(0, 0, S * 1.35, S * 0.3, 0, 0, Math.PI * 2); g.stroke();
+    g.setLineDash([]); g.restore();
+
+    var cr = Math.cos(rot), sr = Math.sin(rot);
+    var tilt = 0.3, ct = Math.cos(tilt), st = Math.sin(tilt);
+    var proj = pts.map(function (p) {
+      var x = p[0] * cr + p[2] * sr, z = -p[0] * sr + p[2] * cr, y = p[1];
+      var y2 = y * ct - z * st, z2 = y * st + z * ct;
+      var f = 2.4 / (2.4 + z2);
+      return { x: cx + x * S * f, y: cy + y2 * S * f, z: z2, s: (p[3] || 1) * f, k: p[4] || 0 };
+    }).sort(function (a, b) { return b.z - a.z; });
+    var dense = pts.length > 300;
+    var t = now / 1000;
+    var beat = Math.pow(Math.max(0, Math.sin(t * 2 * Math.PI * 1.1)), 12);
+    g.globalCompositeOperation = 'lighter';
+    if (dense) {
+      // 細かな点の集まり。わずかな色ずれ
+      var px = 1;
+      proj.forEach(function (q) {
+        var depth = 1 - (q.z + 1) / 2;
+        var a = q.k === 4 ? 0.06 + 0.06 * depth : q.k === 2 ? 0.5 : 0.16 + 0.42 * depth;
+        if (q.k === 1) return;
+        var r = 1;
+                g.fillStyle = 'rgba(' + C3 + ',' + a + ')'; g.fillRect(Math.round(q.x), Math.round(q.y), r, r);
+      });
+      proj.forEach(function (q) {
+        if (q.k !== 1) return;
+        var rr = W * (0.012 + 0.01 * beat);
+        var grd = g.createRadialGradient(q.x, q.y, 0, q.x, q.y, rr * 3);
+        grd.addColorStop(0, 'rgba(169,82,76,' + (0.35 + 0.4 * beat) + ')'); grd.addColorStop(1, 'rgba(169,82,76,0)');
+        g.fillStyle = grd; g.beginPath(); g.arc(q.x, q.y, rr * 3, 0, Math.PI * 2); g.fill();
+      });
+    } else {
+      var cellR = W * 0.035;
+      proj.forEach(function (q) {
+        g.strokeStyle = 'rgba(163,128,143,' + (0.06 + 0.08 * (1 - q.z)) + ')';
+        g.lineWidth = 1;
+        g.beginPath(); g.arc(q.x - 1.4, q.y, cellR * q.s, 0, Math.PI * 2); g.stroke();
+      });
+      proj.forEach(function (q) {
+        var r = cellR * q.s;
+        var a = 0.2 + 0.35 * (1 - (q.z + 1) / 2);
+        var grd = g.createRadialGradient(q.x, q.y, 0, q.x, q.y, r * 1.3);
+        grd.addColorStop(0, 'rgba(' + C3 + ',' + (a * 0.32) + ')');
+        grd.addColorStop(1, 'rgba(' + C3 + ',0)');
+        g.fillStyle = grd;
+        g.beginPath(); g.arc(q.x, q.y, r * 1.3, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = 'rgba(' + C3 + ',' + (0.25 + a * 0.8) + ')';
+        g.lineWidth = 1;
+        g.beginPath(); g.arc(q.x, q.y, r, 0, Math.PI * 2); g.stroke();
+      });
+    }
+    if (o.ripples) {
+      o.ripples.forEach(function (rp) { rp.t += o.dt; });
+      for (var ri = o.ripples.length - 1; ri >= 0; ri--) if (o.ripples[ri].t >= 0.7) o.ripples.splice(ri, 1);
+      o.ripples.forEach(function (rp) {
+        g.strokeStyle = 'rgba(159,189,184,' + (0.35 * (1 - rp.t / 0.7)) + ')';
+        g.lineWidth = 1;
+        g.beginPath(); g.arc(rp.x, rp.y, 8 + rp.t * W * 0.35, 0, Math.PI * 2); g.stroke();
+      });
+    }
+    g.globalCompositeOperation = 'source-over';
+    // 走査線
+    var sweepY = (now / 22) % (H * 1.4) - H * 0.2;
+    var sw = g.createLinearGradient(0, sweepY - 24, 0, sweepY + 24);
+    sw.addColorStop(0, 'rgba(159,189,184,0)'); sw.addColorStop(0.5, 'rgba(159,189,184,.035)'); sw.addColorStop(1, 'rgba(159,189,184,0)');
+    g.fillStyle = sw; g.fillRect(0, sweepY - 24, W, 48);
+    g.fillStyle = 'rgba(0,0,0,.22)';
+    for (var y = 0; y < H; y += 2) g.fillRect(0, y, W, 1);
+    // ざらつき
+    var nN = Math.round(W * H / 260);
+    for (var n = 0; n < nN; n++) {
+      var v = Math.random();
+      g.fillStyle = v < 0.5 ? 'rgba(0,0,0,.35)' : 'rgba(200,200,190,' + (0.03 + 0.05 * Math.random()) + ')';
+      g.fillRect(Math.random() * W, Math.random() * H, 1, 1);
+    }
+    // 減色(4x4のディザで、決まった段にしか色を置かない)
+    try {
+      var im = g.getImageData(0, 0, W, H), dd = im.data;
+      var B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+      var LV = [0, 0.16, 0.34, 0.58, 0.82, 1.05];
+      var red = [169, 82, 76];
+      for (var py = 0; py < H; py++) for (var pxx = 0; pxx < W; pxx++) {
+        var ix = (py * W + pxx) * 4, r0 = dd[ix], g0 = dd[ix + 1], b0 = dd[ix + 2];
+        var L = Math.max(r0, g0, b0) / 255;
+        var th = (B[(py & 3) * 4 + (pxx & 3)] + 0.5) / 16 - 0.5;
+        var lv = Math.max(0, Math.min(LV.length - 1, Math.round(L * (LV.length - 1) + th)));
+        var base = (r0 - g0 > 40) ? red : col;
+        var k2 = LV[lv];
+        dd[ix] = Math.min(255, base[0] * k2 * 1.1 + 6); dd[ix + 1] = Math.min(255, base[1] * k2 * 1.1 + 7); dd[ix + 2] = Math.min(255, base[2] * k2 * 1.1 + 7);
+      }
+      g.putImageData(im, 0, 0);
+    } catch (e) { /* 何もしない */ }
+    // 乱れ
+    if (o.glitch > 0) {
+      for (var k = 0; k < 3; k++) {
+        var gy = Math.random() * H, gh = 2 + Math.random() * 10, off = (Math.random() - 0.5) * 14;
+        try { g.drawImage(cv, 0, gy, W, gh, off, gy, W, gh); } catch (e) { /* 何もしない */ }
+      }
+    }
+  }
+
+  /* 終わりの像 */
+  var endHolo = { pts: null, rot: 0, on: false };
+  function endingLoop(now) {
+    var cv = $('endingCanvas');
+    if (!endHolo.on || !cv) return;
+    if (!endHolo.pts) endHolo.pts = buildFetus(1, true);
+    endHolo.rot += 0.004;
+    drawHolo(cv, endHolo.pts, endHolo.rot, [214, 208, 196], now, { glitch: Math.random() < 0.01 ? 0.1 : 0 });
+    requestAnimationFrame(endingLoop);
+  }
+  function startEndingHolo() { if (endHolo.on) return; endHolo.on = true; requestAnimationFrame(endingLoop); }
+  function stopEndingHolo() { endHolo.on = false; }
+
+  function embryoLoop(now) { drawEmbryoFrame(now || performance.now()); requestAnimationFrame(embryoLoop); }
+  requestAnimationFrame(embryoLoop);
+
+  $('embryo').addEventListener('click', function (ev) {
+    var v = C.click(state);
+    var cv = $('embryo');
+    var rect = cv.getBoundingClientRect();
+    emb.ripples.push({ x: (ev.clientX - rect.left) / rect.width * cv.width, y: (ev.clientY - rect.top) / rect.height * cv.height, t: 0 });
+    var wrap = $('embryoWrap');
+    var wr = wrap.getBoundingClientRect();
+    var p = document.createElement('div');
+    p.className = 'pop';
+    p.textContent = '+' + fmt(v);
+    p.style.left = (ev.clientX - wr.left - 12 + Math.random() * 24) + 'px';
+    p.style.top = (ev.clientY - wr.top - 20) + 'px';
+    wrap.appendChild(p);
+    setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 800);
+  });
+
+  /* ============================================================
    * 設計図(マス目式)の画面。ui.js の中に差し込まれる
    * ========================================================== */
   var bpMode = 'piece';      // piece / vessel / mod / erase
@@ -3206,7 +4430,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   var bpSrc = null;          // 血管の始点
   var bpZoom = false;
   var bpClearArmed = 0;
-  var ZONE_TINT = { a: '#6ff3ff', b: '#9b8cff', c: '#6dffb0', d: '#ffd36b', e: '#ff8ac2', f: '#c38cff', g: '#ff5ef7' };
+  var ZONE_TINT = { a: '#9fbdb8', b: '#8f88a3', c: '#8fa996', d: '#b8a27a', e: '#b08d99', f: '#9b90a8', g: '#a3808f' };
   var AX_CLASS = { r: 'ax-r', b: 'ax-b', y: 'ax-y', v: 'ax-v' };
   var MOD_MARK = { mirror: '鏡', only_r: '頭', only_b: '背', only_y: '左', only_v: '血' };
 
@@ -3254,7 +4478,7 @@ if (typeof module !== 'undefined') module.exports = Core;
         var z = ch === 'x' ? 'g' : ch;
         var open = C.zoneOpen(state, z);
         var tint = ZONE_TINT[z];
-        if (ch === 'x' && !open) out += '<rect x="' + (x * S + 1) + '" y="' + (y * S + 1) + '" width="' + (S - 2) + '" height="' + (S - 2) + '" fill="rgba(255,94,247,.12)" stroke="#ff5ef7" stroke-width="1" stroke-dasharray="2 2"/>';
+        if (ch === 'x' && !open) out += '<rect x="' + (x * S + 1) + '" y="' + (y * S + 1) + '" width="' + (S - 2) + '" height="' + (S - 2) + '" fill="rgba(163,128,143,.12)" stroke="#a3808f" stroke-width="1" stroke-dasharray="2 2"/>';
         else if (ch === 'g' && !open) out += '<rect x="' + (x * S) + '" y="' + (y * S) + '" width="' + S + '" height="' + S + '" fill="#000"/>';
         else out += '<rect x="' + (x * S + 0.5) + '" y="' + (y * S + 0.5) + '" width="' + (S - 1) + '" height="' + (S - 1) + '" fill="' + tint + '" fill-opacity="' + (open ? 0.07 : 0.02) + '" stroke="' + tint + '" stroke-opacity="' + (open ? 0.28 : 0.08) + '"/>';
       }
@@ -3266,13 +4490,13 @@ if (typeof module !== 'undefined') module.exports = Core;
       var ok = r.vesselOk[i];
       var arr = r.arrivals[i];
       var blood = arr && arr.v && !arr.r && !arr.b && !arr.y;
-      var col = !ok ? '#ff4d6d' : blood ? '#ff4d4d' : '#6ff3ff';
+      var col = !ok ? '#a9524c' : blood ? '#9c514b' : '#9fbdb8';
       out += '<polyline points="' + pts + '" fill="none" stroke="' + col + '" stroke-width="' + Math.max(2, S * 0.16) + '" stroke-linejoin="round" opacity=".85"' + (ok ? '' : ' stroke-dasharray="4 3"') + '/>';
       Object.keys(v.mods || {}).forEach(function (j) {
         var c = v.cells[j];
         if (!c) return;
-        out += '<rect x="' + (c[0] * S + S * 0.18) + '" y="' + (c[1] * S + S * 0.18) + '" width="' + (S * 0.64) + '" height="' + (S * 0.64) + '" fill="#160a24" stroke="#ff5ef7"/>' +
-          '<text x="' + (c[0] * S + S / 2) + '" y="' + (c[1] * S + S * 0.66) + '" font-size="' + (S * 0.42) + '" text-anchor="middle" fill="#ff5ef7">' + MOD_MARK[v.mods[j]] + '</text>';
+        out += '<rect x="' + (c[0] * S + S * 0.18) + '" y="' + (c[1] * S + S * 0.18) + '" width="' + (S * 0.64) + '" height="' + (S * 0.64) + '" fill="#1a1718" stroke="#a3808f"/>' +
+          '<text x="' + (c[0] * S + S / 2) + '" y="' + (c[1] * S + S * 0.66) + '" font-size="' + (S * 0.42) + '" text-anchor="middle" fill="#a3808f">' + MOD_MARK[v.mods[j]] + '</text>';
       });
     });
     // 器官
@@ -3281,34 +4505,34 @@ if (typeof module !== 'undefined') module.exports = Core;
       var cx = o.x * S + S / 2, cy = o.y * S + S / 2, rr = S * 0.44;
       var open = res.open;
       var c = res.empty ? 0 : res.c;
-      var col = !open ? '#3a4a5a' : res.tier === 3 ? '#ff5ef7' : res.tier === 2 ? '#ffd36b' : res.tier === 1 ? '#6dffb0' : '#6ff3ff';
-      out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rr + '" fill="#06101e" stroke="' + col + '" stroke-width="1.5"' + (open && !res.empty ? '' : ' stroke-dasharray="3 2"') + '/>';
+      var col = !open ? '#3c3f3e' : res.tier === 3 ? '#a3808f' : res.tier === 2 ? '#b8a27a' : res.tier === 1 ? '#8fa996' : '#9fbdb8';
+      out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rr + '" fill="#121313" stroke="' + col + '" stroke-width="1.5"' + (open && !res.empty ? '' : ' stroke-dasharray="3 2"') + '/>';
       if (open && !res.empty) {
         var ang = c * 2 * Math.PI;
         var x2 = cx + rr * Math.sin(ang), y2 = cy - rr * Math.cos(ang);
         if (c >= 0.999) out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rr + '" fill="none" stroke="' + col + '" stroke-width="3"/>';
         else if (c > 0) out += '<path d="M' + cx + ' ' + (cy - rr) + ' A' + rr + ' ' + rr + ' 0 ' + (c > 0.5 ? 1 : 0) + ' 1 ' + x2.toFixed(1) + ' ' + y2.toFixed(1) + '" fill="none" stroke="' + col + '" stroke-width="3"/>';
       }
-      out += '<text x="' + cx + '" y="' + (cy + S * 0.15) + '" font-size="' + (S * 0.4) + '" text-anchor="middle" fill="' + (open ? '#e9fbff' : '#6a7b8b') + '">' + esc(o.name.slice(0, o.name.length > 2 ? 2 : o.name.length)) + '</text>';
+      out += '<text x="' + cx + '" y="' + (cy + S * 0.15) + '" font-size="' + (S * 0.4) + '" text-anchor="middle" fill="' + (open ? '#d6d8d2' : '#666a68') + '">' + esc(o.name.slice(0, o.name.length > 2 ? 2 : o.name.length)) + '</text>';
     });
     // 祭壇
     var ax = BP.ALTAR.x * S + S / 2, ay = BP.ALTAR.y * S + S / 2;
     var altarOpen = C.zoneOpen(state, 'g');
-    out += '<path d="M' + ax + ' ' + (ay - S * 0.45) + ' L' + (ax + S * 0.45) + ' ' + ay + ' L' + ax + ' ' + (ay + S * 0.45) + ' L' + (ax - S * 0.45) + ' ' + ay + ' Z" fill="' + (altarOpen ? 'rgba(255,94,247,.2)' : '#000') + '" stroke="#ff5ef7" stroke-width="1"/>';
+    out += '<path d="M' + ax + ' ' + (ay - S * 0.45) + ' L' + (ax + S * 0.45) + ' ' + ay + ' L' + ax + ' ' + (ay + S * 0.45) + ' L' + (ax - S * 0.45) + ' ' + ay + ' Z" fill="' + (altarOpen ? 'rgba(163,128,143,.2)' : '#000') + '" stroke="#a3808f" stroke-width="1"/>';
     // 原基
     Object.keys(state.bp.tiles).forEach(function (k) {
       var t = state.bp.tiles[k];
       var p = BP.parseKey(k);
       var def = BP.PIECE_BY_ID[t.id];
       var bad = r.errors[k];
-      var col = def.altarOnly ? '#ffffff' : bad ? '#ff4d6d' : def.facility ? '#ffd36b' : '#6ff3ff';
-      out += '<rect x="' + (p[0] * S + 2) + '" y="' + (p[1] * S + 2) + '" width="' + (S - 4) + '" height="' + (S - 4) + '" fill="#0a1626" stroke="' + col + '" stroke-width="1.5"/>';
+      var col = def.altarOnly ? '#ffffff' : bad ? '#a9524c' : def.facility ? '#b8a27a' : '#9fbdb8';
+      out += '<rect x="' + (p[0] * S + 2) + '" y="' + (p[1] * S + 2) + '" width="' + (S - 4) + '" height="' + (S - 4) + '" fill="#141515" stroke="' + col + '" stroke-width="1.5"/>';
       var lv = def.facility ? (r.levels[k] !== undefined ? r.levels[k] : t.level) : '';
       out += '<text x="' + (p[0] * S + S / 2) + '" y="' + (p[1] * S + S * 0.62) + '" font-size="' + (S * 0.34) + '" text-anchor="middle" fill="' + col + '">' + esc(def.short.slice(0, 2)) + (lv !== '' ? lv : '') + '</text>';
     });
     // 選択と始点
-    if (bpSrc) { var sp = BP.parseKey(bpSrc); out += '<rect x="' + (sp[0] * S) + '" y="' + (sp[1] * S) + '" width="' + S + '" height="' + S + '" fill="none" stroke="#ff5ef7" stroke-width="3"><animate attributeName="stroke-opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/></rect>'; }
-    if (bpSel) { var se = BP.parseKey(bpSel); out += '<rect x="' + (se[0] * S + 1) + '" y="' + (se[1] * S + 1) + '" width="' + (S - 2) + '" height="' + (S - 2) + '" fill="none" stroke="#ffd36b" stroke-width="2"/>'; }
+    if (bpSrc) { var sp = BP.parseKey(bpSrc); out += '<rect x="' + (sp[0] * S) + '" y="' + (sp[1] * S) + '" width="' + S + '" height="' + S + '" fill="none" stroke="#a3808f" stroke-width="3"><animate attributeName="stroke-opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/></rect>'; }
+    if (bpSel) { var se = BP.parseKey(bpSel); out += '<rect x="' + (se[0] * S + 1) + '" y="' + (se[1] * S + 1) + '" width="' + (S - 2) + '" height="' + (S - 2) + '" fill="none" stroke="#b8a27a" stroke-width="2"/>'; }
     // タップ用の透明な層
     for (var yy = 0; yy < BP.H; yy++) for (var xx = 0; xx < BP.W; xx++) {
       if (BP.MAP[yy].charAt(xx) === ' ') continue;
@@ -3320,12 +4544,10 @@ if (typeof module !== 'undefined') module.exports = Core;
   function renderBpEditor(r) {
     var tools = C.bpTools(state);
     if (bpMode === 'vessel' && bpSrc) {
-      return '<div class="ed-head">血管を引く</div><p>始点: <b>' + esc(slotName(bpSrc)) + '</b>。終点をタップすると、道を探して引く。もう一度始点をタップすると取り消す。</p>' +
-        '<p class="desc">この始点から出ている血管: ' + state.bp.vessels.filter(function (v) { return v.from === bpSrc; }).length + ' / ' + tools.branch + '本</p>';
+      return '<div class="ed-head">' + esc(slotName(bpSrc)) + ' →</div><p class="desc num">' + state.bp.vessels.filter(function (v) { return v.from === bpSrc; }).length + ' / ' + tools.branch + '</p>';
     }
     if (!bpSel) {
-      var tips = { piece: '空いたマスをタップすると、原基を選べる。', vessel: '始点(原基か、何かを送り出す器官)をタップし、次に終点をタップする。', mod: '血管が通っているマスをタップすると、付けるものを選べる。', erase: 'タップした原基や血管を消す。' };
-      return '<p class="hint">' + tips[bpMode] + '</p>';
+      return '';
     }
     var xy = BP.parseKey(bpSel);
     var z = BP.zoneAt(xy[0], xy[1]);
@@ -3337,8 +4559,7 @@ if (typeof module !== 'undefined') module.exports = Core;
       var o = r.organs[organ.id];
       h += '<div class="ed-head">' + esc(organ.name) + '</div>';
       h += '<p>目標: ' + vecHtml(BP.vec(organ.target), organ.show || []) + '</p>';
-      h += o.empty ? '<p>まだ何も届いていない。</p>' : '<p>届いている: ' + vecHtml(o.input) + '</p><p>完成度 <b>' + Math.round(o.c * 100) + '%</b>' + (o.tier ? '(段階' + o.tier + ')' : '') + '</p>';
-      h += '<p class="desc">' + esc(organ.role) + '</p>';
+      h += o.empty ? '' : '<p>届いている: ' + vecHtml(o.input) + '</p><p>完成度 <b>' + Math.round(o.c * 100) + '%</b>' + (o.tier ? '(段階' + o.tier + ')' : '') + '</p>';
       if (organ.product) h += '<p class="desc">送り出すもの(段階1/2/3): ' + organ.product.map(function (p) { var v = BP.vec(p); return BP.AXES.filter(function (a) { return v[a]; }).map(function (a) { return BP.AXIS_NAMES[a] + v[a]; }).join(' ') || 'なし'; }).join(' / ') + '</p>';
       return h;
     }
@@ -3358,7 +4579,7 @@ if (typeof module !== 'undefined') module.exports = Core;
       if (def.facility) {
         h += '<div class="choices">段階 ';
         for (var lv = 1; lv <= def.maxLevel; lv++) h += '<button data-level="' + lv + '" class="' + (tile.level === lv ? 'on' : '') + '">' + lv + '</button>';
-        h += '</div><p class="desc">' + esc(C.FACILITY_BY_ID[def.facility].name) + 'を' + (BP.FACILITY_PER_LEVEL * tile.level) + '個回す(その分は普段の生産から外れる)。</p>';
+        h += '</div><p class="desc">' + esc(C.FACILITY_BY_ID[def.facility].name) + ' ×' + (BP.FACILITY_PER_LEVEL * tile.level) + '</p>';
       }
       h += '<div class="choices"><button data-remove="1">取り除く</button></div>';
       return h;
@@ -3408,12 +4629,11 @@ if (typeof module !== 'undefined') module.exports = Core;
       }
       if (k === bpSrc) { bpSrc = null; return; }
       var res = C.bpConnect(state, bpSrc, k);
-      if (res.ok) toast(slotName(bpSrc) + ' → ' + slotName(k) + ' に血管を引いた', '');
-      else toast(res.msg, 'red');
+      if (!res.ok) toast(res.msg, 'red');
       return;
     }
     if (bpMode === 'erase') {
-      if (state.bp.tiles[k]) { C.bpPlace(state, k, null); toast('原基を取り除いた', ''); return; }
+      if (state.bp.tiles[k]) { C.bpPlace(state, k, null); return; }
       var vs = vesselsAt(xy[0], xy[1]);
       if (vs.length) { C.bpDisconnect(state, vs[vs.length - 1].i); toast('血管を消した', ''); return; }
       bpSel = k;
@@ -3430,8 +4650,8 @@ if (typeof module !== 'undefined') module.exports = Core;
     else if (d.mode) { bpMode = d.mode; bpSrc = null; }
     else if (d.zoom) bpZoom = !bpZoom;
     else if (d.clearall) {
-      if (Date.now() - bpClearArmed < 3000) { C.bpClearAll(state); bpSel = null; bpSrc = null; bpClearArmed = 0; toast('設計図を白紙に戻した', 'red'); }
-      else { bpClearArmed = Date.now(); toast('もう一度押すと、設計図の原基と血管をすべて消す', 'red'); }
+      if (Date.now() - bpClearArmed < 3000) { C.bpClearAll(state); bpSel = null; bpSrc = null; bpClearArmed = 0; }
+      else { bpClearArmed = Date.now(); toast('もう一度', 'red'); }
     } else if (d.piece !== undefined && bpSel) {
       var def = BP.PIECE_BY_ID[d.piece];
       var res = C.bpPlace(state, bpSel, def.facility ? { id: def.id, level: 1 } : { id: def.id });
@@ -3450,11 +4670,11 @@ if (typeof module !== 'undefined') module.exports = Core;
     htmlCache = {};
     render(true);
   }
-  $('panel-bp').addEventListener('click', onBpClick);
+  $('win-bp').addEventListener('click', onBpClick);
 
   function renderBlueprint() {
     if (!C.bpUnlocked(state)) {
-      setPanel('bpBody', '<p class="hint">心筒などの上位の施設を手に入れると、設計図が開く。</p>');
+      setPanel('bpBody', '');
       return;
     }
     var r = C.bpEvaluate(state);
@@ -3469,27 +4689,472 @@ if (typeof module !== 'undefined') module.exports = Core;
     setPanel('bpBody', bar + info + '<div class="bp-board">' + renderBpSvg(r) + '</div><div class="bp-editor">' + renderBpEditor(r) + '</div>');
   }
 
+  /* ============================================================
+   * 試験の画面。ui.js の中に差し込まれる
+   * ========================================================== */
+  var TL = C.TL;
+  var trial = { run: null, speed: 1, invest: 0.5, result: null, fx: [], banner: '', bannerBoss: false, bannerT: 0, built: false, flash: 0 };
+  var SIG_KEYS = ['wnt', 'bmp', 'shh', 'fgf', 'ra'];
+  var ACT_KEYS = { pulse: 'Q', grasp: 'W', fury: 'E', detox: 'R', cool: 'T' };
+  var ORGAN_ABILITY = {
+    thymus: '胸腺: 免疫を撃つ', heart: '心臓: 周りを拍動で叩く / 技「拍動」', armL: '左上肢: 左上を払う', armR: '右上肢: 右上を払う', legL: '左下肢: 左下を払う', legR: '右下肢: 右下を払う',
+    kidneyL: '腎: 近づく負荷を遅くする', kidneyR: '腎: 近づく負荷を遅くする', liver: '肝臓: 少しずつ回復 / 技「解毒」', thyroid: '甲状腺: 発射が速くなる', arch: '咽頭弓: 届く距離が伸びる',
+    brain: '脳: 一番強い負荷を狙う / 技「掌握」', adrenal: '副腎: 技「闘争」', pineal: '松果体: 影を遠くから見抜く', gonad: '生殖腺: 一度だけ持ち直す', tail: '尾: 気力が回復しやすい',
+  };
+
+  $('win-trial').addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b) return;
+    var d = b.dataset;
+    if (d.invest) { trial.invest = Number(d.invest); trial.built = false; }
+    else if (d.start) startTrialRun();
+    else if (d.sig) { if (trial.run) TL.setSignal(trial.run, d.sig); }
+    else if (d.act) { if (trial.run && TL.useActive(trial.run, d.act)) trialFxText(TL.ACTIVE_BY_ID[d.act].name, '#a3808f'); }
+    else if (d.speed) { trial.speed = trial.speed === 1 ? 2 : 1; trial.built = false; }
+    else if (d.giveup) { if (trial.run) { trial.run.over = true; finishTrialRun(); } }
+    else if (d.again) { trial.result = null; trial.built = false; }
+    else return;
+    htmlCache = {};
+    renderTrial(true);
+  });
+
+  document.addEventListener('keydown', function (ev) {
+    if (!trial.run || !shown('trial') || ev.target.tagName === 'INPUT') return;
+    var k = ev.key.toUpperCase();
+    var n = Number(ev.key);
+    if (n >= 1 && n <= 5) { TL.setSignal(trial.run, SIG_KEYS[n - 1]); ev.preventDefault(); }
+    Object.keys(ACT_KEYS).forEach(function (id) { if (ACT_KEYS[id] === k && TL.useActive(trial.run, id)) { trialFxText(TL.ACTIVE_BY_ID[id].name, '#a3808f'); ev.preventDefault(); } });
+  });
+
+  function startTrialRun() {
+    var T = C.startTrial(state, trial.invest);
+    if (!T) return;
+    trial.run = T; trial.fx = []; trial.result = null; trial.built = false;
+    trialBanner('第Ⅰ相 開始', false);
+    lastTrialT = performance.now();
+    requestAnimationFrame(trialLoop);
+  }
+  function finishTrialRun() {
+    var T = trial.run;
+    var res = C.finishTrial(state, T);
+    trial.result = Object.assign({ wave: T.wave, kills: T.kills, phase: TL.phaseOf(Math.max(1, T.cleared)) }, res);
+    trial.run = null; trial.built = false;
+    toast(res.cleared + '波', res.record ? 'gold' : '');
+    pushLog('event', '試験', res.cleared + '波');
+    if (res.shards > 0) newShards = true;
+    save();
+    htmlCache = {};
+    render(true);
+  }
+
+  function trialBanner(text, boss) { trial.banner = text; trial.bannerBoss = boss; trial.bannerT = 3; }
+  function trialFxText(text, color) { trial.fx.push({ kind: 'text', text: text, color: color, t: 0, life: 1.2 }); }
+
+  var lastTrialT = 0;
+  function trialLoop(now) {
+    var T = trial.run;
+    if (!T) return;
+    var dt = Math.min(0.1, (now - lastTrialT) / 1000) * trial.speed;
+    lastTrialT = now;
+    var steps = Math.ceil(dt / (1 / 30));
+    for (var i = 0; i < steps && !T.over; i++) TL.step(T, dt / steps);
+    TL.takeEvents(T).forEach(function (e) {
+      if (e.type === 'shot') trial.fx.push({ kind: 'beam', a: e.a, r: e.r, src: e.source, t: 0, life: 0.18 });
+      else if (e.type === 'pulse') trial.fx.push({ kind: 'ring', r: e.r, t: 0, life: 0.5, color: '#a8706a' });
+      else if (e.type === 'sweep') trial.fx.push({ kind: 'arc', from: e.from, to: e.to, t: 0, life: 0.35 });
+      else if (e.type === 'kill') trial.fx.push({ kind: 'burst', a: e.a, r: e.r, t: 0, life: 0.5, boss: e.boss });
+      else if (e.type === 'hit' && e.source === 'tap') trial.fx.push({ kind: 'spark', a: e.a, r: e.r, t: 0, life: 0.3, crit: e.crit });
+      else if (e.type === 'reach') trial.flash = 0.35;
+      else if (e.type === 'wave') { trialBanner(e.phase + ' 第' + e.wave + '波', false); }
+      else if (e.type === 'boss') { trialBanner('介入: ' + e.name, true); pushLog('event', '試験', '介入「' + e.name + '」'); }
+      else if (e.type === 'overheat') trialBanner('過熱 迎撃停止', true);
+      else if (e.type === 'revive') trialBanner('持ち直した', false);
+      else if (e.type === 'active' && e.id === 'pulse') trial.fx.push({ kind: 'ring', r: 0.6, t: 0, life: 0.6, color: '#a3808f' });
+    });
+    trial.bannerT = Math.max(0, trial.bannerT - dt);
+    trial.flash = Math.max(0, trial.flash - dt);
+    drawTrial();
+    updateTrialHud();
+    if (T.over) { finishTrialRun(); return; }
+    requestAnimationFrame(trialLoop);
+  }
+
+  function arenaXY(cv, a, r) {
+    var R = cv.width * 0.46;
+    return [cv.width / 2 + Math.cos(a) * r * R, cv.height / 2 + Math.sin(a) * r * R];
+  }
+
+  function drawTrial() {
+    var cv = $('trialCanvas');
+    var T = trial.run;
+    if (!cv || !T) return;
+    var g = cv.getContext('2d');
+    var W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, R = W * 0.46;
+    g.clearRect(0, 0, W, H);
+    // 場
+    g.strokeStyle = 'rgba(159,189,184,.12)'; g.lineWidth = 1;
+    for (var k = 1; k <= 4; k++) { g.beginPath(); g.arc(cx, cy, R * k / 4, 0, Math.PI * 2); g.stroke(); }
+    for (var q = 0; q < 8; q++) { var aa = q * Math.PI / 4; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(aa) * R, cy + Math.sin(aa) * R); g.stroke(); }
+    // 届く距離と、影を見抜く範囲
+    g.setLineDash([4, 6]);
+    g.strokeStyle = 'rgba(159,189,184,.35)'; g.beginPath(); g.arc(cx, cy, R * Math.min(1, TL.effRange(T)), 0, Math.PI * 2); g.stroke();
+    g.strokeStyle = 'rgba(163,128,143,.3)'; g.beginPath(); g.arc(cx, cy, R * TL.revealR(T), 0, Math.PI * 2); g.stroke();
+    g.setLineDash([]);
+    // him
+    var pulse = 1 + 0.06 * Math.sin(T.t * 4);
+    var hc = T.him.stun > 0 ? '169,82,76' : T.fury > 0 ? '163,128,143' : '159,189,184';
+    var grd = g.createRadialGradient(cx, cy, 0, cx, cy, R * 0.16 * pulse);
+    grd.addColorStop(0, 'rgba(' + hc + ',.9)'); grd.addColorStop(0.4, 'rgba(' + hc + ',.35)'); grd.addColorStop(1, 'rgba(' + hc + ',0)');
+    g.fillStyle = grd; g.beginPath(); g.arc(cx, cy, R * 0.16 * pulse, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = 'rgba(' + hc + ',.9)'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, R * TL.CORE_R, 0, Math.PI * 2); g.stroke();
+    // 負荷
+    T.threats.forEach(function (th) {
+      var p = arenaXY(cv, th.a, th.r);
+      var vis = TL.visible(T, th);
+      var d = TL.THREATS[th.type];
+      var size = (th.boss ? 24 : th.type === 'immune' ? 14 : 10) * (W / 560);
+      g.globalAlpha = vis ? 1 : 0.18;
+      g.strokeStyle = d.color; g.fillStyle = d.color; g.lineWidth = 1.5;
+      g.save(); g.translate(p[0], p[1]); g.rotate(T.t * (th.boss ? 0.6 : 2) + th.id);
+      g.beginPath();
+      if (th.type === 'bact') { g.ellipse(0, 0, size, size * 0.55, 0, 0, Math.PI * 2); }
+      else if (th.type === 'tera') { for (var s = 0; s < 3; s++) { var an = s * 2 * Math.PI / 3; g[s ? 'lineTo' : 'moveTo'](Math.cos(an) * size, Math.sin(an) * size); } g.closePath(); }
+      else if (th.type === 'immune') { g.arc(0, 0, size, 0, Math.PI * 2); g.moveTo(size * 0.5, 0); g.arc(0, 0, size * 0.5, 0, Math.PI * 2); }
+      else if (th.type === 'shade') { g.moveTo(0, -size); g.lineTo(size, 0); g.lineTo(0, size); g.lineTo(-size, 0); g.closePath(); }
+      else { for (var b = 0; b < 6; b++) { var ab = b * Math.PI / 3; g[b ? 'lineTo' : 'moveTo'](Math.cos(ab) * size, Math.sin(ab) * size); } g.closePath(); }
+      g.globalAlpha = (vis ? 1 : 0.18) * 0.18; g.fill(); g.globalAlpha = vis ? 1 : 0.18; g.stroke();
+      g.restore();
+      // 体力の輪
+      if (vis && th.hp < th.maxHp) {
+        g.strokeStyle = d.color; g.lineWidth = 2;
+        g.beginPath(); g.arc(p[0], p[1], size + 4, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * th.hp / th.maxHp); g.stroke();
+      }
+      if (th.boss && vis) { g.fillStyle = '#a9524c'; g.font = Math.max(7, 12 * W / 560) + 'px DotGothic16, monospace'; g.textAlign = 'center'; g.fillText(th.name, p[0], p[1] - size - 8); }
+      g.globalAlpha = 1;
+    });
+    // 演出
+    g.globalCompositeOperation = 'lighter';
+    trial.fx = trial.fx.filter(function (f) { f.t += 1 / 60 * trial.speed; return f.t < f.life; });
+    trial.fx.forEach(function (f) {
+      var k2 = 1 - f.t / f.life;
+      if (f.kind === 'beam') {
+        var p = arenaXY(cv, f.a, f.r);
+        g.strokeStyle = (f.src === 'thymus' ? 'rgba(143,169,150,' : 'rgba(159,189,184,') + k2 + ')'; g.lineWidth = 2;
+        g.beginPath(); g.moveTo(cx, cy); g.lineTo(p[0], p[1]); g.stroke();
+      } else if (f.kind === 'ring') {
+        g.strokeStyle = f.color; g.globalAlpha = k2; g.lineWidth = 3;
+        g.beginPath(); g.arc(cx, cy, R * f.r * (1 - 0.5 * k2), 0, Math.PI * 2); g.stroke(); g.globalAlpha = 1;
+      } else if (f.kind === 'arc') {
+        g.strokeStyle = 'rgba(184,162,122,' + k2 + ')'; g.lineWidth = 6;
+        g.beginPath(); g.arc(cx, cy, R * 0.42, f.from, f.to); g.stroke();
+      } else if (f.kind === 'burst' || f.kind === 'spark') {
+        var p2 = arenaXY(cv, f.a, f.r);
+        var n = f.kind === 'burst' ? (f.boss ? 24 : 8) : 5;
+        g.strokeStyle = f.crit ? 'rgba(163,128,143,' + k2 + ')' : 'rgba(159,189,184,' + k2 + ')';
+        g.lineWidth = 1.5;
+        for (var i = 0; i < n; i++) {
+          var an2 = i / n * Math.PI * 2, d1 = (1 - k2) * (f.boss ? 60 : 22), d2 = d1 + 6;
+          g.beginPath(); g.moveTo(p2[0] + Math.cos(an2) * d1, p2[1] + Math.sin(an2) * d1); g.lineTo(p2[0] + Math.cos(an2) * d2, p2[1] + Math.sin(an2) * d2); g.stroke();
+        }
+      } else if (f.kind === 'text') {
+        g.globalCompositeOperation = 'source-over';
+        g.fillStyle = f.color; g.globalAlpha = k2; g.font = Math.max(9, 22 * W / 560) + 'px DotGothic16, monospace'; g.textAlign = 'center';
+        g.fillText(f.text, cx, cy - R * 0.25 - (1 - k2) * 20); g.globalAlpha = 1;
+        g.globalCompositeOperation = 'lighter';
+      }
+    });
+    g.globalCompositeOperation = 'source-over';
+    if (trial.flash > 0) { g.fillStyle = 'rgba(169,82,76,' + trial.flash * 0.5 + ')'; g.fillRect(0, 0, W, H); }
+    if (T.grasp > 0) { g.fillStyle = 'rgba(143,136,163,.08)'; g.fillRect(0, 0, W, H); }
+  }
+
+  function updateTrialHud() {
+    var T = trial.run;
+    if (!T || !$('trWave')) return;
+    setText($('trWave'), T.wave + '波');
+    setText($('trPhase'), TL.phaseOf(Math.max(1, T.wave)));
+    setText($('trKills'), String(T.kills));
+    $('trHp').style.width = Math.max(0, T.him.hp / T.him.maxHp * 100) + '%';
+    $('trEn').style.width = Math.max(0, T.him.energy / T.him.maxEnergy * 100) + '%';
+    $('trHeat').style.width = Math.min(100, T.him.heat) + '%';
+    setText($('trHpN'), Math.ceil(T.him.hp) + ' / ' + Math.ceil(T.him.maxHp));
+    setText($('trEnN'), Math.floor(T.him.energy) + ' / ' + Math.floor(T.him.maxEnergy));
+    setText($('trHeatN'), String(Math.floor(T.him.heat)));
+    var bn = $('trBanner');
+    setText(bn, trial.bannerT > 0 ? trial.banner : '');
+    bn.classList.toggle('boss', trial.bannerBoss);
+    SIG_KEYS.forEach(function (s) { var b = document.querySelector('[data-sig="' + s + '"]'); if (b) b.classList.toggle('on', T.signal === s); });
+    TL.ACTIVES.forEach(function (a) {
+      var b = document.querySelector('[data-act="' + a.id + '"]');
+      if (!b) return;
+      b.disabled = !TL.activeAvailable(T, a.id) || (T.cds[a.id] || 0) > 0 || T.him.energy < a.cost;
+      var bar = b.querySelector('.cdb');
+      if (bar) bar.style.width = ((T.cds[a.id] || 0) / a.cd * 100) + '%';
+    });
+  }
+
+  function renderTrial(force) {
+    if (!C.trialUnlocked(state)) { setPanel('trialBody', ''); trial.built = false; return; }
+    if (trial.run) {
+      if (trial.built === 'run') return;
+      trial.built = 'run';
+      var T = trial.run;
+      var sigs = SIG_KEYS.map(function (s, i) { var d = TL.SIGNALS[s]; return '<button data-sig="' + s + '"><span class="k">' + (i + 1) + '</span>' + esc(d.name) + '</button>'; }).join('');
+      var acts = TL.ACTIVES.map(function (a) {
+        var ok = TL.activeAvailable(T, a.id);
+        return '<button data-act="' + a.id + '"' + (ok ? '' : ' disabled') + '><span class="k">' + ACT_KEYS[a.id] + '</span>' + esc(a.name) + '<small>' + (ok ? '気力' + a.cost + ' ' + esc(a.desc) : '器官がない') + '</small><i class="cdb"></i></button>';
+      }).join('');
+      setPanel('trialBody', '<div class="tr-wrap">' +
+        '<div class="tr-hud"><div>相<b id="trPhase"></b></div><div>波<b id="trWave"></b></div><div>撃破<b id="trKills"></b></div>' +
+        '<div>体力 <span id="trHpN" class="num"></span><div class="tr-bar"><i id="trHp" style="background:#8fa996"></i></div></div>' +
+        '<div>気力 <span id="trEnN" class="num"></span><div class="tr-bar"><i id="trEn" style="background:#9fbdb8"></i></div></div>' +
+        '<div>ヒート <span id="trHeatN" class="num"></span><div class="tr-bar"><i id="trHeat" style="background:#a9524c"></i></div></div></div>' +
+        '<div class="tr-banner" id="trBanner"></div>' +
+        '<canvas id="trialCanvas" width="280" height="280"></canvas>' +
+        '<div class="tr-ctrl">' + sigs + '</div><div class="tr-ctrl">' + acts + '</div>' +
+        '<div class="tr-ctrl"><button data-speed="1">速さ ×' + trial.speed + '</button><button data-giveup="1">打ち切る</button></div>' +
+        '</div>');
+      var cv = $('trialCanvas');
+      cv.addEventListener('pointerdown', function (ev) {
+        if (!trial.run) return;
+        var rect = cv.getBoundingClientRect();
+        var x = ((ev.clientX - rect.left) / rect.width - 0.5) * 2 / 0.92;
+        var y = ((ev.clientY - rect.top) / rect.height - 0.5) * 2 / 0.92;
+        TL.tap(trial.run, x, y);
+      });
+      updateTrialHud();
+      return;
+    }
+    if (trial.built === 'idle' && !force) return;
+    trial.built = 'idle';
+    var h = '';
+    if (trial.result) {
+      var r = trial.result;
+      h += '<div class="tr-result howto"><div class="big">' + r.cleared + '波</div><p>' + esc(r.phase) + ' / 撃破 ' + r.kills + '</p>' +
+        '<p>殻片 <b>+' + r.shards + '</b>' + '' + '</p><button data-again="1">戻る</button></div>';
+      setPanel('trialBody', h);
+      return;
+    }
+    var st = C.trialStats(state, state.cells * trial.invest);
+    var abil = Object.keys(st.organs).filter(function (k) { return st.organs[k] > 0; }).map(function (k) { return ORGAN_ABILITY[k] + '(段階' + st.organs[k] + ')'; });
+    h += '<div class="tr-start">';
+    h += '<div class="howto">' +
+      '<p>攻撃 <b>' + st.power.toFixed(1) + '</b> / 体力 <b>' + Math.round(st.hp) + '</b> / 気力 <b>' + Math.round(st.energy) + '</b></p>' +
+      (abil.length ? '<p>' + abil.map(esc).join(' / ') + '</p>' : '') + '</div>';
+    h += '<div class="seg-row"><div class="seg">' + [0, 0.25, 0.5, 1].map(function (f) { return '<button data-invest="' + f + '" class="' + (trial.invest === f ? 'active' : '') + '">' + (f * 100) + '%</button>'; }).join('') + '</div>' +
+      '<span class="hint num">' + fmt(state.cells * trial.invest) + '</span></div>';
+    h += '<button class="btn" data-start="1" style="padding:10px;font-size:14px">試験を始める</button>';
+    h += '<div class="tr-hist">到達点 ' + state.trial.best + '波(' + TL.phaseOf(Math.max(1, state.trial.best)) + ') / 試験 ' + state.trial.runs + '回<br>' +
+      state.trial.history.map(function (x) { return x.cleared + '波 殻片+' + x.shards + (x.record ? ' 新記録' : ''); }).join('<br>') + '</div>';
+    h += '</div>';
+    setPanel('trialBody', h);
+  }
+
+  /* ============================================================
+   * 樹の画面(canvas)。ui.js の中に差し込まれる
+   * ========================================================== */
+  var TRE = C.TR;
+  var tview = { x: 0, y: 80, z: 1, sel: null, built: false, drag: null, revealT: 0, centered: false };
+  var newShards = false;
+  var ROMAN = ['', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ', 'Ⅸ', 'Ⅹ'];
+
+  function treeScreen(cv, n) {
+    return [cv.width / 2 + (n.x - tview.x) * tview.z, cv.height / 2 + (n.y - tview.y) * tview.z];
+  }
+
+  function drawTree(now) {
+    var cv = $('treeCanvas');
+    if (!cv) return;
+    var rect = cv.getBoundingClientRect();
+    var dpr = 0.42;   // わざと粗く
+    var W = Math.max(200, Math.round(rect.width * dpr)), H = Math.max(200, Math.round(rect.height * dpr));
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+    var g = cv.getContext('2d');
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, W, H);
+    var z = tview.z * dpr;
+    var tx = function (n) { return [W / 2 + (n.x - tview.x) * z, H / 2 + (n.y - tview.y) * z]; };
+    var owned = state.tree.owned;
+    var vis = TRE.visibility(owned);
+    var rev = C.treeRevealed(state);
+    var t = (now || performance.now()) / 1000;
+    // 明かされたら、球と道を薄く全部見せる
+    if (rev) {
+      g.strokeStyle = 'rgba(163,128,143,.18)'; g.lineWidth = 14 * z;
+      TRE.PATHS.forEach(function (p) {
+        var a = tx(TRE.SPHERE_BY_ID[p[0]]), b = tx(TRE.SPHERE_BY_ID[p[1]]);
+        g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+      });
+    }
+    // つながり
+    TRE.NODES.forEach(function (n) {
+      var vn = vis[n.id] || (rev ? 'seen' : null);
+      if (!vn) return;
+      var a = tx(n);
+      TRE.ADJ[n.id].forEach(function (mid) {
+        if (mid < n.id) return;
+        var vm = vis[mid] || (rev ? 'seen' : null);
+        if (!vm) return;
+        var b = tx(TRE.NODE_BY_ID[mid]);
+        var both = owned[n.id] && owned[mid];
+        var fog = vn === 'fog' || vm === 'fog' || vn === 'seen' || vm === 'seen';
+        g.strokeStyle = both ? 'rgba(163,128,143,.85)' : fog ? 'rgba(159,189,184,.10)' : 'rgba(159,189,184,.4)';
+        g.lineWidth = both ? 2 * dpr : 1 * dpr;
+        g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+      });
+    });
+    // 節
+    g.textAlign = 'center';
+    TRE.NODES.forEach(function (n) {
+      var v = vis[n.id] || (rev ? 'seen' : null);
+      if (!v) return;
+      var p = tx(n);
+      var key = n.kind === 'key';
+      var r = (key ? 13 : n.kind === 'ring' ? 6 : 5) * z;
+      if (v === 'fog') { g.fillStyle = 'rgba(159,189,184,.18)'; g.beginPath(); g.arc(p[0], p[1], Math.max(1.5, r * 0.4), 0, Math.PI * 2); g.fill(); return; }
+      var own = !!owned[n.id];
+      var can = v === 'open' && state.tree.shards >= TRE.cost(n.id);
+      if (own) {
+        var gl = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 2.4);
+        gl.addColorStop(0, key ? 'rgba(163,128,143,.6)' : 'rgba(163,128,143,.35)'); gl.addColorStop(1, 'rgba(163,128,143,0)');
+        g.fillStyle = gl; g.beginPath(); g.arc(p[0], p[1], r * 2.4, 0, Math.PI * 2); g.fill();
+        g.fillStyle = key ? '#c4a7b3' : '#a3808f';
+        g.beginPath(); g.arc(p[0], p[1], r, 0, Math.PI * 2); g.fill();
+      } else {
+        g.strokeStyle = v === 'seen' ? 'rgba(159,189,184,.25)' : can ? 'rgba(159,189,184,' + (0.6 + 0.4 * Math.sin(t * 4)) + ')' : 'rgba(159,189,184,.55)';
+        g.lineWidth = (can ? 2 : 1) * dpr;
+        g.fillStyle = 'rgba(16,17,17,.9)';
+        g.beginPath(); g.arc(p[0], p[1], r, 0, Math.PI * 2); g.fill(); g.stroke();
+      }
+      if (tview.sel === n.id) { g.strokeStyle = '#b8a27a'; g.lineWidth = 2 * dpr; g.beginPath(); g.arc(p[0], p[1], r + 5 * dpr, 0, Math.PI * 2); g.stroke(); }
+      if (key && (own || v === 'open' || rev)) {
+        var s = TRE.SPHERE_BY_ID[n.id];
+        g.fillStyle = own ? '#fff' : 'rgba(159,189,184,.8)';
+        g.font = Math.max(7, 11 * z) + 'px DotGothic16, monospace';
+        g.fillText(ROMAN[s.no], p[0], p[1] + 4 * z);
+      }
+    });
+  }
+
+  function treeLoop(now) { if (shown('tree')) drawTree(now); requestAnimationFrame(treeLoop); }
+  requestAnimationFrame(treeLoop);
+
+  function treeHit(cv, ev) {
+    var rect = cv.getBoundingClientRect();
+    var mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+    var vis = TRE.visibility(state.tree.owned);
+    var rev = C.treeRevealed(state);
+    var best = null, bd = 16 * 16;
+    TRE.NODES.forEach(function (n) {
+      var v = vis[n.id] || (rev ? 'seen' : null);
+      if (!v || v === 'fog') return;
+      var x = rect.width / 2 + (n.x - tview.x) * tview.z, y = rect.height / 2 + (n.y - tview.y) * tview.z;
+      var d = (x - mx) * (x - mx) + (y - my) * (y - my);
+      if (d < bd) { bd = d; best = n.id; }
+    });
+    return best;
+  }
+
+  function bindTreeCanvas() {
+    var cv = $('treeCanvas');
+    if (!cv || cv.__bound) return;
+    cv.__bound = true;
+    var moved = false;
+    cv.addEventListener('pointerdown', function (ev) {
+      tview.drag = { x: ev.clientX, y: ev.clientY, vx: tview.x, vy: tview.y };
+      moved = false;
+      cv.setPointerCapture(ev.pointerId);
+    });
+    cv.addEventListener('pointermove', function (ev) {
+      if (!tview.drag) return;
+      var dx = ev.clientX - tview.drag.x, dy = ev.clientY - tview.drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+      tview.x = tview.drag.vx - dx / tview.z; tview.y = tview.drag.vy - dy / tview.z;
+    });
+    cv.addEventListener('pointerup', function (ev) {
+      if (!moved) { var id = treeHit(cv, ev); if (id) { tview.sel = id; htmlCache = {}; renderTreeSel(); } }
+      tview.drag = null;
+    });
+    cv.addEventListener('wheel', function (ev) {
+      ev.preventDefault();
+      tview.z = Math.max(0.35, Math.min(2.5, tview.z * (ev.deltaY < 0 ? 1.1 : 0.9)));
+    }, { passive: false });
+  }
+
+  $('win-tree').addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b) return;
+    if (b.dataset.buy) {
+      var id = b.dataset.buy;
+      if (C.buyNode(state, id)) {
+        var n = TRE.NODE_BY_ID[id];
+        if (n.kind === 'key') toast(n.text, 'dark');
+      }
+    } else if (b.dataset.zoom) tview.z = Math.max(0.35, Math.min(2.5, tview.z * Number(b.dataset.zoom)));
+    else if (b.dataset.home) { tview.x = 0; tview.y = 80; tview.z = 1; }
+    else return;
+    htmlCache = {};
+    renderTree(true);
+  });
+
+  function renderTreeSel() {
+    var id = tview.sel;
+    var el = $('treeSel');
+    if (!el) return;
+    if (!id) { setPanel('treeSel', ''); return; }
+    var n = TRE.NODE_BY_ID[id];
+    var own = state.tree.owned[id];
+    var can = TRE.canBuy(state.tree.owned, id);
+    var c = TRE.cost(id);
+    var s = n.sphere ? TRE.SPHERE_BY_ID[n.sphere] : null;
+    var rev = C.treeRevealed(state);
+    var h = n.kind === 'key' ? '<div class="t">' + ROMAN[s.no] + '</div>' : '';
+    h += '<div>' + esc(n.label) + '</div>';
+    if (n.text) h += '<div class="q">' + esc(n.text) + '</div>';
+    if (!own && can) h += '<button data-buy="' + id + '"' + (state.tree.shards < c ? ' disabled' : '') + '>殻片 ' + c + ' で開く</button>';
+    setPanel('treeSel', h);
+  }
+
+  function renderTree(force) {
+    var rev = C.treeRevealed(state);
+    if (!$('treeCanvas')) {
+      setPanel('treeBody', '<div class="tree-top"><span>殻片 <b id="treeShards"></b></span><span class="seg"><button data-zoom="1.2">拡大</button><button data-zoom="0.83">縮小</button><button data-home="1">始まりへ</button></span></div>' +
+        '<div id="treeView"><canvas id="treeCanvas"></canvas></div><div class="tree-sel" id="treeSel"></div>');
+      bindTreeCanvas();
+    }
+    setText($('treeShards'), String(state.tree.shards));
+    renderTreeSel();
+  }
+
 
   /* ---------- まとめて描く ---------- */
   var lastSlow = 0;
   var bpSeenUnlock = false;
+  var lastTrialIdle = 0, lastLog = 0;
   function render(force) {
     var t = performance.now();
     var rates = C.computeRates(state);
     renderTop(rates);
     renderMiddle();
-    if (activeTab === 'fac') renderFacilities(rates);
-    if (activeTab === 'upg') renderUpgrades();
-    if (activeTab === 'drug') renderDrugs();
-    if (activeTab === 'bp' && (force || t - lastSlow > 500)) { renderBlueprint(); lastSlow = t; }
-    if (activeTab === 'codex' && (force || t - lastSlow > 1000)) { renderCodex(); lastSlow = t; }
-    if (activeTab === 'rec' && (force || t - lastSlow > 1000)) { renderWave(); renderStats(); lastSlow = t; }
-    if (activeTab === 'grade') renderGrade();
-    var dots = document.querySelectorAll('#tabs .dot');
-    dots[TAB_INDEX.upg].classList.toggle('on', activeTab !== 'upg' && (anyUpgradeBuyable() || newCard));
-    dots[TAB_INDEX.bp].classList.toggle('on', activeTab !== 'bp' && C.bpUnlocked(state) && !bpSeenUnlock);
-    dots[TAB_INDEX.codex].classList.toggle('on', activeTab !== 'codex' && (newPage || newGuide));
-    dots[TAB_INDEX.grade].classList.toggle('on', activeTab !== 'grade' && C.promotionUnits(state) > 0);
+    updateNavLocks();
+    if (shown('fac')) renderFacilities(rates);
+    if (shown('upg')) renderUpgrades();
+    if (shown('drug')) renderDrugs();
+    if (shown('bp') && (force || t - lastSlow > 500)) { renderBlueprint(); lastSlow = t; }
+    if (shown('codex') && (force || t - lastSlow > 1000)) { renderCodex(); lastSlow = t; }
+    if (shown('rec') && (force || t - lastSlow > 1000)) { renderWave(); renderStats(); lastSlow = t; }
+    if (shown('grade')) renderGrade();
+    if (shown('trial') && (force || trial.run || t - lastTrialIdle > 1000)) { renderTrial(force || (!trial.run && t - lastTrialIdle > 1000)); lastTrialIdle = t; }
+    if (shown('tree')) renderTree(force);
+    if (shown('log') && (force || t - lastLog > 1000)) { renderLog(); lastLog = t; }
+    setDot('upg', anyUpgradeBuyable() || newCard);
+    setDot('bp', C.bpUnlocked(state) && !bpSeenUnlock);
+    setDot('codex', newPage || newGuide);
+    setDot('grade', C.promotionUnits(state) > 0);
+    setDot('trial', C.trialUnlocked(state) && state.trial.runs === 0);
+    setDot('tree', newShards || TRE.NODES.some(function (n) { return TRE.canBuy(state.tree.owned, n.id) && state.tree.shards >= TRE.cost(n.id); }));
+    setDot('log', newLog);
+    ['fac', 'drug', 'rec'].forEach(function (id) { setDot(id, false); });
   }
 
   /* ---------- 出来事の知らせ ---------- */
@@ -3501,22 +5166,22 @@ if (typeof module !== 'undefined') module.exports = Core;
       promotions: state.promotions, zones: C.openZoneCount(state), bp: C.bpUnlocked(state),
     };
     if (prev && prev.promotions === cur.promotions) {
-      if (cur.crash && !prev.crash) toast('暴走した。' + C.CONFIG.heat.crashSeconds + '秒間、生産が-99%', 'red');
-      if (!cur.crash && prev.crash) toast('暴走が明けた。しばらく不応期', 'blue');
-      if (cur.stage !== prev.stage) toast(cur.stage + 'になった', '');
+      if (cur.crash && !prev.crash) toast('暴走', 'red');
+      if (cur.stage !== prev.stage) toast(cur.stage, '');
       if (cur.hs === 2 && prev.hs < 2 && !cur.crash) toast('過熱', 'red');
-      if (cur.win && !prev.win) toast('臨界期が開いた', '');
-      if (cur.canPromote && !prev.canPromote) toast('継代できるようになった', '');
-      if (cur.bp && !prev.bp) toast('設計図が開いた', 'gold');
-      if (cur.zones > prev.zones && prev.bp) toast('設計図の新しい区画が開いた', 'gold');
+      if (cur.win && !prev.win) toast('臨界期', '');
+      if (cur.canPromote && !prev.canPromote) toast('継代', '');
+      if (cur.bp && !prev.bp) toast('設計図', 'gold');
+      if (cur.zones > prev.zones && prev.bp) toast('区画', 'gold');
     }
     prev = cur;
   }
   function handleEvents(events) {
     events.forEach(function (e) {
-      if (e.type === 'card') { var c = CT.CARD_BY_ID[e.id]; toast('カード「' + c.name + '」を見つけた', c.dark ? 'dark' : 'gold'); newCard = true; }
-      else if (e.type === 'page') { var p = CT.PAGE_BY_ID[e.id]; toast(CT.CODEX_NAME + 'の第' + p.no + '頁を' + (e.drop ? '拾った' : '見つけた'), p.kind === 'final' ? 'dark' : 'gold'); newPage = true; }
-      else if (e.type === 'seal') toast('設計図の封印が解けた', 'dark');
+      if (e.type === 'card') { var c = CT.CARD_BY_ID[e.id]; toast(c.name, c.dark ? 'dark' : 'gold'); newCard = true; pushLog('event', 'カード', c.name); }
+      else if (e.type === 'page') { var p = CT.PAGE_BY_ID[e.id]; toast('第' + p.no + '頁', p.kind === 'final' ? 'dark' : 'gold'); newPage = true; pushLog('event', '写本 第' + p.no + '頁', p.text); }
+      else if (e.type === 'seal') { toast('封印', 'dark'); }
+      else if (e.type === 'qliphoth') { newShards = true; }
       else if (e.type === 'ending') showEnding();
     });
   }
@@ -3524,13 +5189,14 @@ if (typeof module !== 'undefined') module.exports = Core;
   /* ---------- 結末 ---------- */
   function showEnding() {
     var box = $('ending');
+    startEndingHolo();
     $('endingLines').innerHTML = CT.ENDING.map(function (l, i) { return '<p style="animation-delay:' + (i * 2.2) + 's">' + esc(l) + '</p>'; }).join('');
     $('endingOk').style.animationDelay = (CT.ENDING.length * 2.2 + 1) + 's';
     box.classList.add('show');
     state.story.endingShown = true;
     save();
   }
-  $('endingOk').addEventListener('click', function () { $('ending').classList.remove('show'); embryoKey = ''; render(true); });
+  $('endingOk').addEventListener('click', function () { $('ending').classList.remove('show'); stopEndingHolo(); render(true); });
 
   /* ---------- 彼の声 ---------- */
   function showHim(text) {
@@ -3554,8 +5220,8 @@ if (typeof module !== 'undefined') module.exports = Core;
     } else {
       while (dt > 0) { var d = Math.min(1, dt); C.tick(state, d); dt -= d; }
     }
-    if (!state.voice && state.nextVoiceIn <= 0) C.spawnVoice(state);
-    if (!state.him && state.nextHimIn <= 0) { var h = C.spawnHim(state); if (h) showHim(h.text); }
+    if (!state.voice && state.nextVoiceIn <= 0) { var vv = C.spawnVoice(state); if (vv) pushLog('voice', vv.name, vv.text); }
+    if (!state.him && state.nextHimIn <= 0) { var h = C.spawnHim(state); if (h) { showHim(h.text); pushLog('him', '', h.text); } }
     if (t - lastCheck > 1000) { lastCheck = t; handleEvents(C.checkProgress(state, { sessionSeconds: sessionSeconds() })); }
     if (t - lastWave > 2000) { lastWave = t; recordWave(); }
     watchEvents();
